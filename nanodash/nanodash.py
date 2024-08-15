@@ -1,8 +1,9 @@
 import flask
 
 class NanoDash:
-    def __init__(self):
+    def __init__(self, debug=False):
         self._app = flask.Flask(__name__)
+        self._debug = debug
 
     def set_layout(self, layout):
         # Create a simple route
@@ -15,4 +16,4 @@ class NanoDash:
 
     def run(self):
         # Run the web server in debug mode
-        self._app.run( debug=True )
+        self._app.run( debug=self._debug )

@@ -1,8 +1,10 @@
 from nanodash.nanodash import NanoDash
+from nanodash.components import Component
 
 # Create a new Flask web server
-app = NanoDash()
+app = NanoDash(debug=True)
 
-app.set_layout('<h1>Hello, World!</h1>')
+simple_component = Component('h1', 'Emily rocks!')
+app.set_layout(simple_component)
 
 app.run()

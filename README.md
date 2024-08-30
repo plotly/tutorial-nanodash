@@ -17,6 +17,13 @@ Coming soon.
 -   Do not use JavaScript frameworks: they hide too much and are more complex to debug (?)
 -   No JavaScript build step: load required packages (e.g., [SVG.js][svgjs]) from the web (?)
 
+## Try it out
+To install requirements and run the sample `NanoDash` application:
+```
+pip install -r requirements.txt
+python sample.py
+```
+
 ## Contributors
 
 -   [Martha Cryan][cryan-martha]

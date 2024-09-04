@@ -1,15 +1,21 @@
+$.ajaxSetup({
+    headers: {
+        'Content-Type': 'application/json',
+    }
+});
+
 $(document).ready(function(){
     // Record and send the state when inputs change
     $('input, select, button').each(function(i, obj) {
         if(obj.type==='checkbox' || obj.type==='radio'){
             $(obj).change(function(){
                 console.log('getState()', getState());
-                sendState({}, {});
+                sendState(obj.name);
             });
         } else if (obj.tagName === 'BUTTON') {
             obj.onclick = function(){
                 console.log('getState()', getState());
-                sendState({}, {});
+                sendState(obj.name);
             };
         } else {
             obj.oninput = function(){
@@ -17,14 +23,14 @@ $(document).ready(function(){
                     $('output[for='+obj.name+']')[0].value = obj.value;
                 }
                 console.log('getState()', getState());
-                sendState({}, {});
+                sendState(obj.name);
             };
         }
     });
 });
 
-function getState(payload) {
-    var payload = payload || {};
+function getState() {
+    var payload = {};
     $('input').each(function(i, el) {
         if (el.type==='radio') {
             var value = $('input[name='+el.name+']:checked').val();
@@ -46,14 +52,17 @@ function getState(payload) {
     return payload;
 }
 
-function sendState(that, payload){
-    var payload = payload || {};
-    payload = getState(payload);
-    $.post( '/state', payload, function(data) {
+function sendState(name) {
+    var state = getState();
+    var payload = {
+        triggered: name,
+        state: state
+    }
+    $.post('/state', payload, function(data) {
         console.log('response', data);
         for (var key in data) {
             var value = data[key];
-            if(typeof value === 'boolean'){
+            if(typeof value === 'boolean') {
                 $('input[name="'+key+'"]').prop('checked', value);
             } else {
                 $('input[name="'+key+'"]').val(value);

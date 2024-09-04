@@ -11,8 +11,8 @@ class NanoDash:
         # This route is used to handle callbacks
         @self._app.route("/state", methods=["POST"])
         def handle_change():
-            print(dict(flask.request.form))
-
+            print(flask.request.form)
+            response = {}
             # TODO: Update this logic to correctly choose which callback(s) to run
             # TODO: Handle prop names (right now we are assuming everything is `value`)
             for k, v in dict(flask.request.form).items():

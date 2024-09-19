@@ -58,7 +58,7 @@ function sendState(name) {
         triggered: name,
         state: state
     }
-    $.post('/state', payload, function(data) {
+    $.post('/state', JSON.stringify(payload), function(data) {
         console.log('response', data);
         for (var key in data) {
             var value = data[key];

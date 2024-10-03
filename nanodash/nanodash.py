@@ -8,14 +8,16 @@ class NanoDash:
         self._debug = debug
         self._callbacks = []
 
-        # This route is used to handle callbacks
-        @self._app.route("/state", methods=["POST"])
+        # This route is used to handle callbacks, convert application/json content-type to dict
+        @self._app.route("/state", methods=["POST"], )
         def handle_change():
-            print(dict(flask.request.form))
-
+            response = {}
+            state = flask.request.json['state']
+            triggered = flask.request.json['triggered']
+            print('state:', state, ' triggered:', triggered)
             # TODO: Update this logic to correctly choose which callback(s) to run
             # TODO: Handle prop names (right now we are assuming everything is `value`)
-            for k, v in dict(flask.request.form).items():
+            for k, v in dict(state).items():
                 for callback in self._callbacks:
                     for input in callback["inputs"]:
                         if input[0] == k:

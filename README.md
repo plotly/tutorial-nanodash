@@ -27,10 +27,10 @@ python sample.py
 ## Contributors
 
 -   [Martha Cryan][cryan-martha]
--   [Emily Kellison-Lim][kellison-lim-emily]
+-   [Emily Kellison-Linn][kellison-linn-emily]
 
 [cryan-martha]: https://github.com/marthacryan
 [dash]: https://dash.plotly.com/
 [flask]: https://flask.palletsprojects.com/
-[kellison-lim-emily]: https://github.com/emilykl
+[kellison-linn-emily]: https://github.com/emilykl
 [svgjs]: https://svgjs.dev/

@@ -9,20 +9,14 @@ $(document).ready(function(){
     $('input, select, button').each(function(i, obj) {
         if(obj.type==='checkbox' || obj.type==='radio'){
             $(obj).change(function(){
-                console.log('getState()', getState());
                 sendState(obj.name);
             });
         } else if (obj.tagName === 'BUTTON') {
             obj.onclick = function(){
-                console.log('getState()', getState());
                 sendState(obj.name);
             };
         } else {
             obj.oninput = function(){
-                if($(obj).hasClass('show-output')){
-                    $('output[for='+obj.name+']')[0].value = obj.value;
-                }
-                console.log('getState()', getState());
                 sendState(obj.name);
             };
         }
@@ -40,8 +34,6 @@ function getState() {
             payload[el.name] = value;
         } else if (el.type==='checkbox') {
             payload[el.name] = $(el).is(':checked');
-        } else if (el.type==='text') {
-            payload[el.name] = el.value;
         } else {
             payload[el.name] = el.value;
         }
@@ -59,7 +51,6 @@ function sendState(name) {
         state: state
     }
     $.post('/state', JSON.stringify(payload), function(data) {
-        console.log('response', data);
         for (var key in data) {
             var value = data[key];
             if(typeof value === 'boolean') {

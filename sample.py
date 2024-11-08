@@ -1,5 +1,6 @@
 from nanodash.nanodash import NanoDash
-from nanodash.components import Component
+from nanodash.components import Component, Graph
+import plotly.graph_objects as go
 
 # Create a new Flask web server
 app = NanoDash(debug=True)
@@ -9,18 +10,21 @@ header_wrapper = Component("div", [header])
 input = Component("input", "", {"name": "input_sample"})
 output = Component("input", "", {"name": "output_sample"})
 button = Component("button", "Click me!")
-simple_component = Component("div", [header_wrapper, input, button, output])
+graph_component = Graph(graph_obj={"data": [], "layout": {}, "config": {}}, attributes={"name": "graph-component-sample", "id": "graph-component-sample"})
+simple_component = Component("div", [header_wrapper, input, button, output, graph_component])
+
 app.set_layout(simple_component)
 
 
 def sample_callback(inputs):
-    output = inputs[0] + "!"
-    return [output]
+    fig = go.Figure(go.Scatter(x=[1, 2, 3], y=[1, 2, 3]))
+    fig.layout.title = inputs[0] + "!"
+    return [fig]
 
 
 app.add_callback(
     inputs=[("input_sample", "value")],
-    outputs=[("output_sample", "value")],
+    outputs=[("graph-component-sample", "value")],
     function=sample_callback,
 )
 

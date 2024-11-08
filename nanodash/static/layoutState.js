@@ -64,6 +64,9 @@ function sendState(name) {
             var value = data[key];
             if(typeof value === 'boolean') {
                 $('input[name="'+key+'"]').prop('checked', value);
+            // If the value is an object, it's a graph
+            } else if (typeof value === 'object') {
+                Plotly.newPlot(key, value.data, value.layout);
             } else {
                 $('input[name="'+key+'"]').val(value);
             }

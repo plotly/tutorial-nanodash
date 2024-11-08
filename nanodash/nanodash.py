@@ -1,6 +1,15 @@
 import flask
 from .components import Component
+import plotly.graph_objects as go
 
+def process_outputs(outputs):
+    for index, output in enumerate(outputs):
+        print(type(output))
+        print(output)
+        if isinstance(output, go.Figure):
+            print('found figure')
+            outputs[index] = output.to_plotly_json()
+    return outputs
 
 class NanoDash:
     def __init__(self, debug=False):
@@ -21,6 +30,7 @@ class NanoDash:
                 input_names = [input_name for input_name, _ in callback["inputs"]]
                 if triggered in input_names:
                     outputs = callback["function"]([state[triggered]])
+                    outputs = process_outputs(outputs)
                     output_names = [output_name for output_name, _ in callback["outputs"]]
                     response.update({
                         output_name: output
@@ -39,6 +49,7 @@ class NanoDash:
             return f"""
         <html>
             <head>
+                <script src="https://cdn.plot.ly/plotly-2.32.0.min.js" charset="utf-8"></script>
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
                 <script src='static/layoutState.js'></script>
                 <title>Simple NanoDash App</title>

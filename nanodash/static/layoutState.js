@@ -66,7 +66,7 @@ function sendState(name) {
                 $('input[name="'+key+'"]').prop('checked', value);
             // If the value is an object, it's a graph
             } else if (typeof value === 'object') {
-                Plotly.newPlot(key, value.data, value.layout);
+                Plotly.newPlot(key, value.data, value.layout, value.config);
             } else {
                 $('input[name="'+key+'"]').val(value);
             }

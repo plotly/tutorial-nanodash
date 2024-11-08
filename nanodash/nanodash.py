@@ -4,10 +4,7 @@ import plotly.graph_objects as go
 
 def process_outputs(outputs):
     for index, output in enumerate(outputs):
-        print(type(output))
-        print(output)
         if isinstance(output, go.Figure):
-            print('found figure')
             outputs[index] = output.to_plotly_json()
     return outputs
 

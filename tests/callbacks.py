@@ -7,8 +7,8 @@ def test_callback():
     driver = webdriver.Chrome()
     driver.get("http://127.0.0.1:5000")
 
-    # Set text in the input with name "input_sample"
-    driver.find_element(By.NAME, "input_sample").send_keys("Hello, world!")
+    # Set text in the input with id "input_sample"
+    driver.find_element(By.ID, "input_sample").send_keys("Hello, world!")
 
     time.sleep(1)
 

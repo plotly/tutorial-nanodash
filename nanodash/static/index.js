@@ -37,7 +37,7 @@ function initializeButtonHandlers() {
 
 $(document).ready(initializeButtonHandlers);
 
-function getButtonState(element) {
+function getInputState(element) {
     if (isRadio(element)) {
         var value = $('input[id='+element.id+']:checked').val();
         if(typeof value === 'undefined'){

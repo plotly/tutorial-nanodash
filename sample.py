@@ -1,5 +1,6 @@
 from nanodash.nanodash import NanoDash
-from nanodash.components import Component, Graph
+from nanodash.components import Component
+from nanodash.graph import Graph
 import plotly.graph_objects as go
 
 # Create a new Flask web server

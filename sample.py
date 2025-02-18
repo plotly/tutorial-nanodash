@@ -1,21 +1,70 @@
 from nanodash.nanodash import NanoDash
-from nanodash.components import Component, Graph
+from nanodash.components import Component
+from nanodash.graph import Graph
 import plotly.graph_objects as go
 
 # Create a new Flask web server
 app = NanoDash(debug=True)
 
-header = Component("h1", "Hello, world!")
-header_wrapper = Component("div", [header])
-input = Component("input", "", {"name": "input_sample"})
-output = Component("input", "", {"name": "output_sample"})
-button = Component("button", "Click me!")
-slider = Component("input", "", {"name": "slider_sample", "type": "range", "min": 0, "max": 100, "step": 1})
-graph_component = Graph(graph_obj={"data": [], "layout": {}, "config": {}}, attributes={"name": "graph-component-sample", "id": "graph-component-sample"})
-simple_component = Component("div", [header_wrapper, input, button, slider, output, graph_component])
+# Create a header component
+header = Component(
+    tag="h1", 
+    children="Hello, world!"
+)
 
-app.set_layout(simple_component)
+###################
+# COMPONENTS
+###################
+input = Component(
+    tag="input", 
+    attributes={"id": "input_sample"}
+)
+output = Component(
+    tag="input", 
+    attributes={"id": "output_sample"}
+)
+button = Component(
+    tag="button", 
+    children="Click me!"
+)
+slider = Component(
+    tag="input", 
+    attributes={
+        "id": "slider_sample", 
+        "type": "range", 
+        "min": 0, 
+        "max": 100, 
+        "step": 1
+    }
+)
+graph_component = Graph(
+    graph_obj={
+        "data": [],
+        "layout": {}, 
+        "config": {}
+    }, 
+    attributes={
+        "id": "graph-component-sample"
+    }
+)
+all_components = Component(
+    "div", 
+    children = [
+        header, 
+        input, 
+        button, 
+        slider, 
+        output, 
+        graph_component
+    ]
+)
 
+# Add layout to the app
+app.set_layout(all_components)
+
+###################
+# CALLBACKS
+###################
 def slider_callback(inputs):
     return [inputs[0]]
 
@@ -30,11 +79,11 @@ def sample_callback(inputs):
     fig.layout.title = inputs[0] + "!"
     return [fig]
 
-
 app.add_callback(
     inputs=[("input_sample", "value")],
     outputs=[("graph-component-sample", "value")],
     function=sample_callback,
 )
 
+# Run the app
 app.run()

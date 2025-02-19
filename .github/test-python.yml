@@ -1,8 +1,9 @@
-name: Format and test
+name: Run tests
 
 on:
     push:
-        branches: ['*']
+        branches:
+          - '*'
     pull_request:
         branches: ['main']
 
@@ -16,7 +17,8 @@ jobs:
 
         steps:
             - uses: actions/checkout@v4
-
+            - name: 'Setup Chrome and chromedriver'
+              uses: nanasess/setup-chromedriver@v2
             - name: Set up Python ${{ matrix.python-version }}
               uses: actions/setup-python@v4
               with:

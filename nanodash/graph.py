@@ -13,6 +13,6 @@ class Graph(Component):
                     var data = {self._graph_obj['data']};
                     var layout = {self._graph_obj['layout']};
                     var config = {self._graph_obj['config']};
-                    Plotly.newPlot('{self._attributes['id']}', data, layout, config);
+                    Plotly.newPlot('graph', data, layout, config);
                 </script>
         '''

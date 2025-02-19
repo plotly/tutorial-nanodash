@@ -2,8 +2,7 @@ name: Run tests
 
 on:
     push:
-        branches:
-          - '*'
+        branches: ['main']
     pull_request:
         branches: ['main']
 
@@ -32,7 +31,7 @@ jobs:
                   source .venv/bin/activate
                   uv pip install --upgrade pip
                   uv pip install -r requirements.txt
-                  uv pip install -r requires-dev.txt
+                  uv pip install -r requirements-dev.txt
             - name: Run unit tests
               run: |
                 source .venv/bin/activate

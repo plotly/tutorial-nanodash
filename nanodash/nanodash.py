@@ -35,7 +35,6 @@ class NanoDash:
             return response
 
     def set_layout(self, layout: Component):
-        # Create a simple route
         self.layout = layout
 
     def _process_outputs(self, outputs):

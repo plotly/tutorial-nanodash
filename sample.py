@@ -7,48 +7,38 @@ import plotly.graph_objects as go
 app = NanoDash(debug=True)
 
 # Create a header component
-header = Component(
-    tag="h1", 
+header = Header(
     children="Hello, world!"
 )
 
 ###################
 # COMPONENTS
 ###################
-input = Component(
-    tag="input", 
-    attributes={"id": "input_sample"}
+input = TextField(
+    id="input_sample",
 )
-output = Component(
-    tag="input", 
-    attributes={"id": "output_sample"}
+output = TextField(
+    id="output_sample"
 )
-button = Component(
-    tag="button", 
+button = Button(
     children="Click me!"
 )
-slider = Component(
-    tag="input", 
-    attributes={
-        "id": "slider_sample", 
-        "type": "range", 
-        "min": 0, 
-        "max": 100, 
-        "step": 1
-    }
+slider = Slider(
+    id="slider_sample", 
+    type="range", 
+    min=0, 
+    max=100, 
+    step=1,
 )
 graph_component = Graph(
-    graph_obj={
+    fig={
         "data": [],
         "layout": {}, 
         "config": {}
     }, 
-    attributes={
-        "id": "graph-component-sample"
-    }
+    id="graph-component-sample"
 )
-all_components = Component(
-    "div", 
+all_components = Page(
     children = [
         header, 
         input, 
@@ -69,8 +59,8 @@ def slider_callback(inputs):
     return [inputs[0]]
 
 app.add_callback(
-    inputs=[("slider_sample", "value")],
-    outputs=[("output_sample", "value")],
+    inputs=["slider_sample.value"],
+    outputs=["output_sample.value"],
     function=slider_callback,
 )
 

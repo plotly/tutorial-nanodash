@@ -22,11 +22,11 @@ class NanoDash:
 
             response = {}
             for callback in self._callbacks:
-                input_ids = [input_id for input_id, _ in callback["inputs"]]
+                input_ids = [i.split(".")[0] for i in callback["inputs"]]
                 if triggered in input_ids:
                     outputs = callback["function"]([state[triggered]])
                     outputs = self._process_outputs(outputs)
-                    output_ids = [output_id for output_id, _ in callback["outputs"]]
+                    output_ids = [o.split(".")[0] for o in callback["outputs"]]
                     response.update({
                         output_id: output
                         for output_id, output in zip(output_ids, outputs)

@@ -6,19 +6,18 @@ import plotly.graph_objects as go
 app = NanoDash(debug=True)
 
 # Create a header component
-header = Header(children="Hello, world!")
+header = Header(text="Hello, world!")
 
 ###################
 # COMPONENTS
 ###################
 input = TextField(
-    id="input_sample",
+    id="input-sample",
 )
-output = TextField(id="output_sample")
-button = Button(children="Click me!")
+output = TextField(id="output-sample")
+button = Button(text="Click me!")
 slider = Slider(
-    id="slider_sample",
-    type="range",
+    id="slider-sample",
     min=0,
     max=100,
     step=1,
@@ -54,8 +53,8 @@ def slider_callback(inputs):
 
 
 app.add_callback(
-    inputs=["slider_sample"],
-    outputs=["output_sample"],
+    inputs=["slider-sample"],
+    outputs=["output-sample"],
     function=slider_callback,
 )
 
@@ -67,7 +66,7 @@ def sample_callback(inputs):
 
 
 app.add_callback(
-    inputs=["input_sample"],
+    inputs=["input-sample"],
     outputs=["graph-component-sample"],
     function=sample_callback,
 )

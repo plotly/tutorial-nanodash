@@ -1,64 +1,82 @@
+import plotly.graph_objects as go
+
+
 class Component:
-    def __init__(self, tag, children=None, attributes=None):
-        self._tag = tag
-        self._attributes = attributes or {}
-        children = children or []
-        self._children = children if isinstance(children, list) else [children]
+    def __init__(self, **kwargs) -> None:
+        raise NotImplementedError(
+            f"The __init__() method for {self.__class__.__name__} is not implemented yet!"
+        )
 
     def html(self):
-        attributes_html = " ".join(
-            [f'{key}="{value}"' for key, value in self._attributes.items()]
+        raise NotImplementedError(
+            f"The html() method for {self.__class__.__name__} is not implemented yet!"
         )
-        children_html = [
-            child.html() if isinstance(child, Component) else child
-            for child in self._children
-        ]
-        return f"""
-            <{self._tag} {attributes_html}>{"".join(children_html)}</{self._tag}>
-        """
 
 
 class Header(Component):
-    def __init__(self, children=None, **attributes):
-        super().__init__("h1", children, attributes=attributes)
+    def __init__(self, id: str = "", text: str = "") -> None:
+        self.id = id
+        self.text = text
+
+    def html(self) -> str:
+        return f"<h1 id='{self.id}'>{self.text}</h1>"
 
 
 class TextField(Component):
-    def __init__(self, **attributes):
-        super().__init__("input", attributes=attributes)
+    def __init__(self, id: str = "") -> None:
+        self.id = id
+
+    def html(self) -> str:
+        return f"<input id='{self.id}' type='text' value=''/>"
 
 
 class Button(Component):
-    def __init__(self, children=None, **attributes):
-        super().__init__("button", children, attributes=attributes)
+    def __init__(self, id: str = "", text: str = "") -> None:
+        self.id = id
+        self.text = text
+
+    def html(self) -> str:
+        return f"<button id='{self.id}'>{self.text}</button>"
 
 
 class Slider(Component):
-    def __init__(self, **attributes):
-        attributes["type"] = "range"
-        super().__init__("input", attributes=attributes)
+    def __init__(
+        self, id: str = "", min: int = 0, max: int = 100, step: int = 1
+    ) -> None:
+        self.id = id
+        self.min = min
+        self.max = max
+        self.step = step
+
+    def html(self) -> str:
+        return f"<input id='{self.id}' type='range' min='{self.min}' max='{self.max}' step='{self.step}'/>"
 
 
 class Page(Component):
-    def __init__(self, children=None, **attributes):
-        super().__init__("div", children, attributes=attributes)
+    def __init__(self, id: str = "", children: list = None) -> None:
+        self.id = id
+        self.children = children or []
+
+    def html(self) -> str:
+        return f"<div id='{self.id}'>{''.join(c.html() for c in self.children)}</div>"
 
 
 class Graph(Component):
-    def __init__(self, fig, **attributes):
-        super().__init__("div", [], attributes)
-        self._fig = fig
+    def __init__(
+        self, id: str = "", fig: dict = None, width: int = 1000, height: int = 600
+    ) -> None:
+        self.id = id or "graph"
+        self.fig = fig or go.Figure()
+        self.width = width
+        self.height = height
 
     def html(self):
-        attributes_html = " ".join(
-            [f'{key}="{value}"' for key, value in self._attributes.items()]
-        )
         return f"""
-                <div height="600px" width="1000px" {attributes_html}></div>
+                <div id={self.id} height="{self.height}px" width="{self.width}px"></div>
                 <script>
-                    var data = {self._fig["data"]};
-                    var layout = {self._fig["layout"]};
-                    var config = {self._fig["config"]};
-                    Plotly.newPlot('{self._attributes["id"]}', data, layout, config);
+                    var data = {self.fig["data"]};
+                    var layout = {self.fig["layout"]};
+                    var config = {self.fig["config"]};
+                    Plotly.newPlot('{self.id}', data, layout, config);
                 </script>
         """

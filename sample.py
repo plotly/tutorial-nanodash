@@ -54,8 +54,8 @@ def slider_callback(inputs):
 
 
 app.add_callback(
-    inputs=["slider_sample.value"],
-    outputs=["output_sample.value"],
+    inputs=["slider_sample"],
+    outputs=["output_sample"],
     function=slider_callback,
 )
 
@@ -67,8 +67,8 @@ def sample_callback(inputs):
 
 
 app.add_callback(
-    inputs=["input_sample.value"],
-    outputs=["graph-component-sample.value"],
+    inputs=["input_sample"],
+    outputs=["graph-component-sample"],
     function=sample_callback,
 )
 

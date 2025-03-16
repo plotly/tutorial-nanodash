@@ -18,15 +18,14 @@ class NanoDash:
             response = {}
             state = flask.request.json['state']
             triggered = flask.request.json['triggered']
-            # TODO: Handle prop names (right now we are assuming everything is `value`)
 
             response = {}
             for callback in self._callbacks:
-                input_ids = [i.split(".")[0] for i in callback["inputs"]]
+                input_ids = callback["inputs"]
                 if triggered in input_ids:
                     outputs = callback["function"]([state[triggered]])
                     outputs = self._process_outputs(outputs)
-                    output_ids = [o.split(".")[0] for o in callback["outputs"]]
+                    output_ids = callback["outputs"]
                     response.update({
                         output_id: output
                         for output_id, output in zip(output_ids, outputs)

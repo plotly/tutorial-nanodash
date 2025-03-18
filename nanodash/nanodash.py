@@ -2,6 +2,7 @@ import flask
 from .components import Component
 import plotly.graph_objects as go
 
+
 class NanoDash:
     def __init__(self, debug=False):
         self._app = flask.Flask(__name__)
@@ -16,8 +17,8 @@ class NanoDash:
         @self._app.route("/state", methods=["POST"])
         def handle_change():
             response = {}
-            state = flask.request.json['state']
-            triggered = flask.request.json['triggered']
+            state = flask.request.json["state"]
+            triggered = flask.request.json["triggered"]
 
             response = {}
             for callback in self._callbacks:
@@ -26,10 +27,12 @@ class NanoDash:
                     outputs = callback["function"]([state[triggered]])
                     outputs = self._process_outputs(outputs)
                     output_ids = callback["outputs"]
-                    response.update({
-                        output_id: output
-                        for output_id, output in zip(output_ids, outputs)
-                    })
+                    response.update(
+                        {
+                            output_id: output
+                            for output_id, output in zip(output_ids, outputs)
+                        }
+                    )
 
             return response
 

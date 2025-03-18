@@ -52,6 +52,18 @@ class Slider(Component):
         return f"<input id='{self.id}' type='range' min='{self.min}' max='{self.max}' step='{self.step}'/>"
 
 
+class Dropdown(Component):
+    def __init__(self, id: str = "", options: list = None) -> None:
+        self.id = id
+        self.options = options or []
+
+    def html(self) -> str:
+        options_html = "".join(
+            f"<option value='{opt}'>{opt}</option>" for opt in self.options
+        )
+        return f"<select id='{self.id}'>{options_html}</select>"
+
+
 class Page(Component):
     def __init__(self, id: str = "", children: list = None) -> None:
         self.id = id

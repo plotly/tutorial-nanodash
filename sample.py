@@ -1,66 +1,49 @@
 from nanodash.nanodash import NanoDash
-from nanodash.components import Component
-from nanodash.graph import Graph
+from nanodash.components import Header, TextField, Button, Slider, Page, Graph
 import plotly.graph_objects as go
 
 # Create a new Flask web server
 app = NanoDash(debug=True)
 
 # Create a header component
-header = Component(
-    tag="h1", 
-    children="Hello, world!"
-)
+header = Header(text="Hello, world!")
 
 ###################
 # COMPONENTS
 ###################
-input = Component(
-    tag="input", 
-    attributes={"id": "input_sample"}
+input = TextField(
+    id="input-sample",
 )
-output = Component(
-    tag="input", 
-    attributes={"id": "output_sample"}
-)
-button = Component(
-    tag="button", 
-    children="Click me!"
-)
-slider = Component(
-    tag="input", 
-    attributes={
-        "id": "slider_sample", 
-        "type": "range", 
-        "min": 0, 
-        "max": 100, 
-        "step": 1
-    }
+output = TextField(id="output-sample")
+button = Button(text="Click me!")
+slider = Slider(
+    id="slider-sample",
+    min=0,
+    max=100,
+    step=1,
 )
 graph_component = Graph(
-    graph_obj={
+    fig={
         "data": [],
-        "layout": {}, 
-        "config": {}
-    }, 
-    attributes={
-        "id": "graph-component-sample"
-    }
+        "layout": {},
+        "config": {},
+    },
+    id="graph-component-sample",
 )
-all_components = Component(
-    "div", 
-    children = [
-        header, 
-        input, 
-        button, 
-        slider, 
-        output, 
-        graph_component
+all_components = Page(
+    children=[
+        header,
+        input,
+        button,
+        slider,
+        output,
+        graph_component,
     ]
 )
 
 # Add layout to the app
 app.set_layout(all_components)
+
 
 ###################
 # CALLBACKS
@@ -68,20 +51,23 @@ app.set_layout(all_components)
 def slider_callback(inputs):
     return [inputs[0]]
 
+
 app.add_callback(
-    inputs=[("slider_sample", "value")],
-    outputs=[("output_sample", "value")],
+    inputs=["slider-sample"],
+    outputs=["output-sample"],
     function=slider_callback,
 )
+
 
 def sample_callback(inputs):
     fig = go.Figure(go.Scatter(x=[1, 2, 3], y=[1, 2, 3]))
     fig.layout.title = inputs[0] + "!"
     return [fig]
 
+
 app.add_callback(
-    inputs=[("input_sample", "value")],
-    outputs=[("graph-component-sample", "value")],
+    inputs=["input-sample"],
+    outputs=["graph-component-sample"],
     function=sample_callback,
 )
 

@@ -1,51 +1,35 @@
-$.ajaxSetup({
-    headers: {
-        'Content-Type': 'application/json',
-    }
-});
-
 function isButton(element) {
-    return (element.tagName === 'BUTTON');
+    return element.tagName === 'BUTTON';
 }
 
 function isCheckbox(element) {
-    return (element.type==='checkbox');
+    return element.type === 'checkbox';
 }
 
 function isRadio(element) {
-    return (element.type==='radio');
+    return element.type === 'radio';
 }
 
 function initializeButtonHandlers() {
-    // Record and send the state when inputs change
-    $('input, select, button').each(function(i, element) {
+    document.querySelectorAll('input, select, button').forEach(element => {
         if (isCheckbox(element) || isRadio(element)) {
-            $(element).change(function(){
-                sendState(element.id);
-            });
+            element.addEventListener('change', () => sendState(element.id));
         } else if (isButton(element)) {
-            element.onclick = function(){
-                sendState(element.id);
-            };
+            element.addEventListener('click', () => sendState(element.id));
         } else {
-            element.oninput = function(){
-                sendState(element.id);
-            };
+            element.addEventListener('input', () => sendState(element.id));
         }
     });
 }
 
-$(document).ready(initializeButtonHandlers);
+document.addEventListener('DOMContentLoaded', initializeButtonHandlers);
 
 function getInputState(element) {
     if (isRadio(element)) {
-        var value = $('input[id='+element.id+']:checked').val();
-        if(typeof value === 'undefined'){
-            value = null;
-        }
-        return value;
+        const checkedRadio = document.querySelector(`input[id='${element.id}']:checked`);
+        return checkedRadio ? checkedRadio.value : null;
     } else if (isCheckbox(element)) {
-        return $(element).is(':checked');
+        return element.checked;
     } else {
         return element.value;
     }
@@ -56,40 +40,52 @@ function getSelectState(element) {
 }
 
 function getState() {
-    var payload = {};
-    $('input').each(function(i, element) {
+    let payload = {};
+    document.querySelectorAll('input').forEach(element => {
         payload[element.id] = getInputState(element);
     });
-    $('select').each(function(i, element) {
+    document.querySelectorAll('select').forEach(element => {
         payload[element.id] = getSelectState(element);
     });
     return payload;
 }
 
 function getInputElement(id) {
-    return $('input[id="'+id+'"]');
+    return document.querySelector(`input[id='${id}']`);
 }
 
 function updateValues(newState) {
-    for (var id in newState) {
-        var value = newState[id];
+    console.log('Updating values with new state:', newState);
+    for (let id in newState) {
+        let value = newState[id];
+        
         if (typeof value === 'boolean') {
-            getInputElement(id).prop('checked', value);
-        // If the value is an object, it's a graph
-        // TODO: This is a hacky way to determine if the value is a graph
+            let element = getInputElement(id);
+            if (!element) continue;
+            element.checked = value;
         } else if (typeof value === 'object') {
             Plotly.newPlot(id, value.data, value.layout, value.config);
         } else {
-            getInputElement(id).val(value);
+            let element = getInputElement(id);
+            if (!element) continue;
+            element.value = value;
         }
     }
 }
 
 function sendState(id) {
-    var state = getState();
-    var payload = {
+    let state = getState();
+    let payload = {
         triggered: id,
         state: state
-    }
-    $.post('/state', JSON.stringify(payload), updateValues);
+    };
+    
+    fetch('/state', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    })
+    .then(response => response.json())
+    .then(updateValues)
+    .catch(error => console.error('Error:', error));
 }

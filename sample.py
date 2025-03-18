@@ -77,6 +77,7 @@ app.add_callback(
 def sample_callback(inputs):
     fig = go.Figure(go.Scatter(x=[1, 2, 3], y=[1, 2, 3]))
     fig.layout.title = inputs[0] + "!"
+    print('fig', fig)
     return [fig]
 
 app.add_callback(

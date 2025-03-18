@@ -55,7 +55,6 @@ function getInputElement(id) {
 }
 
 function updateValues(newState) {
-    console.log('Updating values with new state:', newState);
     for (let id in newState) {
         let value = newState[id];
         

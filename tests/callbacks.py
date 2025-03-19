@@ -13,7 +13,9 @@ def test_callback():
     time.sleep(1)
 
     # Check that it is showing up as the graph title
-    graph = driver.find_element(By.ID, "graph-component-sample").find_element(By.CLASS_NAME, "g-gtitle")
+    graph = driver.find_element(By.ID, "graph-component-sample").find_element(
+        By.CLASS_NAME, "g-gtitle"
+    )
     assert graph.text == "Hello, world!!"
 
     # Close the driver

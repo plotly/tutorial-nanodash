@@ -1,5 +1,5 @@
 from nanodash.nanodash import NanoDash
-from nanodash.components import Header, TextField, Button, Slider, Page, Graph
+from nanodash.components import Dropdown, Header, TextField, Button, Slider, Page, Graph
 import plotly.graph_objects as go
 
 # Create a new Flask web server
@@ -14,13 +14,18 @@ header = Header(text="Hello, world!")
 input = TextField(
     id="input-sample",
 )
-output = TextField(id="output-sample")
+slider_output = TextField(id="slider-output")
+dropdown_output = TextField(id="dropdown-output")
 button = Button(text="Click me!")
 slider = Slider(
     id="slider-sample",
     min=0,
     max=100,
     step=1,
+)
+dropdown = Dropdown(
+    id="dropdown-sample",
+    options=["Option 1", "Option 2", "Option 3"],
 )
 graph_component = Graph(
     fig={
@@ -36,7 +41,9 @@ all_components = Page(
         input,
         button,
         slider,
-        output,
+        slider_output,
+        dropdown,
+        dropdown_output,
         graph_component,
     ]
 )
@@ -54,8 +61,19 @@ def slider_callback(inputs):
 
 app.add_callback(
     inputs=["slider-sample"],
-    outputs=["output-sample"],
+    outputs=["slider-output"],
     function=slider_callback,
+)
+
+
+def dropdown_callback(inputs):
+    return [inputs[0]]
+
+
+app.add_callback(
+    inputs=["dropdown-sample"],
+    outputs=["dropdown-output"],
+    function=dropdown_callback,
 )
 
 

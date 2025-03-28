@@ -7,7 +7,7 @@ from .components import Component
 
 
 class NanoDash:
-    def __init__(self, title: str = "Simple NanoDash App") -> None:
+    def __init__(self, title: str = "NanoDash App") -> None:
         self.app = flask.Flask(__name__)
         self.title = title
         self.callbacks = []

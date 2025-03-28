@@ -3,7 +3,7 @@ from nanodash.components import Dropdown, Header, TextField, Button, Slider, Pag
 import plotly.graph_objects as go
 
 # Create a new Flask web server
-app = NanoDash(debug=True)
+app = NanoDash(title="Sample NanoDash App")
 
 # Create a header component
 header = Header(text="Hello, world!")
@@ -55,37 +55,37 @@ app.set_layout(all_components)
 ###################
 # CALLBACKS
 ###################
-def slider_callback(inputs):
-    return [inputs[0]]
+def slider_callback(input_values):
+    return [input_values[0]]
 
 
 app.add_callback(
-    inputs=["slider-sample"],
-    outputs=["slider-output"],
+    input_ids=["slider-sample"],
+    output_ids=["slider-output"],
     function=slider_callback,
 )
 
 
-def dropdown_callback(inputs):
-    return [inputs[0]]
+def dropdown_callback(input_values):
+    return [input_values[0]]
 
 
 app.add_callback(
-    inputs=["dropdown-sample"],
-    outputs=["dropdown-output"],
+    input_ids=["dropdown-sample"],
+    output_ids=["dropdown-output"],
     function=dropdown_callback,
 )
 
 
-def sample_callback(inputs):
+def sample_callback(input_values):
     fig = go.Figure(go.Scatter(x=[1, 2, 3], y=[1, 2, 3]))
-    fig.layout.title = inputs[0] + "!"
+    fig.layout.title = input_values[0] + "!"
     return [fig]
 
 
 app.add_callback(
-    inputs=["input-sample"],
-    outputs=["graph-component-sample"],
+    input_ids=["input-sample"],
+    output_ids=["graph-component-sample"],
     function=sample_callback,
 )
 

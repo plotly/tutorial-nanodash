@@ -67,4 +67,4 @@ class NanoDash:
 
     def run(self):
         # Run the web server in debug mode
-        self._app.run(debug=self._debug)
+        self._app.run(debug=self._debug, use_reloader=False)

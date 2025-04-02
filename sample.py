@@ -28,11 +28,7 @@ dropdown = Dropdown(
     options=["Option 1", "Option 2", "Option 3"],
 )
 graph_component = Graph(
-    fig={
-        "data": [],
-        "layout": {},
-        "config": {},
-    },
+    fig=go.Figure(),
     id="graph-component-sample",
 )
 all_components = Page(

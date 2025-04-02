@@ -1,3 +1,4 @@
+import json
 import plotly.graph_objects as go
 
 
@@ -23,11 +24,12 @@ class Header(Component):
 
 
 class TextField(Component):
-    def __init__(self, id: str = "") -> None:
+    def __init__(self, id: str = "", value="") -> None:
         self.id = id
+        self.value = value
 
     def html(self) -> str:
-        return f"<input id='{self.id}' type='text' value=''/>"
+        return f"<input id='{self.id}' type='text' value={self.value}/>"
 
 
 class Button(Component):
@@ -41,27 +43,29 @@ class Button(Component):
 
 class Slider(Component):
     def __init__(
-        self, id: str = "", min: int = 0, max: int = 100, step: int = 1
+        self, id: str = "", min: int = 0, max: int = 100, step: int = 1, value = None
     ) -> None:
         self.id = id
         self.min = min
         self.max = max
         self.step = step
+        self.value = value
 
     def html(self) -> str:
-        return f"<input id='{self.id}' type='range' min='{self.min}' max='{self.max}' step='{self.step}'/>"
+        return f"<input id='{self.id}' value='{self.value}' type='range' min='{self.min}' max='{self.max}' step='{self.step}'/>"
 
 
 class Dropdown(Component):
-    def __init__(self, id: str = "", options: list = None) -> None:
+    def __init__(self, id: str = "", options: list = None, value = None) -> None:
         self.id = id
         self.options = options or []
+        self.value = value
 
     def html(self) -> str:
         options_html = "".join(
             f"<option value='{opt}'>{opt}</option>" for opt in self.options
         )
-        return f"<select id='{self.id}'>{options_html}</select>"
+        return f"<select id='{self.id}' value='{self.value}'>{options_html}</select>"
 
 
 class Page(Component):
@@ -75,7 +79,7 @@ class Page(Component):
 
 class Graph(Component):
     def __init__(
-        self, id: str = "", fig: dict = None, width: int = 1000, height: int = 600
+        self, id: str = "", fig: go.Figure = None, width: int = 1000, height: int = 600
     ) -> None:
         self.id = id or "graph"
         self.fig = fig or go.Figure()
@@ -83,12 +87,12 @@ class Graph(Component):
         self.height = height
 
     def html(self):
+        fig_json = self.fig.to_plotly_json()
         return f"""
                 <div id={self.id} height="{self.height}px" width="{self.width}px"></div>
                 <script>
-                    var data = {self.fig["data"]};
-                    var layout = {self.fig["layout"]};
-                    var config = {self.fig["config"]};
-                    Plotly.newPlot('{self.id}', data, layout, config);
+                    var data = {json.dumps(fig_json["data"])};
+                    var layout = {json.dumps(fig_json["layout"])};
+                    Plotly.newPlot('{self.id}', data, layout, {{}});
                 </script>
         """

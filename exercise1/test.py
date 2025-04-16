@@ -4,18 +4,15 @@ Exercise 1: Testing the basic Flask server with static HTML capabilities
 import requests
 from selenium.webdriver.common.by import By
 import pytest
-from .test_utils import start_server, stop_server, app_test_context
+from ..test_utils import start_server, app_test_context
 
 
 def test_server_running():
     """Test if the Flask server is running and returning HTML content."""
-    server = start_server("tests/exercise_apps/exercise1.py")
-    try:
-        response = requests.get("http://127.0.0.1:5000")
-        assert response.status_code == 200
-        assert "<html" in response.text, "Response does not contain HTML"
-    finally:
-        stop_server(server)
+    start_server("tests/exercise_apps/exercise1.py")
+    response = requests.get("http://127.0.0.1:5000")
+    assert response.status_code == 200
+    assert "<html" in response.text, "Response does not contain HTML"
 
 
 def test_page_structure():

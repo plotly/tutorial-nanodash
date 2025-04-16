@@ -5,41 +5,38 @@ from selenium.webdriver.common.by import By
 import pytest
 import json
 import requests
-from .test_utils import (
-    start_server, stop_server, app_test_context, setup_fetch_interceptor,
+from ..test_utils import (
+    start_server, app_test_context, setup_fetch_interceptor,
     set_component_value, check_component_exists, wait_for_callback_completion
 )
 
 
 def test_state_endpoint_exists():
     """Test if the state endpoint exists and accepts POST requests."""
-    server = start_server("tests/exercise_apps/exercise4.py")
+    start_server("tests/exercise_apps/exercise4.py")
+    # Create a simple payload
+    payload = {
+        "triggered": "input-test",
+        "state": {"input-test": "test value"}
+    }
+    
+    # Send a POST request to the state endpoint
+    response = requests.post(
+        "http://127.0.0.1:5000/state",
+        json=payload,
+        headers={"Content-Type": "application/json"}
+    )
+    
+    # Check if the endpoint exists and accepts the request
+    assert response.status_code != 404, "State endpoint should exist"
+    assert response.status_code == 200, "State endpoint should accept POST requests"
+    
+    # Check if the response is valid JSON
     try:
-        # Create a simple payload
-        payload = {
-            "triggered": "input-test",
-            "state": {"input-test": "test value"}
-        }
-        
-        # Send a POST request to the state endpoint
-        response = requests.post(
-            "http://127.0.0.1:5000/state",
-            json=payload,
-            headers={"Content-Type": "application/json"}
-        )
-        
-        # Check if the endpoint exists and accepts the request
-        assert response.status_code != 404, "State endpoint should exist"
-        assert response.status_code == 200, "State endpoint should accept POST requests"
-        
-        # Check if the response is valid JSON
-        try:
-            response_data = response.json()
-            assert isinstance(response_data, dict), "Response should be a JSON object"
-        except:
-            pytest.fail("Response should be valid JSON")
-    finally:
-        stop_server(server)
+        response_data = response.json()
+        assert isinstance(response_data, dict), "Response should be a JSON object"
+    except:
+        pytest.fail("Response should be valid JSON")
 
 
 def test_input_state_capture():

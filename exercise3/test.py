@@ -3,7 +3,7 @@ Exercise 3: Testing the Graph component and Plotly integration
 """
 from selenium.webdriver.common.by import By
 import pytest
-from .test_utils import app_test_context, wait_for_graph_render, check_component_exists, get_graph_data
+from ..test_utils import app_test_context, wait_for_graph_render, check_component_exists, get_graph_data
 
 
 def test_graph_component_rendered():

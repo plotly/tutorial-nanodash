@@ -9,36 +9,33 @@ import pytest
 import json
 import requests
 import time
-from .test_utils import start_server, stop_server
+from ..test_utils import start_server
 
 
 def test_callback_registration():
     """Test if callbacks can be registered and processed."""
-    process = start_server("tests/exercise_apps/exercise5.py")
-    try:
-        # Create a payload to simulate a component update
-        payload = {
-            "triggered": "input-test",
-            "state": {"input-test": "test value"}
-        }
-        
-        # Send a POST request to the state endpoint
-        response = requests.post(
-            "http://127.0.0.1:5000/state",
-            json=payload,
-            headers={"Content-Type": "application/json"}
-        )
-        
-        # Check if a callback was triggered and returned a response
-        assert response.status_code == 200
-        response_data = response.json()
-        assert response_data, "Callback should return a response"
-        
-        # Assuming a simple echo callback that returns the input value in an output component
-        assert "output-test" in response_data, "Output component should be in the response"
-        assert response_data["output-test"] == "test value", "Callback should process input value"
-    finally:
-        stop_server(process)
+    start_server("tests/exercise_apps/exercise5.py")
+    # Create a payload to simulate a component update
+    payload = {
+        "triggered": "input-test",
+        "state": {"input-test": "test value"}
+    }
+    
+    # Send a POST request to the state endpoint
+    response = requests.post(
+        "http://127.0.0.1:5000/state",
+        json=payload,
+        headers={"Content-Type": "application/json"}
+    )
+    
+    # Check if a callback was triggered and returned a response
+    assert response.status_code == 200
+    response_data = response.json()
+    assert response_data, "Callback should return a response"
+    
+    # Assuming a simple echo callback that returns the input value in an output component
+    assert "output-test" in response_data, "Output component should be in the response"
+    assert response_data["output-test"] == "test value", "Callback should process input value"
 
 
 def test_callback_function_execution():
@@ -84,7 +81,6 @@ def test_callback_function_execution():
         assert response["output-test"] == test_value, "Callback should process the input correctly"
     finally:
         driver.quit()
-        stop_server(process)
 
 
 def test_multiple_callbacks():
@@ -132,7 +128,6 @@ def test_multiple_callbacks():
         assert "dropdown-output" in responses[1], "Second callback should update dropdown output"
     finally:
         driver.quit()
-        stop_server(process)
 
 
 if __name__ == "__main__":

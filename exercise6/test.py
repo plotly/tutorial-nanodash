@@ -7,7 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import pytest
 import time
-from .test_utils import start_server, stop_server
+from ..test_utils import start_server
 
 
 def test_text_updates():
@@ -33,7 +33,6 @@ def test_text_updates():
         assert output_element.get_attribute("value") == test_value, "Output should be updated with input value"
     finally:
         driver.quit()
-        stop_server(process)
 
 
 def test_graph_updates():
@@ -75,7 +74,6 @@ def test_graph_updates():
             pytest.fail("Graph title should be updated and visible")
     finally:
         driver.quit()
-        stop_server(process)
 
 
 def test_multiple_output_updates():
@@ -103,7 +101,6 @@ def test_multiple_output_updates():
         assert test_value in output2.get_attribute("value"), "Second output should be updated"
     finally:
         driver.quit()
-        stop_server(process)
 
 
 if __name__ == "__main__":

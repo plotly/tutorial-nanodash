@@ -2,7 +2,7 @@
 Comprehensive test utilities for NanoDash tests
 
 This module provides a unified set of utilities for testing NanoDash applications:
-1. Server management: start_server, stop_server
+1. Server management: start_server
 2. Test contexts: app_test_context
 3. Component interaction: check_component_exists, set_component_value
 4. Graph testing: wait_for_graph_render, get_graph_data
@@ -48,17 +48,6 @@ def start_server(script_path):
     time.sleep(2)
     
     return server_thread
-
-
-def stop_server(server_thread):
-    """Stop a Flask server running in a thread.
-    
-    Args:
-        server_thread: Thread object returned by start_server
-    """
-    # Since the thread is a daemon, it will be terminated when the main thread exits
-    # Nothing specific needs to be done to stop it
-    pass
 
 
 @contextmanager

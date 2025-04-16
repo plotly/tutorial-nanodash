@@ -3,7 +3,7 @@ Exercise 2: Testing component implementation (TextInput and Dropdown)
 """
 from selenium.webdriver.common.by import By
 import pytest
-from .test_utils import app_test_context, check_component_exists, set_component_value
+from ..test_utils import app_test_context, check_component_exists, set_component_value
 
 
 def test_text_input_component():

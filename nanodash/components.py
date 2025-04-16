@@ -86,9 +86,6 @@ class Graph(Component):
         return f"""
                 <div id={self.id} height="{self.height}px" width="{self.width}px"></div>
                 <script>
-                    var data = {self.fig["data"]};
-                    var layout = {self.fig["layout"]};
-                    var config = {self.fig["config"]};
-                    Plotly.newPlot('{self.id}', data, layout, config);
+                    Plotly.newPlot('{self.id}', {self.fig.to_json()});
                 </script>
         """

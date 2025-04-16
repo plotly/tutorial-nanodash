@@ -9,12 +9,12 @@ import pytest
 import json
 import requests
 import time
-from ..test_utils import start_server
+from test_utils import start_server
 
 
 def test_callback_registration():
     """Test if callbacks can be registered and processed."""
-    start_server("tests/exercise_apps/exercise5.py")
+    start_server("exercise5/app.py")
     # Create a payload to simulate a component update
     payload = {
         "triggered": "input-test",
@@ -40,7 +40,7 @@ def test_callback_registration():
 
 def test_callback_function_execution():
     """Test if the callback function is executed with the correct inputs."""
-    process = start_server("tests/exercise_apps/exercise5.py")
+    process = start_server("exercise5/app.py")
     try:
         driver = webdriver.Chrome()
         driver.get("http://127.0.0.1:5000")
@@ -85,7 +85,7 @@ def test_callback_function_execution():
 
 def test_multiple_callbacks():
     """Test if multiple callbacks can be registered and executed correctly."""
-    process = start_server("tests/exercise_apps/exercise5.py")
+    start_server("exercise5/app.py")
     try:
         driver = webdriver.Chrome()
         driver.get("http://127.0.0.1:5000")

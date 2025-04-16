@@ -3,12 +3,12 @@ Exercise 2: Testing component implementation (TextInput and Dropdown)
 """
 from selenium.webdriver.common.by import By
 import pytest
-from ..test_utils import app_test_context, check_component_exists, set_component_value
+from test_utils import app_test_context, check_component_exists, set_component_value
 
 
 def test_text_input_component():
     """Test if the TextInput component is properly implemented and renders correctly."""
-    with app_test_context("tests/exercise_apps/exercise2.py") as driver:
+    with app_test_context("exercise2/app.py") as driver:
         # Check component exists
         assert check_component_exists(driver, "input-test"), "Text input component should exist"
         
@@ -20,7 +20,7 @@ def test_text_input_component():
 
 def test_dropdown_component():
     """Test if the Dropdown component is properly implemented and renders correctly."""
-    with app_test_context("tests/exercise_apps/exercise2.py") as driver:
+    with app_test_context("exercise2/app.py") as driver:
         # Check component exists
         assert check_component_exists(driver, "dropdown-test"), "Dropdown component should exist"
         
@@ -38,8 +38,3 @@ def test_dropdown_component():
         # Test component functionality using our utility
         assert set_component_value(driver, "dropdown-test", option_value), "Should be able to select dropdown option"
         assert dropdown.get_attribute("value") == option_value, "Dropdown should update its value"
-
-
-if __name__ == "__main__":
-    test_text_input_component()
-    test_dropdown_component()

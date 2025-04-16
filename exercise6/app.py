@@ -1,5 +1,6 @@
 from nanodash.nanodash import NanoDash
 from nanodash.components import Header, TextField, Graph, Page
+import plotly.express as px
 import plotly.graph_objects as go
 
 # Create a new Flask web server
@@ -16,13 +17,15 @@ output_test = TextField(id="output-test")
 graph_input = TextField(id="graph-input")
 
 # Create an initial graph
-fig = go.Figure(
-    data=[go.Scatter(x=[1, 2, 3, 4, 5], y=[1, 4, 9, 16, 25], mode='markers+lines')],
-    layout=go.Layout(
-        title="Initial Graph Title",
-        xaxis=dict(title="X-Axis"),
-        yaxis=dict(title="Y-Axis")
-    )
+fig = px.scatter(
+    x=[1, 2, 3, 4, 5], 
+    y=[1, 4, 9, 16, 25]
+)
+
+fig.update_layout(
+    title="Initial Graph Title",
+    xaxis=dict(title="X-Axis"),
+    yaxis=dict(title="Y-Axis")
 )
 
 graph_test = Graph(
@@ -57,8 +60,8 @@ def text_callback(inputs):
     return [inputs[0]]
 
 app.add_callback(
-    inputs=["input-test"],
-    outputs=["output-test"],
+    input_ids=["input-test"],
+    output_ids=["output-test"],
     function=text_callback
 )
 
@@ -67,20 +70,21 @@ def graph_update_callback(inputs):
     new_title = inputs[0]
     
     # Create a new figure with the updated title
-    updated_fig = go.Figure(
-        data=[go.Scatter(x=[1, 2, 3, 4, 5], y=[1, 4, 9, 16, 25], mode='markers+lines')],
-        layout=go.Layout(
-            title=new_title,
-            xaxis=dict(title="X-Axis"),
-            yaxis=dict(title="Y-Axis")
-        )
+    updated_fig = px.scatter(
+        x=[1, 2, 3, 4, 5], 
+        y=[1, 4, 9, 16, 25]
+    )
+    updated_fig.update_layout(
+        title=new_title,
+        xaxis=dict(title="X-Axis"),
+        yaxis=dict(title="Y-Axis")
     )
     
     return [updated_fig]
 
 app.add_callback(
-    inputs=["graph-input"],
-    outputs=["graph-test"],
+    input_ids=["graph-input"],
+    output_ids=["graph-test"],
     function=graph_update_callback
 )
 
@@ -90,8 +94,8 @@ def multi_output_callback(inputs):
     return [input_value, input_value]
 
 app.add_callback(
-    inputs=["multi-output-input"],
-    outputs=["output-1", "output-2"],
+    input_ids=["multi-output-input"],
+    output_ids=["output-1", "output-2"],
     function=multi_output_callback
 )
 

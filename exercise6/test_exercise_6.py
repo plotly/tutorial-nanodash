@@ -7,12 +7,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import pytest
 import time
-from ..test_utils import start_server
+from test_utils import start_server
 
 
 def test_text_updates():
     """Test if text outputs are updated correctly."""
-    process = start_server("tests/exercise_apps/exercise4c.py")
+    start_server("exercise6/app.py")
     try:
         driver = webdriver.Chrome()
         driver.get("http://127.0.0.1:5000")
@@ -37,7 +37,7 @@ def test_text_updates():
 
 def test_graph_updates():
     """Test if graph components are updated correctly."""
-    process = start_server("tests/exercise_apps/exercise4c.py")
+    start_server("exercise6/app.py")
     try:
         driver = webdriver.Chrome()
         driver.get("http://127.0.0.1:5000")
@@ -78,7 +78,7 @@ def test_graph_updates():
 
 def test_multiple_output_updates():
     """Test if multiple outputs can be updated from a single input."""
-    process = start_server("tests/exercise_apps/exercise4c.py")
+    start_server("exercise6/app.py")
     try:
         driver = webdriver.Chrome()
         driver.get("http://127.0.0.1:5000")

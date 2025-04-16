@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 import pytest
 import json
 import requests
-from ..test_utils import (
+from test_utils import (
     start_server, app_test_context, setup_fetch_interceptor,
     set_component_value, check_component_exists, wait_for_callback_completion
 )
@@ -13,7 +13,7 @@ from ..test_utils import (
 
 def test_state_endpoint_exists():
     """Test if the state endpoint exists and accepts POST requests."""
-    start_server("tests/exercise_apps/exercise4.py")
+    start_server("exercise2/app.py")
     # Create a simple payload
     payload = {
         "triggered": "input-test",
@@ -41,7 +41,7 @@ def test_state_endpoint_exists():
 
 def test_input_state_capture():
     """Test if component state changes are captured and sent to the server."""
-    with app_test_context("tests/exercise_apps/exercise4.py") as driver:
+    with app_test_context("exercise3/app.py") as driver:
         # Mock the fetch API to intercept the requests
         setup_fetch_interceptor(driver)
         
@@ -64,7 +64,7 @@ def test_input_state_capture():
 
 def test_multi_component_state():
     """Test if the state includes all component values."""
-    with app_test_context("tests/exercise_apps/exercise4.py") as driver:
+    with app_test_context("exercise4/app.py") as driver:
         # Mock the fetch API to intercept the requests
         setup_fetch_interceptor(driver)
         
@@ -83,9 +83,3 @@ def test_multi_component_state():
         components_to_check = ["input-test", "dropdown-test"]  # Adjust based on your exercise
         for component_id in components_to_check:
             assert component_id in state, f"State should include {component_id}"
-
-
-if __name__ == "__main__":
-    test_state_endpoint_exists()
-    test_input_state_capture()
-    test_multi_component_state()

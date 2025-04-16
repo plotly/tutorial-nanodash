@@ -3,12 +3,12 @@ Exercise 3: Testing the Graph component and Plotly integration
 """
 from selenium.webdriver.common.by import By
 import pytest
-from ..test_utils import app_test_context, wait_for_graph_render, check_component_exists, get_graph_data
+from test_utils import app_test_context, wait_for_graph_render, check_component_exists, get_graph_data
 
 
 def test_graph_component_rendered():
     """Test if the Graph component is rendered correctly."""
-    with app_test_context("tests/exercise_apps/exercise3.py") as driver:
+    with app_test_context("exercise3/app.py") as driver:
         # Check that the graph container exists
         assert check_component_exists(driver, "graph-test"), "Graph container should be present"
         
@@ -23,7 +23,7 @@ def test_graph_component_rendered():
 
 def test_graph_components_present():
     """Test if the Graph component has the expected Plotly structure."""
-    with app_test_context("tests/exercise_apps/exercise3.py") as driver:
+    with app_test_context("exercise3/app.py") as driver:
         # Wait for Plotly to render the graph
         wait_for_graph_render(driver)
         
@@ -38,8 +38,3 @@ def test_graph_components_present():
         y_axis = driver.find_elements(By.CSS_SELECTOR, ".yaxislayer-above")
         assert x_axis, "X-axis should be rendered"
         assert y_axis, "Y-axis should be rendered"
-
-
-if __name__ == "__main__":
-    test_graph_component_rendered()
-    test_graph_components_present()

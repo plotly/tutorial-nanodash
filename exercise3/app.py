@@ -9,7 +9,7 @@ app = NanoDash()
 header = Header(text="Exercise 3: Graph Component and Plotly Integration")
 
 # Create a simple scatter plot
-fig = px.scatter(x=[1, 2, 3, 4, 5], y=[1, 4, 9, 16, 25], mode='markers+lines')
+fig = px.scatter(x=[1, 2, 3, 4, 5], y=[1, 4, 9, 16, 25])
 
 # Create the graph component
 graph = Graph(

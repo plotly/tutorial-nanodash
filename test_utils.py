@@ -44,8 +44,11 @@ def start_server(script_path):
     server_thread.daemon = True
     server_thread.start()
     
-    # Give the server time to start
-    time.sleep(2)
+    # Wait until the server is up and running by checking the URL
+    wait = WebDriverWait(webdriver.Chrome(), 10)
+    wait.until(
+        EC.presence_of_element_located((By.TAG_NAME, "html"))
+    )
     
     return server_thread
 

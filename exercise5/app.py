@@ -38,8 +38,8 @@ def text_callback(inputs):
     return [inputs[0]]
 
 app.add_callback(
-    inputs=["input-test"],
-    outputs=["output-test"],
+    input_ids=["input-test"],
+    output_ids=["output-test"],
     function=text_callback
 )
 
@@ -48,8 +48,8 @@ def dropdown_callback(inputs):
     return [inputs[0]]
 
 app.add_callback(
-    inputs=["dropdown-test"],
-    outputs=["dropdown-output"],
+    input_ids=["dropdown-test"],
+    output_ids=["dropdown-output"],
     function=dropdown_callback
 )
 

@@ -7,6 +7,9 @@ name = "nanodash"
 version = "0.1.0"
 description = "A minimal dashboard library"
 requires-python = ">=3.7"
-
+authors = [
+    { name="Martha Cryan", email="martha.cryan@plot.ly" },
+    { name="Emily Kellison-Linn", email="emily@plot.ly" }
+]
 [tool.setuptools]
 packages = ["nanodash"]

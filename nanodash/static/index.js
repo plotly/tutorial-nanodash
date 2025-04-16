@@ -57,7 +57,9 @@ function getInputElement(id) {
 function updateValues(newState) {
     for (let id in newState) {
         let value = newState[id];
-        
+        // Deserialize json
+        value = JSON.parse(value);
+
         if (typeof value === 'boolean') {
             let element = getInputElement(id);
             if (!element) continue;
@@ -75,11 +77,11 @@ function updateValues(newState) {
 function sendState(id) {
     let state = getState();
     let payload = {
-        triggered: id,
+        trigger_id: id,
         state: state
     };
     
-    fetch('/state', {
+    fetch('/handle-change', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

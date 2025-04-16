@@ -23,6 +23,15 @@ class Header(Component):
         return f"<h1 id='{self.id}'>{self.text}</h1>"
 
 
+class Text(Component):
+    def __init__(self, id: str = "", text: str = "") -> None:
+        self.id = id
+        self.text = text
+
+    def html(self) -> str:
+        return f"<p id='{self.id}'>{self.text}</p>"
+
+
 class TextField(Component):
     def __init__(self, id: str = "", value="") -> None:
         self.id = id
@@ -87,12 +96,9 @@ class Graph(Component):
         self.height = height
 
     def html(self):
-        fig_json = self.fig.to_plotly_json()
         return f"""
                 <div id={self.id} height="{self.height}px" width="{self.width}px"></div>
                 <script>
-                    var data = {json.dumps(fig_json["data"])};
-                    var layout = {json.dumps(fig_json["layout"])};
-                    Plotly.newPlot('{self.id}', data, layout, {{}});
+                    Plotly.newPlot('{self.id}', {self.fig.to_json()});
                 </script>
         """

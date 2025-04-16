@@ -1,6 +1,6 @@
 from nanodash.nanodash import NanoDash
 from nanodash.components import Header, Graph, Page
-import plotly.graph_objects as go
+import plotly.express as px
 
 # Create a new Flask web server
 app = NanoDash()
@@ -9,14 +9,7 @@ app = NanoDash()
 header = Header(text="Exercise 3: Graph Component and Plotly Integration")
 
 # Create a simple scatter plot
-fig = go.Figure(
-    data=[go.Scatter(x=[1, 2, 3, 4, 5], y=[1, 4, 9, 16, 25], mode='markers+lines')],
-    layout=go.Layout(
-        title="Sample Scatter Plot",
-        xaxis=dict(title="X-Axis"),
-        yaxis=dict(title="Y-Axis")
-    )
-)
+fig = px.scatter(x=[1, 2, 3, 4, 5], y=[1, 4, 9, 16, 25], mode='markers+lines')
 
 # Create the graph component
 graph = Graph(

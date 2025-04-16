@@ -1,6 +1,6 @@
 from nanodash.nanodash import NanoDash
 from nanodash.components import Header, TextField, Dropdown, Graph, Page, Slider
-import plotly.graph_objects as go
+import plotly.express as px
 import numpy as np
 
 # Create a new Flask web server
@@ -36,14 +36,7 @@ initial_points = 20
 x = np.linspace(0, 10, initial_points)
 y = np.sin(x)
 
-fig = go.Figure(
-    data=[go.Scatter(x=x, y=y, mode='markers')],
-    layout=go.Layout(
-        title="Sample Dashboard",
-        xaxis=dict(title="X Values"),
-        yaxis=dict(title="Y Values")
-    )
-)
+fig = px.scatter(x=x, y=y, mode='markers')
 
 graph = Graph(
     id="main-graph",

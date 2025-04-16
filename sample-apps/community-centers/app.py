@@ -1,5 +1,5 @@
 from nanodash.nanodash import NanoDash
-from nanodash.components import Dropdown, Header, Page, Graph
+from nanodash.components import Dropdown, Header, Text, Page, Graph
 import plotly.express as px
 import pandas as pd
 
@@ -17,7 +17,6 @@ def make_graph(year, month, center_name):
     # Show only data from selected month
     if month != "All":
         data_filtered = data_filtered[data_filtered["date"].dt.month_name() == month]
-    print("df:\n", data_filtered)
     # Show only data from selected center
     if center_name != "All":
         data_filtered = data_filtered[data_filtered["center_name"] == center_name]
@@ -35,7 +34,6 @@ def make_graph(year, month, center_name):
         yaxis_title="Attendance count",
         showlegend=False,
     )
-    print("year:", year, "month:", month, "center_name:", center_name)
     return fig
 
 
@@ -46,6 +44,9 @@ header = Header(text="Pittsburgh Community Center Attendance")
 graph = Graph(
     fig=make_graph(year="2025", month="All", center_name="All"),
     id="attendance-graph",
+)
+citation = Text(
+    text="Source: Western Pennsylvania Regional Data Center (data.wprdc.org)"
 )
 unique_years = [str(y) for y in data["date"].dt.year.unique()]
 year_dropdown = Dropdown(
@@ -82,6 +83,7 @@ center_name_dropdown = Dropdown(
 page = Page(
     children=[
         header,
+        citation,
         year_dropdown,
         month_dropdown,
         center_name_dropdown,

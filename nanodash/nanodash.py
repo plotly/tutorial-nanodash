@@ -56,7 +56,7 @@ class NanoDash:
             trigger_id = flask.request.json["trigger_id"]
 
             for callback in self.callbacks:
-                ## EXERCISE 4B START
+                ## EXERCISE 5 START
                 # For each callback, check if the trigger_id is in the input_ids
                 # If it is, we execute the callback function to get the new values
                 # for the outputs
@@ -76,7 +76,7 @@ class NanoDash:
                         callback["output_ids"], output_values
                     ):
                         response[output_id] = output_value
-                ## EXERCISE 4B END
+                ## EXERCISE 5 END
 
             # Send the response back to the frontend
             return response

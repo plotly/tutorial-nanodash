@@ -5,7 +5,7 @@ from nanodash.components import Header, TextField, Dropdown, Page
 app = NanoDash()
 
 # Create a header component
-header = Header(text="Exercise 4a: Client-to-Server Communication")
+header = Header(text="Exercise 4: Client-to-Server Communication")
 
 # Create the components needed for the test
 text_input = TextField(id="input-test")

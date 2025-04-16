@@ -52,7 +52,7 @@ Each exercise builds on the knowledge from previous exercises and focuses on spe
 **Location**: `/exercise3/`
 **Key components**: `Graph` component
 
-## Exercise 4a: Frontend to Python Communication
+## Exercise 4: Frontend to Python Communication
 
 **Goal**: Implement state tracking and sending component state to the server.
 
@@ -62,13 +62,13 @@ Each exercise builds on the knowledge from previous exercises and focuses on spe
 - Send state changes to the server via POST requests
 
 **Files to modify**:
-- `exercise4a/app.py`
-- `exercise4a/static/index.js`
+- `exercise4/app.py`
+- `exercise4/static/index.js`
 
-**Location**: `/exercise4a/`
+**Location**: `/exercise4/`
 **Key concepts**: State tracking, POST requests, JSON handling
 
-## Exercise 4b: Python to Frontend Communication
+## Exercise 5: Python to Frontend Communication
 
 **Goal**: Implement callback registration and execution.
 
@@ -78,10 +78,10 @@ Each exercise builds on the knowledge from previous exercises and focuses on spe
 - Send callback results back to the client
 
 **Files to modify**:
-- `exercise4b/app.py`
-- `exercise4b/static/index.js`
+- `exercise5/app.py`
+- `exercise5/static/index.js`
 
-**Location**: `/exercise4b/`
+**Location**: `/exercise5/`
 **Key concepts**: Callback functions, input/output mapping
 
 ## Exercise 4c: UI Updates from Callbacks

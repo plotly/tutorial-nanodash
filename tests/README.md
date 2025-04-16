@@ -19,8 +19,8 @@ The tests are organized by exercise, matching the incremental steps of the tutor
    - Verifies graph structure and elements
 
 4. **Callback Implementation**
-   - **Exercise 4a: Client-to-Server** (`test_exercise4a.py`): Tests if frontend can send state to backend
-   - **Exercise 4b: Server Processing** (`test_exercise4b.py`): Tests if callbacks process inputs correctly
+   - **Exercise 4: Client-to-Server** (`test_exercise4.py`): Tests if frontend can send state to backend
+   - **Exercise 5: Server Processing** (`test_exercise5.py`): Tests if callbacks process inputs correctly
    - **Exercise 4c: UI Updates** (`test_exercise4c.py`): Tests if frontend updates based on callback responses
 
 5. **Exercise 5: Complete Application** (`test_exercise5.py`)

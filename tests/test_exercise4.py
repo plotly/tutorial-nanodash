@@ -1,5 +1,5 @@
 """
-Exercise 4a: Testing client-to-server communication (Frontend to Python)
+Exercise 4: Testing client-to-server communication (Frontend to Python)
 """
 from selenium.webdriver.common.by import By
 import pytest
@@ -13,7 +13,7 @@ from .test_utils import (
 
 def test_state_endpoint_exists():
     """Test if the state endpoint exists and accepts POST requests."""
-    server = start_server("tests/exercise_apps/exercise4a.py")
+    server = start_server("tests/exercise_apps/exercise4.py")
     try:
         # Create a simple payload
         payload = {
@@ -44,7 +44,7 @@ def test_state_endpoint_exists():
 
 def test_input_state_capture():
     """Test if component state changes are captured and sent to the server."""
-    with app_test_context("tests/exercise_apps/exercise4a.py") as driver:
+    with app_test_context("tests/exercise_apps/exercise4.py") as driver:
         # Mock the fetch API to intercept the requests
         setup_fetch_interceptor(driver)
         
@@ -67,7 +67,7 @@ def test_input_state_capture():
 
 def test_multi_component_state():
     """Test if the state includes all component values."""
-    with app_test_context("tests/exercise_apps/exercise4a.py") as driver:
+    with app_test_context("tests/exercise_apps/exercise4.py") as driver:
         # Mock the fetch API to intercept the requests
         setup_fetch_interceptor(driver)
         

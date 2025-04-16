@@ -45,11 +45,11 @@ document.addEventListener('DOMContentLoaded', initializeButtonHandlers);
 
 function getState() {
     let payload = {};
-    // EXERCISE 4A START
+    // EXERCISE 4 START
     getElementByTagName('input').forEach(element => {
         payload[element.id] = getInputState(element);
     });
-    // EXERCISE 4A END
+    // EXERCISE 4 END
     return payload;
 }
 

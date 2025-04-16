@@ -1,124 +1,141 @@
 """
-Exercise 5: Testing a complete nanodash application
+Exercise 5: Testing server-to-client communication (Python to Frontend)
 """
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import pytest
+import json
+import requests
 import time
 from .test_utils import start_server, stop_server
 
 
-def test_complete_app_loads():
-    """Test if the complete application loads with all components."""
+def test_callback_registration():
+    """Test if callbacks can be registered and processed."""
     process = start_server("tests/exercise_apps/exercise5.py")
     try:
-        driver = webdriver.Chrome()
-        driver.get("http://127.0.0.1:5000")
+        # Create a payload to simulate a component update
+        payload = {
+            "triggered": "input-test",
+            "state": {"input-test": "test value"}
+        }
         
-        # Check that key components exist
-        header = driver.find_element(By.TAG_NAME, "h1")
-        assert header, "Header should be present"
+        # Send a POST request to the state endpoint
+        response = requests.post(
+            "http://127.0.0.1:5000/state",
+            json=payload,
+            headers={"Content-Type": "application/json"}
+        )
         
-        # Check for input components
-        input_components = driver.find_elements(By.TAG_NAME, "input")
-        select_components = driver.find_elements(By.TAG_NAME, "select")
-        assert len(input_components) > 0, "Application should have input elements"
+        # Check if a callback was triggered and returned a response
+        assert response.status_code == 200
+        response_data = response.json()
+        assert response_data, "Callback should return a response"
         
-        # Check for graph
-        wait = WebDriverWait(driver, 10)
-        graph = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, ".main-svg")))
-        assert graph, "Application should display a Plotly graph"
+        # Assuming a simple echo callback that returns the input value in an output component
+        assert "output-test" in response_data, "Output component should be in the response"
+        assert response_data["output-test"] == "test value", "Callback should process input value"
     finally:
-        driver.quit()
         stop_server(process)
 
 
-def test_data_interaction():
-    """Test if the application can interact with data."""
+def test_callback_function_execution():
+    """Test if the callback function is executed with the correct inputs."""
     process = start_server("tests/exercise_apps/exercise5.py")
     try:
         driver = webdriver.Chrome()
         driver.get("http://127.0.0.1:5000")
         
-        # Wait for the page to fully load
-        wait = WebDriverWait(driver, 10)
-        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, ".main-svg")))
-        
-        # Get the initial state of the graph
-        initial_traces = driver.execute_script("""
-            const graphDiv = document.querySelector('[class*="plotly"]');
-            if (graphDiv && graphDiv._fullData) {
-                return graphDiv._fullData.length;
-            }
-            return 0;
+        # Set up response tracking
+        driver.execute_script("""
+            window.lastResponse = null;
+            const originalFetch = window.fetch;
+            window.fetch = function(url, options) {
+                return originalFetch(url, options).then(response => {
+                    if (url === '/state') {
+                        return response.clone().json().then(data => {
+                            window.lastResponse = data;
+                            return response;
+                        });
+                    }
+                    return response;
+                });
+            };
         """)
         
-        # Interact with a filter dropdown
-        dropdown = driver.find_element(By.TAG_NAME, "select")
-        options = dropdown.find_elements(By.TAG_NAME, "option")
-        if len(options) > 1:
-            options[1].click()  # Select a different option
+        # Find and modify the input
+        input_element = driver.find_element(By.ID, "input-test")
+        test_value = "Testing callback"
+        input_element.clear()
+        input_element.send_keys(test_value)
         
-            # Wait for the graph to update
-            time.sleep(2)
-            
-            # Check if the graph data changed
-            updated_traces = driver.execute_script("""
-                const graphDiv = document.querySelector('[class*="plotly"]');
-                if (graphDiv && graphDiv._fullData) {
-                    return graphDiv._fullData.length;
-                }
-                return 0;
-            """)
-            
-            assert updated_traces != initial_traces or updated_traces > 0, "Graph should update based on interaction"
+        # Wait for the response to be processed
+        time.sleep(2)
+        
+        # Check if the response was captured and contains the right information
+        response = driver.execute_script("return window.lastResponse;")
+        assert response, "Response should be received from the server"
+        
+        # Check if the callback processed the input correctly
+        # This assumes a callback that echoes the input to the output-test
+        assert "output-test" in response, "Response should include the output component ID"
+        assert response["output-test"] == test_value, "Callback should process the input correctly"
     finally:
         driver.quit()
         stop_server(process)
 
 
-def test_multi_component_interaction():
-    """Test if multiple components can interact with each other."""
+def test_multiple_callbacks():
+    """Test if multiple callbacks can be registered and executed correctly."""
     process = start_server("tests/exercise_apps/exercise5.py")
     try:
         driver = webdriver.Chrome()
         driver.get("http://127.0.0.1:5000")
         
-        # Wait for the page to fully load
-        wait = WebDriverWait(driver, 10)
-        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, ".main-svg")))
+        # Set up response tracking
+        driver.execute_script("""
+            window.allResponses = [];
+            const originalFetch = window.fetch;
+            window.fetch = function(url, options) {
+                return originalFetch(url, options).then(response => {
+                    if (url === '/state') {
+                        return response.clone().json().then(data => {
+                            window.allResponses.push(data);
+                            return response;
+                        });
+                    }
+                    return response;
+                });
+            };
+        """)
         
-        # Find a text input
-        inputs = driver.find_elements(By.TAG_NAME, "input")
-        text_input = None
-        for inp in inputs:
-            if inp.get_attribute("type") == "text":
-                text_input = inp
-                break
+        # Test the first callback
+        input_element = driver.find_element(By.ID, "input-test")
+        input_element.clear()
+        input_element.send_keys("Input 1")
+        time.sleep(1)
         
-        if text_input:
-            # Update the text input
-            test_value = "Test Graph Title"
-            text_input.clear()
-            text_input.send_keys(test_value)
-            
-            # Wait for update to propagate
-            time.sleep(2)
-            
-            # Check if title was updated
-            try:
-                title = driver.find_element(By.CSS_SELECTOR, ".gtitle")
-                assert test_value in title.text, "Graph title should update based on text input"
-            except:
-                pass  # Title might not be what is being updated
+        # Test the second callback
+        dropdown_element = driver.find_element(By.ID, "dropdown-test")
+        dropdown_options = dropdown_element.find_elements(By.TAG_NAME, "option")
+        dropdown_options[1].click()  # Select the second option
+        time.sleep(1)
+        
+        # Get all responses
+        responses = driver.execute_script("return window.allResponses;")
+        assert len(responses) >= 2, "Should receive responses for both inputs"
+        
+        # Check if the callbacks were independent
+        # This assumes the second response includes the dropdown output
+        assert "dropdown-output" in responses[1], "Second callback should update dropdown output"
     finally:
         driver.quit()
         stop_server(process)
 
 
 if __name__ == "__main__":
-    test_complete_app_loads()
-    test_data_interaction()
-    test_multi_component_interaction()
+    test_callback_registration()
+    test_callback_function_execution()
+    test_multiple_callbacks()

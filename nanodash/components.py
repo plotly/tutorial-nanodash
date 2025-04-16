@@ -22,6 +22,15 @@ class Header(Component):
         return f"<h1 id='{self.id}'>{self.text}</h1>"
 
 
+class Text(Component):
+    def __init__(self, id: str = "", text: str = "") -> None:
+        self.id = id
+        self.text = text
+
+    def html(self) -> str:
+        return f"<p id='{self.id}'>{self.text}</p>"
+
+
 class TextField(Component):
     def __init__(self, id: str = "") -> None:
         self.id = id

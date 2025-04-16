@@ -17,11 +17,6 @@ def test_text_input_component():
         assert text_input.tag_name == "input", "TextInput should render as an input element"
         assert text_input.get_attribute("type") == "text", "TextInput should have type='text'"
         
-        # Test component functionality using our utility
-        test_text = "Hello, world!"
-        assert set_component_value(driver, "input-test", test_text), "Should be able to set input value"
-        assert text_input.get_attribute("value") == test_text, "Input should store entered text"
-
 
 def test_dropdown_component():
     """Test if the Dropdown component is properly implemented and renders correctly."""

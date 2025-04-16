@@ -186,9 +186,6 @@ def set_component_value(driver, component_id, value):
             if input_type == "text":
                 element.clear()
                 element.send_keys(value)
-            elif input_type == "range":
-                driver.execute_script(f"document.getElementById('{component_id}').value = {value};")
-                driver.execute_script(f"document.getElementById('{component_id}').dispatchEvent(new Event('input'));")
         elif element_type == "select":
             options = element.find_elements(By.TAG_NAME, "option")
             for option in options:

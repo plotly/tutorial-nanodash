@@ -48,7 +48,6 @@ class NanoDash:
                 ...
             }
             """
-
             # Get the state and trigger_id from the request
             state = flask.request.json["state"]
             trigger_id = flask.request.json["trigger_id"]
@@ -110,5 +109,5 @@ class NanoDash:
 def make_json_serializable(output_values: List) -> List:
     for index, output_value in enumerate(output_values):
         if isinstance(output_value, go.Figure):
-            output_values[index] = output_value.to_plotly_json()
+            output_values[index] = output_value.to_json()
     return output_values

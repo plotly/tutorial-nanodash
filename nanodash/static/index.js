@@ -57,7 +57,9 @@ function getInputElement(id) {
 function updateValues(newState) {
     for (let id in newState) {
         let value = newState[id];
-        
+        // Deserialize json
+        value = JSON.parse(value);
+
         if (typeof value === 'boolean') {
             let element = getInputElement(id);
             if (!element) continue;

@@ -10,6 +10,25 @@ function isRadio(element) {
     return element.type === 'radio';
 }
 
+function getInputState(element) {
+    if (isRadio(element)) {
+        const checkedRadio = document.querySelector(`input[id='${element.id}']:checked`);
+        return checkedRadio ? checkedRadio.value : null;
+    } else if (isCheckbox(element)) {
+        return element.checked;
+    } else {
+        return element.value;
+    }
+}
+
+function getElementByTagName(tagName) {
+    return document.querySelectorAll(tagName);
+}
+
+function getInputElement(id) {
+    return document.querySelector(`input[id='${id}']`);
+}
+
 function initializeButtonHandlers() {
     document.querySelectorAll('input, select, button').forEach(element => {
         if (isCheckbox(element) || isRadio(element)) {
@@ -24,37 +43,18 @@ function initializeButtonHandlers() {
 
 document.addEventListener('DOMContentLoaded', initializeButtonHandlers);
 
-function getInputState(element) {
-    if (isRadio(element)) {
-        const checkedRadio = document.querySelector(`input[id='${element.id}']:checked`);
-        return checkedRadio ? checkedRadio.value : null;
-    } else if (isCheckbox(element)) {
-        return element.checked;
-    } else {
-        return element.value;
-    }
-}
-
-function getSelectState(element) {
-    return element.value;
-}
-
 function getState() {
     let payload = {};
-    document.querySelectorAll('input').forEach(element => {
+    // EXERCISE 4A START
+    getElementByTagName('input').forEach(element => {
         payload[element.id] = getInputState(element);
     });
-    document.querySelectorAll('select').forEach(element => {
-        payload[element.id] = getSelectState(element);
-    });
+    // EXERCISE 4A END
     return payload;
 }
 
-function getInputElement(id) {
-    return document.querySelector(`input[id='${id}']`);
-}
-
 function updateValues(newState) {
+    // EXERCISE 4C START
     for (let id in newState) {
         let value = newState[id];
         // Deserialize json
@@ -72,6 +72,7 @@ function updateValues(newState) {
             element.value = value;
         }
     }
+    // EXERCISE 4C END
 }
 
 function sendState(id) {

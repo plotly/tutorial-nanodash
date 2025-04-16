@@ -33,6 +33,7 @@ class Text(Component):
 
 
 class TextField(Component):
+    ## EXERCISE 2 START
     def __init__(self, id: str = "", value="") -> None:
         self.id = id
         self.value = value
@@ -40,6 +41,8 @@ class TextField(Component):
     def html(self) -> str:
         return f"<input id='{self.id}' type='text' value={self.value}/>"
 
+        return f"<input id='{self.id}' type='text' value=''/>"
+    ## EXERCISE 2 END
 
 class Button(Component):
     def __init__(self, id: str = "", text: str = "") -> None:
@@ -65,6 +68,7 @@ class Slider(Component):
 
 
 class Dropdown(Component):
+    ## EXERCISE 2 START
     def __init__(self, id: str = "", options: list = None, value = None) -> None:
         self.id = id
         self.options = options or []
@@ -75,7 +79,7 @@ class Dropdown(Component):
             f"<option value='{opt}'>{opt}</option>" for opt in self.options
         )
         return f"<select id='{self.id}' value='{self.value}'>{options_html}</select>"
-
+    ## EXERCISE 2 END
 
 class Page(Component):
     def __init__(self, id: str = "", children: list = None) -> None:
@@ -87,6 +91,7 @@ class Page(Component):
 
 
 class Graph(Component):
+    ## EXERCISE 3 START
     def __init__(
         self, id: str = "", fig: go.Figure = None, width: int = 1000, height: int = 600
     ) -> None:
@@ -102,3 +107,4 @@ class Graph(Component):
                     Plotly.newPlot('{self.id}', {self.fig.to_json()});
                 </script>
         """
+    ## EXERCISE 3 END

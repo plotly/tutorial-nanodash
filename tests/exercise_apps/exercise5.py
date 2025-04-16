@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 import numpy as np
 
 # Create a new Flask web server
-app = NanoDash(debug=True)
+app = NanoDash()
 
 # Create a header component
 header = Header(text="Exercise 5: Complete NanoDash Application")

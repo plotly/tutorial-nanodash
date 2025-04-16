@@ -2,7 +2,7 @@ from nanodash.nanodash import NanoDash
 from nanodash.components import Header, TextField, Dropdown, Page
 
 # Create a new Flask web server
-app = NanoDash(debug=True)
+app = NanoDash()
 
 # Create a header component
 header = Header(text="Exercise 2: TextInput and Dropdown Components")

@@ -2,7 +2,7 @@ from nanodash.nanodash import NanoDash
 from nanodash.components import Header, TextField, Dropdown, Page
 
 # Create a new Flask web server
-app = NanoDash(debug=True)
+app = NanoDash()
 
 # Create a header component
 header = Header(text="Exercise 4b: Server-to-Client Communication")

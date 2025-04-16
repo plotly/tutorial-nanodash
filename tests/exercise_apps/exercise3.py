@@ -3,7 +3,7 @@ from nanodash.components import Header, Graph, Page
 import plotly.graph_objects as go
 
 # Create a new Flask web server
-app = NanoDash(debug=True)
+app = NanoDash()
 
 # Create a header component
 header = Header(text="Exercise 3: Graph Component and Plotly Integration")

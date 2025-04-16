@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nanodash"
+version = "0.1.0"
+description = "A minimal dashboard library"
+requires-python = ">=3.7"
+
+[tool.setuptools]
+packages = ["nanodash"]

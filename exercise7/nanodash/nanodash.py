@@ -61,7 +61,25 @@ class NanoDash:
 
             for callback in self.callbacks:
                 ## EXERCISE 5 START
-                pass
+                # For each callback, check if the trigger_id is in the input_ids
+                # If it is, we execute the callback function to get the new values
+                # for the outputs
+                if trigger_id in callback["input_ids"]:
+                    callback_function = callback["function"]
+                    input_values = [
+                        state[input_id] for input_id in callback["input_ids"]
+                    ]
+                    output_values = callback_function(input_values)
+
+                    # If any of the outputs is not a number or a string,
+                    # we convert it to a JSON-serializable dictionary
+                    output_values = make_json_serializable(output_values)
+
+                    # Update the response with the new values for the outputs
+                    for output_id, output_value in zip(
+                        callback["output_ids"], output_values
+                    ):
+                        response[output_id] = output_value
                 ## EXERCISE 5 END
 
             # Send the response back to the frontend

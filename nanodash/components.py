@@ -3,11 +3,18 @@ import plotly.graph_objects as go
 
 class Component:
     def __init__(self, **kwargs) -> None:
+        """
+        Initiaize the component.
+        """
         raise NotImplementedError(
             f"The __init__() method for {self.__class__.__name__} is not implemented yet!"
         )
 
-    def html(self):
+    def html(self) -> str:
+        """
+        Returns a string containing the HTML needed to render this component
+        in the page layout.
+        """
         raise NotImplementedError(
             f"The html() method for {self.__class__.__name__} is not implemented yet!"
         )

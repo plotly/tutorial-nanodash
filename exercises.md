@@ -47,7 +47,7 @@ Each exercise focuses on implementing a specific part of the NanoDash framework.
 
 ### Exercise 3: Implement Graph component 
 
-**Goal**: Implement the Graph component, which uses Plotly.js to display Plotly figures in the browser
+**Goal**: Implement the Graph component, which uses Plotly.js to display Plotly figures in the browser.
 
 **Tasks**:
 - Implement the the `__init__()` and `html()` methods of the `Graph` class in `exercise3/nanodash/components.py`
@@ -115,6 +115,7 @@ There are no tests for this exercise since your app can do whatever you like!
 
 ## Resources
 
+- Intro to HTML: https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Your_first_website/Creating_the_content#creating_your_first_html_document
 - Plotly.js documentation: https://plotly.com/javascript/
 - Plotly.py documentation: https://plotly.com/python/
 - Flask documentation: https://flask.palletsprojects.com/

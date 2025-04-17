@@ -84,7 +84,7 @@ Each exercise builds on the knowledge from previous exercises and focuses on spe
 **Location**: `/exercise5/`
 **Key concepts**: Callback functions, input/output mapping
 
-## Exercise 4c: UI Updates from Callbacks
+## Exercise 6: UI Updates from Callbacks
 
 **Goal**: Update UI components based on callback responses.
 
@@ -94,10 +94,10 @@ Each exercise builds on the knowledge from previous exercises and focuses on spe
 - Process multiple outputs from a single callback
 
 **Files to modify**:
-- `exercise4c/app.py`
-- `exercise4c/static/index.js`
+- `exercise6/app.py`
+- `exercise6/static/index.js`
 
-**Location**: `/exercise4c/`
+**Location**: `/exercise6/`
 **Key concepts**: DOM manipulation, dynamic updates
 
 ## Exercise 5: Complete NanoDash Application

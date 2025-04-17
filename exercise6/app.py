@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 app = NanoDash()
 
 # Create a header component
-header = Header(text="Exercise 4c: UI Updates from Callbacks")
+header = Header(text="Exercise 6: UI Updates from Callbacks")
 
 # Create components for text update test
 input_test = TextField(id="input-test")

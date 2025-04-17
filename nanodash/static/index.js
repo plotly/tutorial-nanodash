@@ -58,7 +58,7 @@ function getState() {
 }
 
 function updateValues(newState) {
-    // EXERCISE 4C START
+    // EXERCISE 6 START
     for (let id in newState) {
         let value = newState[id];
         // Deserialize json
@@ -78,7 +78,7 @@ function updateValues(newState) {
             element.value = value;
         }
     }
-    // EXERCISE 4C END
+    // EXERCISE 6 END
 }
 
 function sendState(id) {

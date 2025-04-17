@@ -1,5 +1,5 @@
 """
-Exercise 4c: Testing UI updates from callback responses
+Exercise 6: Testing UI updates from callback responses
 """
 from selenium import webdriver
 from selenium.webdriver.common.by import By

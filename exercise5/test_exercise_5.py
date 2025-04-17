@@ -124,7 +124,6 @@ def test_multiple_callbacks():
         
         # Check if the callbacks were independent
         # This assumes the second response includes the dropdown output
-        print('here', responses)
         assert "dropdown-output" in responses[len(responses) - 1], "Second callback should update dropdown output"
     finally:
         driver.quit()

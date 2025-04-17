@@ -1,4 +1,4 @@
-from exercise1.nanodash.nanodash import NanoDash
+from nanodash.nanodash import NanoDash
 
 # Create a new Flask web server
 app = NanoDash()

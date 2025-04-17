@@ -1,5 +1,5 @@
-from exercise6.nanodash.nanodash import NanoDash
-from exercise6.nanodash.components import Header, TextField, Graph, Page
+from nanodash.nanodash import NanoDash
+from nanodash.components import Header, TextField, Graph, Page
 import plotly.express as px
 import plotly.graph_objects as go
 

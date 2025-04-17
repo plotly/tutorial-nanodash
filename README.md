@@ -22,7 +22,6 @@ Each exercise focuses on implementing a specific part of the NanoDash framework.
 
 **Tasks**:
 - Implement the `full_html()` function of the `NanoDash` class in `exercise1/nanodash/nanodash.py` to return a valid HTML webpage.
-- Define a Flask route inside the `NanoDash.__init__()` function which returns the value of `full_html()` for the route `/`.
 
 **Files to modify**
 - `exercise1/nanodash/nanodash.py`

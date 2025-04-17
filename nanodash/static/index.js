@@ -6,23 +6,13 @@ function isCheckbox(element) {
     return element.type === 'checkbox';
 }
 
+function isDropdown(element) {
+    return element.tagName === 'SELECT';
+}
+
 function isRadio(element) {
     return element.type === 'radio';
 }
-
-function initializeButtonHandlers() {
-    document.querySelectorAll('input, select, button').forEach(element => {
-        if (isCheckbox(element) || isRadio(element)) {
-            element.addEventListener('change', () => sendState(element.id));
-        } else if (isButton(element)) {
-            element.addEventListener('click', () => sendState(element.id));
-        } else {
-            element.addEventListener('input', () => sendState(element.id));
-        }
-    });
-}
-
-document.addEventListener('DOMContentLoaded', initializeButtonHandlers);
 
 function getInputState(element) {
     if (isRadio(element)) {
@@ -35,30 +25,46 @@ function getInputState(element) {
     }
 }
 
-function getSelectState(element) {
-    return element.value;
-}
-
-function getState() {
-    let payload = {};
-    document.querySelectorAll('input').forEach(element => {
-        payload[element.id] = getInputState(element);
-    });
-    document.querySelectorAll('select').forEach(element => {
-        payload[element.id] = getSelectState(element);
-    });
-    return payload;
+function getElementByTagName(tagName) {
+    return document.querySelectorAll(tagName);
 }
 
 function getInputElement(id) {
     return document.querySelector(`input[id='${id}']`);
 }
 
+function initializeButtonHandlers() {
+    document.querySelectorAll('input, select, button').forEach(element => {
+        if (isCheckbox(element) || isRadio(element)) {
+            element.addEventListener('change', () => sendState(element.id));
+        } else if (isButton(element) || isDropdown(element)) {
+            element.addEventListener('click', () => sendState(element.id));
+        } else {
+            element.addEventListener('input', () => sendState(element.id));
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', initializeButtonHandlers);
+
+function getState() {
+    let payload = {};
+    // EXERCISE 4 START
+    getElementByTagName('input, select').forEach(element => {
+        payload[element.id] = getInputState(element);
+    });
+    // EXERCISE 4 END
+    return payload;
+}
+
 function updateValues(newState) {
+    // EXERCISE 6 START
     for (let id in newState) {
         let value = newState[id];
         // Deserialize json
-        value = JSON.parse(value);
+        try {
+            value = JSON.parse(value);
+        } catch (e) {}
 
         if (typeof value === 'boolean') {
             let element = getInputElement(id);
@@ -72,6 +78,7 @@ function updateValues(newState) {
             element.value = value;
         }
     }
+    // EXERCISE 6 END
 }
 
 function sendState(id) {

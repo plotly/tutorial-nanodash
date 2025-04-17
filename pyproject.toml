@@ -1,15 +1,40 @@
 [build-system]
-requires = ["setuptools>=42", "wheel"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "nanodash"
 version = "0.1.0"
 description = "A minimal dashboard library"
-requires-python = ">=3.7"
+readme = "README.md"
 authors = [
     { name="Martha Cryan", email="martha.cryan@plot.ly" },
     { name="Emily Kellison-Linn", email="emily@plot.ly" }
 ]
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "flask>=2.0.0",
+    "plotly>=5.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "selenium>=4.0.0",
+    "requests>=2.0.0",
+    "numpy>=1.20.0",
+]
+test = [
+    "pytest>=7.0.0",
+    "selenium>=4.0.0",
+    "requests>=2.0.0",
+]
+
 [tool.setuptools]
 packages = ["nanodash"]

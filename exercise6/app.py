@@ -44,11 +44,11 @@ page = Page(children=[
     header,
     input_test,
     output_test,
+    output_1,
+    output_2,
     graph_input,
     graph_test,
-    multi_output_input,
-    output_1,
-    output_2
+    multi_output_input
 ])
 
 # Add layout to the app

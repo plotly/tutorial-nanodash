@@ -1,10 +1,10 @@
-from exercise7.nanodash.nanodash import NanoDash
-from exercise7.nanodash.components import Dropdown, Header, Text, Page, Graph
+from nanodash.nanodash import NanoDash
+from nanodash.components import Dropdown, Header, Text, Page, Graph
 import plotly.express as px
 import pandas as pd
 
 # Read data
-data = pd.read_csv("sample-apps/community-centers/data.csv")
+data = pd.read_csv("./pgh-data.csv")
 data["date"] = pd.to_datetime(data["date"])
 
 # Create a new Flask web server

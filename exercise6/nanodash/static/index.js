@@ -59,25 +59,7 @@ function getState() {
 
 function updateValues(newState) {
     // EXERCISE 6 START
-    for (let id in newState) {
-        let value = newState[id];
-        // Deserialize json
-        try {
-            value = JSON.parse(value);
-        } catch (e) {}
-
-        if (typeof value === 'boolean') {
-            let element = getInputElement(id);
-            if (!element) continue;
-            element.checked = value;
-        } else if (typeof value === 'object') {
-            Plotly.newPlot(id, value.data, value.layout, value.config);
-        } else {
-            let element = getInputElement(id);
-            if (!element) continue;
-            element.value = value;
-        }
-    }
+    
     // EXERCISE 6 END
 }
 

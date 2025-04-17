@@ -39,15 +39,7 @@ class NanoDash:
         '''
         """
         ## EXERCISE 1 START
-        return """<html>
-            <head>
-                <title>My webpage</title>
-            </head>
-            <body>
-                <h1>Hello, world!</h1>
-                <p>This is my HTML page.</p>
-            </body>
-        </html>"""
+        raise NotImplementedError()
         ## EXERCISE 1 END
 
     def run(self) -> None:

@@ -58,10 +58,12 @@ def test_graph_updates():
         input_element = driver.find_element(By.ID, "graph-input")
         test_value = "New Graph Title"
         input_element.clear()
-        input_element.send_keys(test_value)
+        for char in test_value:
+            input_element.send_keys(char)
+            time.sleep(0.1)
         
         # Wait for the graph to update
-        time.sleep(2)
+        time.sleep(0.5)
         
         # Check if the graph title was updated
         try:
@@ -87,7 +89,9 @@ def test_multiple_output_updates():
         multi_input = driver.find_element(By.ID, "multi-output-input")
         test_value = "Multi Update"
         multi_input.clear()
-        multi_input.send_keys(test_value)
+        for char in test_value:
+            multi_input.send_keys(char)
+            time.sleep(0.1)
         
         # Wait for updates to propagate
         time.sleep(1)

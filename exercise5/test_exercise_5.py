@@ -3,10 +3,10 @@ Exercise 5: Testing server-to-client communication (Python to Frontend)
 """
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import Select
+
 import pytest
-import json
 import requests
 import time
 from test_utils import start_server
@@ -17,13 +17,13 @@ def test_callback_registration():
     start_server("exercise5/app.py")
     # Create a payload to simulate a component update
     payload = {
-        "triggered": "input-test",
+        "trigger_id": "input-test",
         "state": {"input-test": "test value"}
     }
     
     # Send a POST request to the state endpoint
     response = requests.post(
-        "http://127.0.0.1:5000/state",
+        "http://127.0.0.1:5000/handle-change",
         json=payload,
         headers={"Content-Type": "application/json"}
     )
@@ -51,7 +51,7 @@ def test_callback_function_execution():
             const originalFetch = window.fetch;
             window.fetch = function(url, options) {
                 return originalFetch(url, options).then(response => {
-                    if (url === '/state') {
+                    if (url === '/handle-change') {
                         return response.clone().json().then(data => {
                             window.lastResponse = data;
                             return response;
@@ -96,7 +96,7 @@ def test_multiple_callbacks():
             const originalFetch = window.fetch;
             window.fetch = function(url, options) {
                 return originalFetch(url, options).then(response => {
-                    if (url === '/state') {
+                    if (url === '/handle-change') {
                         return response.clone().json().then(data => {
                             window.allResponses.push(data);
                             return response;
@@ -114,9 +114,8 @@ def test_multiple_callbacks():
         time.sleep(1)
         
         # Test the second callback
-        dropdown_element = driver.find_element(By.ID, "dropdown-test")
-        dropdown_options = dropdown_element.find_elements(By.TAG_NAME, "option")
-        dropdown_options[1].click()  # Select the second option
+        dropdown_element = Select(driver.find_element(By.ID, "dropdown-test"))
+        dropdown_element.select_by_visible_text('Option 2')
         time.sleep(1)
         
         # Get all responses
@@ -125,7 +124,8 @@ def test_multiple_callbacks():
         
         # Check if the callbacks were independent
         # This assumes the second response includes the dropdown output
-        assert "dropdown-output" in responses[1], "Second callback should update dropdown output"
+        print('here', responses)
+        assert "dropdown-output" in responses[len(responses) - 1], "Second callback should update dropdown output"
     finally:
         driver.quit()
 

@@ -6,6 +6,10 @@ function isCheckbox(element) {
     return element.type === 'checkbox';
 }
 
+function isDropdown(element) {
+    return element.tagName === 'SELECT';
+}
+
 function isRadio(element) {
     return element.type === 'radio';
 }
@@ -33,7 +37,7 @@ function initializeButtonHandlers() {
     document.querySelectorAll('input, select, button').forEach(element => {
         if (isCheckbox(element) || isRadio(element)) {
             element.addEventListener('change', () => sendState(element.id));
-        } else if (isButton(element)) {
+        } else if (isButton(element) || isDropdown(element)) {
             element.addEventListener('click', () => sendState(element.id));
         } else {
             element.addEventListener('input', () => sendState(element.id));
@@ -46,7 +50,7 @@ document.addEventListener('DOMContentLoaded', initializeButtonHandlers);
 function getState() {
     let payload = {};
     // EXERCISE 4 START
-    getElementByTagName('input').forEach(element => {
+    getElementByTagName('input, select').forEach(element => {
         payload[element.id] = getInputState(element);
     });
     // EXERCISE 4 END
@@ -58,7 +62,9 @@ function updateValues(newState) {
     for (let id in newState) {
         let value = newState[id];
         // Deserialize json
-        value = JSON.parse(value);
+        try {
+            value = JSON.parse(value);
+        } catch (e) {}
 
         if (typeof value === 'boolean') {
             let element = getInputElement(id);

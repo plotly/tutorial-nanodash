@@ -54,12 +54,15 @@ class NanoDash:
             # Get the state and trigger_id from the request
             state = flask.request.json["state"]
             trigger_id = flask.request.json["trigger_id"]
+            print('STATE', state)
 
             for callback in self.callbacks:
                 ## EXERCISE 5 START
                 # For each callback, check if the trigger_id is in the input_ids
                 # If it is, we execute the callback function to get the new values
                 # for the outputs
+                print('trigger_id', trigger_id)
+                print('callback', callback)
                 if trigger_id in callback["input_ids"]:
                     callback_function = callback["function"]
                     input_values = [

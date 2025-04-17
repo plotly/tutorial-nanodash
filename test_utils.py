@@ -101,12 +101,12 @@ def wait_for_graph_render(driver, graph_id="#graph-test", timeout=10):
     )
 
 
-def setup_fetch_interceptor(driver, url_path='/state'):
+def setup_fetch_interceptor(driver, url_path='/handle-change'):
     """Setup JavaScript to intercept fetch requests and store payloads/responses.
     
     Args:
         driver: Selenium WebDriver instance
-        url_path: URL path to intercept (default: '/state')
+        url_path: URL path to intercept (default: '/handle-change')
     """
     driver.execute_script(f"""
         window.lastPayload = null;

@@ -1,5 +1,5 @@
-from nanodash.nanodash import NanoDash
-from nanodash.components import Dropdown, Header, Text, Page, Graph
+from exercise7.nanodash.nanodash import NanoDash
+from exercise7.nanodash.components import Dropdown, Header, Text, Page, Graph
 import plotly.express as px
 import pandas as pd
 

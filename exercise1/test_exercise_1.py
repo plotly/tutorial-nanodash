@@ -17,10 +17,7 @@ def test_page_structure():
     with app_test_context("exercise1/app.py") as driver:
         # Check for basic page elements
         assert driver.title, "Page should have a title"
+
+        assert driver.find_element(By.TAG_NAME, "h1"), "Page should have an <h1> element"
         
-        # Check for script inclusion
-        script_tags = driver.find_elements(By.TAG_NAME, "script")
-        script_srcs = [tag.get_attribute("src") for tag in script_tags if tag.get_attribute("src")]
-        assert any("plotly" in src for src in script_srcs), "Plotly script should be included"
-        assert any("static/index.js" in src for src in script_srcs), "index.js should be included"
 

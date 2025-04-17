@@ -1,8 +1,8 @@
 """
 NanoDash - A lightweight dashboard framework for Python
 """
-from nanodash.nanodash import NanoDash
-from nanodash.components import (
+from .nanodash import NanoDash
+from .components import (
     Header,
     TextField,
     Button,

@@ -48,13 +48,15 @@ class NanoDash:
                 ...
             }
             """
+            # Construct the response
+            response = {}
+
             # Get the state and trigger_id from the request
             state = flask.request.json["state"]
             trigger_id = flask.request.json["trigger_id"]
 
-            # Construct the response
-            response = {}
             for callback in self.callbacks:
+                ## EXERCISE 5 START
                 # For each callback, check if the trigger_id is in the input_ids
                 # If it is, we execute the callback function to get the new values
                 # for the outputs
@@ -74,6 +76,7 @@ class NanoDash:
                         callback["output_ids"], output_values
                     ):
                         response[output_id] = output_value
+                ## EXERCISE 5 END
 
             # Send the response back to the frontend
             return response
@@ -82,6 +85,7 @@ class NanoDash:
         self.layout = layout
 
     def full_html(self) -> str:
+        ## EXERCISE 1 START
         return f"""
         <html>
             <head>
@@ -94,6 +98,7 @@ class NanoDash:
             </body>
         </html>
         """
+        ## EXERCISE 1 END
 
     def add_callback(
         self, input_ids: List[str], output_ids: List[str], function: callable

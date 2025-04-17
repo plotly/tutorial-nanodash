@@ -1,3 +1,4 @@
+import json
 import plotly.graph_objects as go
 
 
@@ -32,12 +33,16 @@ class Text(Component):
 
 
 class TextField(Component):
-    def __init__(self, id: str = "") -> None:
+    ## EXERCISE 2 START
+    def __init__(self, id: str = "", value="") -> None:
         self.id = id
+        self.value = value
 
     def html(self) -> str:
-        return f"<input id='{self.id}' type='text' value=''/>"
+        return f"<input id='{self.id}' type='text' value={self.value}/>"
 
+        return f"<input id='{self.id}' type='text' value=''/>"
+    ## EXERCISE 2 END
 
 class Button(Component):
     def __init__(self, id: str = "", text: str = "") -> None:
@@ -50,28 +55,31 @@ class Button(Component):
 
 class Slider(Component):
     def __init__(
-        self, id: str = "", min: int = 0, max: int = 100, step: int = 1
+        self, id: str = "", min: int = 0, max: int = 100, step: int = 1, value = None
     ) -> None:
         self.id = id
         self.min = min
         self.max = max
         self.step = step
+        self.value = value
 
     def html(self) -> str:
-        return f"<input id='{self.id}' type='range' min='{self.min}' max='{self.max}' step='{self.step}'/>"
+        return f"<input id='{self.id}' value='{self.value}' type='range' min='{self.min}' max='{self.max}' step='{self.step}'/>"
 
 
 class Dropdown(Component):
-    def __init__(self, id: str = "", options: list = None) -> None:
+    ## EXERCISE 2 START
+    def __init__(self, id: str = "", options: list = None, value = None) -> None:
         self.id = id
         self.options = options or []
+        self.value = value
 
     def html(self) -> str:
         options_html = "".join(
             f"<option value='{opt}'>{opt}</option>" for opt in self.options
         )
-        return f"<select id='{self.id}'>{options_html}</select>"
-
+        return f"<select id='{self.id}' value='{self.value}'>{options_html}</select>"
+    ## EXERCISE 2 END
 
 class Page(Component):
     def __init__(self, id: str = "", children: list = None) -> None:
@@ -83,8 +91,9 @@ class Page(Component):
 
 
 class Graph(Component):
+    ## EXERCISE 3 START
     def __init__(
-        self, id: str = "", fig: dict = None, width: int = 1000, height: int = 600
+        self, id: str = "", fig: go.Figure = None, width: int = 1000, height: int = 600
     ) -> None:
         self.id = id or "graph"
         self.fig = fig or go.Figure()
@@ -98,3 +107,4 @@ class Graph(Component):
                     Plotly.newPlot('{self.id}', {self.fig.to_json()});
                 </script>
         """
+    ## EXERCISE 3 END

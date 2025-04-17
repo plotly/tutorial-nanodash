@@ -1,166 +1,122 @@
 # NanoDash Tutorial Exercises
 
-This repository contains sample apps for each exercise in the NanoDash tutorial. NanoDash is a minimalist dashboard framework for data visualization inspired by Dash.
+The 6 exercises to be completed for this tutorial are located in the directories `exercise1/` through `exercise6/`.
 
-## Exercise Structure
+Each exercise folder contains the following:
 
-Each exercise builds on the knowledge from previous exercises and focuses on specific aspects of the NanoDash framework:
+- A partial copy of the NanoDash codebase (under `exerciseN/nanodash/`), containing one or more spots for you to "fill-in-the-blanks" by implementing part of the NanoDash logic
 
-## Exercise 1: Basic Flask Server with Static HTML
+- A sample app (`exerciseN/app.py`) which will run correctly once the exercise has been completed
 
-**Goal**: Set up a simple Flask server that serves static HTML content.
+- A tests file (`test_exerciseN.py`) which will pass once the exercise has been completed.
+  - To run the tests for exercise N from the repository root: `python -m pytest exerciseN/`
+  - To run the tests for exercise N from within the exercise directory: `python -m pytest`
 
-**Tasks**:
-- Implement the NanoDash class with basic Flask server functionality
-- Create a route for the main page
-- Implement the full_html method to generate HTML with proper structure
-- Include necessary script tags (Plotly.js, index.js)
+## Exercise outline
 
-**Files to modify**:
-- `exercise1/app.py`
+Each exercise focuses on implementing a specific part of the NanoDash framework.
 
-**Location**: `/exercise1/`
-**Key concepts**: Basic HTML structure, script inclusion
+### Exercise 1: Making a basic Flask server which serves a static HTML page
 
-## Exercise 2: Component Implementation
-
-**Goal**: Implement basic UI components.
+**Goal**: Set up a simple Flask server that serves one static HTML page.
 
 **Tasks**:
-- Implement the TextField component
-- Implement the Dropdown component
-- Create a page layout using the components
+- Implement the `full_html()` function of the `NanoDash` class in `exercise1/nanodash/nanodash.py` to return a valid HTML webpage.
+- Define a Flask route inside the `NanoDash.__init__()` function which returns the value of `full_html()` for the route `/`.
 
-**Files to modify**:
-- `exercise2/app.py`
+**Files to modify**
+- `exercise1/nanodash/nanodash.py`
 
-**Location**: `/exercise2/`
-**Key components**: `TextField`, `Dropdown`, `Page`
+**Command to run tests**
+`python -m pytest exercise1/`
 
-## Exercise 3: Graph Component and Plotly Integration
+### Exercise 2: Implement UI components
 
-**Goal**: Create and implement the Graph component with Plotly.js integration.
-
-**Tasks**:
-- Implement the Graph component
-- Create a Plotly figure and display it using the Graph component
-- Ensure proper rendering of SVG elements and axes
-
-**Files to modify**:
-- `exercise3/app.py`
-
-**Location**: `/exercise3/`
-**Key components**: `Graph` component
-
-## Exercise 4: Frontend to Python Communication
-
-**Goal**: Implement state tracking and sending component state to the server.
+**Goal**: Implement basic UI component objects to use as building blocks for page layouts.
 
 **Tasks**:
-- Implement the state endpoint in Flask
-- Create functions to collect form element states
-- Send state changes to the server via POST requests
+- Review the implementations of the `Page`, `Header` and `Text` classes in `exercise2/nanodash/components.py`
+- Implement the `__init__()` and `html()` methods of the `TextField` class
+- Implement the `__init__()` and `html()` methods of the `Dropdown` class
 
 **Files to modify**:
-- `exercise4/app.py`
+- `exercise2/nanodash/components.py`
+
+**Command to run tests**
+`python -m pytest exercise2/`
+
+### Exercise 3: Implement Graph component 
+
+**Goal**: Implement the Graph component, which uses Plotly.js to display Plotly figures in the browser.
+
+**Tasks**:
+- Implement the the `__init__()` and `html()` methods of the `Graph` class in `exercise3/nanodash/components.py`
+
+**Files to modify**:
+- `exercise3/nanodash/components.py`
+
+**Command to run tests**
+`python -m pytest exercise3/`
+
+### Exercise 4: Browser to Server Communication — Gathering the page state
+
+**Goal**: Implement the Javascript logic to capture the state of all components on the page, and bundle it into a JSON request to send to the Flask server.
+
+Don't worry — we've provided some useful helper functions inside the Javascript file; all you need to do is put them together in the right way.
+
+**Tasks**:
+- Implement the `getState()` function in `exercise4/nanodash/static/index.js`.
+
+**Files to modify**:
 - `exercise4/static/index.js`
 
-**Location**: `/exercise4/`
-**Key concepts**: State tracking, POST requests, JSON handling
+**Command to run tests**
+`python -m pytest exercise4/`
 
-## Exercise 5: Python to Frontend Communication
+### Exercise 5: Running callbacks
 
-**Goal**: Implement callback registration and execution.
-
-**Tasks**:
-- Implement the add_callback method to register callbacks
-- Update the state endpoint to execute registered callbacks
-- Send callback results back to the client
-
-**Files to modify**:
-- `exercise5/app.py`
-- `exercise5/static/index.js`
-
-**Location**: `/exercise5/`
-**Key concepts**: Callback functions, input/output mapping
-
-## Exercise 6: UI Updates from Callbacks
-
-**Goal**: Update UI components based on callback responses.
+**Goal**: Implement the Python logic which receives the page state from the frontend, runs the necessary callbacks, and sends the results back to the frontend. Also implement the logic which allows a user to add a callback to their app.
 
 **Tasks**:
-- Implement the updateValues function to update UI elements
-- Handle different types of updates (text, boolean, graph)
-- Process multiple outputs from a single callback
+- Implement the `handle_change()` function in `exercise5/nanodash/nanodash.py`
+- Implement the `add_callback()` function in `exercise5/nanodash/nanodash.py`
 
 **Files to modify**:
-- `exercise6/app.py`
-- `exercise6/static/index.js`
+- `exercise5/nanodash/nanodash.py`
 
-**Location**: `/exercise6/`
-**Key concepts**: DOM manipulation, dynamic updates
+**Command to run tests**
+`python -m pytest exercise5/`
 
-## Exercise 5: Complete NanoDash Application
+### Exercise 6: Updating the page with callback results
 
-**Goal**: Build a complete data dashboard application using all previous components.
+**Goal**: Implement the Javascript logic to update the page's UI components based on the callback results received from the server.
 
 **Tasks**:
-- Create a Pittsburgh data explorer dashboard
-- Implement filtering and data visualization
-- Use callbacks to update multiple components based on user interaction
+- Implement the `updateValues()` function in `exercise6/nanodash/static/index.js`
 
 **Files to modify**:
-- `exercise5/app.py`
-- `exercise5/static/index.js`
+- `exercise6/nanodash/static/index.js`
 
-**Location**: `/exercise5/`
-**Key features**: Pittsburgh city data exploration, filtering, data visualization
+**Command to run tests**
+`python -m pytest exercise6/`
 
-## Running the Exercises
+### Exercise 7: Write your own NanoDash Application
 
-To run any exercise, navigate to its directory and run the `app.py` file:
+**Goal**: Use the NanoDash framework to write your own interactive dashboard. You can modify the framework or add new components if you like.
 
-```bash
-cd exercise1
-python app.py
-```
+**Tasks**:
+- Pick a dataset
+- Modify `exercise7/app.py` to define an app layout, add graphs and interactive components, and add at least one callback
 
-Then open a web browser and go to: http://127.0.0.1:5000
+**Files to modify**:
+- `exercise7/app.py`
 
-## Project Structure
-
-Each exercise directory contains:
-
-- `app.py`: The main application file
-- `static/`: Directory for static files (like JavaScript)
-  - `index.js`: Client-side JavaScript for the exercise
-
-## Exercise Templates
-
-If you want to start with a skeleton template instead of the completed examples, check out the templates in the `tests/exercise_templates/` directory:
-
-- `nanodash_skeleton.py`: Basic framework skeleton
-- `components_skeleton.py`: Components implementation skeleton
-- `index_js_skeleton.js`: Frontend JavaScript skeleton
-- `sample_app_skeleton.py`: Complete app skeleton
-
-## Submission
-
-Submit your completed exercises by following these steps:
-
-1. Complete the implementation for each exercise
-2. Ensure all tests pass for each exercise
-3. Submit your code to the course repository
-
-## Requirements
-
-- Python 3.6+
-- Flask
-- Plotly
-- Pandas (for Exercise 5)
+There are no tests for this exercise since your app can do whatever you like!
 
 ## Resources
 
+- Intro to HTML: https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Your_first_website/Creating_the_content#creating_your_first_html_document
 - Plotly.js documentation: https://plotly.com/javascript/
+- Plotly.py documentation: https://plotly.com/python/
 - Flask documentation: https://flask.palletsprojects.com/
 - Pittsburgh data: https://data.wprdc.org/

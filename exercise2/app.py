@@ -12,7 +12,7 @@ app = NanoDash()
 header = Header(text="Exercise 2: TextInput and Dropdown Components")
 
 # Create the components needed for the test
-text_input = TextInput(id="input-test")
+text_input = TextInput(id="input-test", value="Test Value")
 
 dropdown = Dropdown(
     id="dropdown-test",

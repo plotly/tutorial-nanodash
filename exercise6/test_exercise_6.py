@@ -105,9 +105,3 @@ def test_multiple_output_updates():
         assert test_value in output2.get_attribute("value"), "Second output should be updated"
     finally:
         driver.quit()
-
-
-if __name__ == "__main__":
-    test_text_updates()
-    test_graph_updates()
-    test_multiple_output_updates()

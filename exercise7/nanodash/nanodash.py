@@ -117,6 +117,7 @@ class NanoDash:
         <html>
             <head>
                 <script src="https://cdn.plot.ly/plotly-3.0.1.min.js" charset="utf-8"></script>
+                <script src='static/utils.js'></script>
                 <script src='static/index.js'></script>
                 <title>{self.title}</title>
             </head>

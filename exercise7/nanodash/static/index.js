@@ -1,58 +1,16 @@
-function isButton(element) {
-    return element.tagName === 'BUTTON';
-}
-
-function isCheckbox(element) {
-    return element.type === 'checkbox';
-}
-
-function isDropdown(element) {
-    return element.tagName === 'SELECT';
-}
-
-function isRadio(element) {
-    return element.type === 'radio';
-}
-
-function getInputState(element) {
-    if (isRadio(element)) {
-        const checkedRadio = document.querySelector(`input[id='${element.id}']:checked`);
-        return checkedRadio ? checkedRadio.value : null;
-    } else if (isCheckbox(element)) {
-        return element.checked;
-    } else {
-        return element.value;
-    }
-}
-
-function getElementByTagName(tagName) {
-    return document.querySelectorAll(tagName);
-}
-
-function getInputElement(id) {
-    return document.querySelector(`input[id='${id}']`);
-}
-
-function initializeButtonHandlers() {
-    document.querySelectorAll('input, select, button').forEach(element => {
-        if (isCheckbox(element) || isRadio(element) || isDropdown(element)) {
-            element.addEventListener('change', () => sendState(element.id));
-        } else if (isButton(element)) {
-            element.addEventListener('click', () => sendState(element.id));
-        } else {
-            element.addEventListener('input', () => sendState(element.id));
-        }
-    });
-}
-
-document.addEventListener('DOMContentLoaded', initializeButtonHandlers);
+document.addEventListener('DOMContentLoaded', initializeInputHandlers);
 
 function getState() {
     let payload = {};
+    // Some helpful pseudo code:
+    // for each element in the form
+    //     if element is a button
+    //         payload[element.id] = element.value
     // EXERCISE 4 START
-    getElementByTagName('input, select').forEach(element => {
-        payload[element.id] = getInputState(element);
-    });
+    const elements = getInputElements();
+    for (const element of elements) {
+        payload[element.id] = getElementState(element);
+    };
     // EXERCISE 4 END
     return payload;
 }

@@ -12,6 +12,9 @@ Each exercise folder contains the following:
   - To run the tests for exercise N from the repository root: `python -m pytest exerciseN/`
   - To run the tests for exercise N from within the exercise directory: `python -m pytest`
 
+## Note on Running Pytest
+We recommend running `python -m pytest` rather than just `pytest`, because it ensures using the python in your virtual environment rather than the system python. 
+
 ## Exercise outline
 
 Each exercise focuses on implementing a specific part of the NanoDash framework.

@@ -1,4 +1,4 @@
-from nanodash.nanodash import NanoDash
+from nanodash import NanoDash
 from nanodash.components import Header, TextField, Graph, Page
 import plotly.express as px
 import plotly.graph_objects as go

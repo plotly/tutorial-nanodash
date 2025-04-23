@@ -1,5 +1,10 @@
-from nanodash import NanoDash
-from nanodash.components import Header, TextField, Graph, Page
+try:
+    from nanodash import NanoDash
+    from nanodash.components import Header, TextField, Graph, Page
+except ModuleNotFoundError:
+    from exercise7.nanodash import NanoDash
+    from exercise7.nanodash.components import Header, TextField, Graph, Page
+
 import plotly.express as px
 import plotly.graph_objects as go
 

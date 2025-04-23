@@ -1,4 +1,7 @@
-from exercise1.nanodash.nanodash import NanoDash
+try:
+    from nanodash import NanoDash
+except ModuleNotFoundError:
+    from exercise1.nanodash import NanoDash
 
 # Create a new Flask web server
 app = NanoDash()

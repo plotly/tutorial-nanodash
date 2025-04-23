@@ -1,28 +1,5 @@
-function isButton(element) {
-    return element.tagName === 'BUTTON';
-}
-
-function isCheckbox(element) {
-    return element.type === 'checkbox';
-}
-
-function isDropdown(element) {
-    return element.tagName === 'SELECT';
-}
-
-function isRadio(element) {
-    return element.type === 'radio';
-}
-
 function getElementValue(element) {
-    if (isRadio(element)) {
-        const checkedRadio = document.querySelector(`input[id='${element.id}']:checked`);
-        return checkedRadio ? checkedRadio.value : null;
-    } else if (isCheckbox(element)) {
-        return element.checked;
-    } else {
-        return element.value;
-    }
+    return element.value;
 }
 
 function getElementId(element) {

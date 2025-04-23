@@ -14,7 +14,7 @@ function isRadio(element) {
     return element.type === 'radio';
 }
 
-function getElementState(element) {
+function getElementValue(element) {
     if (isRadio(element)) {
         const checkedRadio = document.querySelector(`input[id='${element.id}']:checked`);
         return checkedRadio ? checkedRadio.value : null;
@@ -23,6 +23,10 @@ function getElementState(element) {
     } else {
         return element.value;
     }
+}
+
+function getElementId(element) {
+    return element.id;
 }
 
 function getInputElements() {

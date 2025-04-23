@@ -1,15 +1,30 @@
 document.addEventListener('DOMContentLoaded', initializeInputHandlers);
 
 function getState() {
-    let payload = {};
+    const payload = {};
     // Some helpful pseudo code:
-    // for each element in the form
-    //     if element is a button
-    //         payload[element.id] = element.value
+    // for each input element in the page:
+    //   set the payload at element's id to the element's value.
+    
+    // HELPER FUNCTIONS:
+    // * getInputElements() - returns all input elements on the page
+    // * getElementId(element) - returns the id of the element as a string
+    // * getElementValue(element) - returns the value of the element
+
+    // Some helpful javascript syntax:
+    // * To create a variable:
+    //     * const variable = value;
+    // * To create a for loop:
+    //     * for (const element of elements) { ... }
+    // * To set a value in an object:
+    //     * object[key] = value;
+    // * To print to the console:
+    //     * console.log('message', variable);
+    //////////////////////////////////////////////////////
     // EXERCISE 4 START
     const elements = getInputElements();
     for (const element of elements) {
-        payload[element.id] = getElementState(element);
+        payload[getElementId(element)] = getElementState(element);
     };
     // EXERCISE 4 END
     return payload;

@@ -12,7 +12,7 @@ import plotly.graph_objects as go
 app = NanoDash()
 
 # Create a header component
-header = Header(text="This is a NanoDash app")
+header = Header(text="This is a NanoDash app!")
 
 # Create a page with all components
 page = Page(children=[
@@ -34,4 +34,4 @@ app.set_layout(page)
 
 # Run the app if this file is executed directly
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

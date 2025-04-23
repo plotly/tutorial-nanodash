@@ -46,4 +46,4 @@ class NanoDash:
         """
         Run the NanoDash application by starting the Flask server.
         """
-        self.app.run()
+        self.app.run(debug=True)

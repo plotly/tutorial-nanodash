@@ -171,11 +171,11 @@ class NanoDash:
             {"input_ids": input_ids, "output_ids": output_ids, "function": function}
         )
 
-    def run(self) -> None:
+    def run(self, debug=True) -> None:
         """
         Run the NanoDash application by starting the Flask server.
         """
-        self.app.run()
+        self.app.run(debug=debug)
 
 
 def make_json_serializable(output_values: List) -> List:

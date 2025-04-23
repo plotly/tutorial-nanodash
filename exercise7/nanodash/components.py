@@ -111,7 +111,7 @@ class Graph(Component):
 
     def html(self):
         return f"""
-                <div id={self.id} height="{self.height}px" width="{self.width}px"></div>
+                <div id={self.id} style="height:{self.height}px; width:{self.width}px"></div>
                 <script>
                     Plotly.newPlot('{self.id}', {self.fig.to_json()});
                 </script>

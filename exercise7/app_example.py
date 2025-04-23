@@ -8,7 +8,7 @@ import plotly.express as px
 import pandas as pd
 
 # Read data
-data = pd.read_csv("./pgh-data.csv")
+data = pd.read_csv("./exercise7/data_example.csv")
 data["date"] = pd.to_datetime(data["date"])
 
 # Create a new Flask web server

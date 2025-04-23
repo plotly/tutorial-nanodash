@@ -1,6 +1,6 @@
 # NanoDash Tutorial Exercises
 
-The 6 exercises to be completed for this tutorial are located in the directories `exercise1/` through `exercise6/`.
+The 7 exercises to be completed for this tutorial are located in the directories `exercise1/` through `exercise7/`.
 
 Each exercise folder contains the following:
 

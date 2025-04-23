@@ -1,9 +1,9 @@
 try:
     from nanodash.nanodash import NanoDash
-    from nanodash.components import Header, TextField, Graph, Page
+    from nanodash.components import Header, TextInput, Graph, Page
 except ModuleNotFoundError:
     from exercise6.nanodash import NanoDash
-    from exercise6.nanodash.components import Header, TextField, Graph, Page
+    from exercise6.nanodash.components import Header, TextInput, Graph, Page
 import plotly.express as px
 import plotly.graph_objects as go
 
@@ -14,11 +14,11 @@ app = NanoDash()
 header = Header(text="Exercise 6: UI Updates from Callbacks")
 
 # Create components for text update test
-input_test = TextField(id="input-test")
-output_test = TextField(id="output-test")
+input_test = TextInput(id="input-test")
+output_test = TextInput(id="output-test")
 
 # Create components for graph update test
-graph_input = TextField(id="graph-input")
+graph_input = TextInput(id="graph-input")
 
 # Create an initial graph
 fig = px.scatter(
@@ -38,10 +38,10 @@ graph_test = Graph(
 )
 
 # Create components for multiple output test
-multi_output_input = TextField(id="multi-output-input")
+multi_output_input = TextInput(id="multi-output-input")
 
-output_1 = TextField(id="output-1")
-output_2 = TextField(id="output-2")
+output_1 = TextInput(id="output-1")
+output_2 = TextInput(id="output-2")
 
 # Create a page with all components
 page = Page(children=[

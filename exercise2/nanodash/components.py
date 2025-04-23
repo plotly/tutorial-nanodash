@@ -54,7 +54,7 @@ class Page(Component):
 
 
 
-class TextField(Component):
+class TextInput(Component):
     def __init__(self, id: str = "", value="") -> None:
         self.id = id
         self.value = value

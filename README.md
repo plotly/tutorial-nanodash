@@ -35,7 +35,7 @@ Each exercise focuses on implementing a specific part of the NanoDash framework.
 
 **Tasks**:
 - Review the implementations of the `Page`, `Header` and `Text` classes in `exercise2/nanodash/components.py`
-- Implement the `__init__()` and `html()` methods of the `TextField` class
+- Implement the `__init__()` and `html()` methods of the `TextInput` class
 - Implement the `__init__()` and `html()` methods of the `Dropdown` class
 
 **Files to modify**:

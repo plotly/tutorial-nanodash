@@ -60,10 +60,15 @@ class NanoDash:
             trigger_id = flask.request.json["trigger_id"]
 
             for callback in self.callbacks:
+                # Helpful pseudocode:
+                # For each callback: Check if the trigger id is in the input ids for that callback
+                # If yes:
+                #  1. Get the values of the inputs to the callback
+                #  2. Execute the callback function by passing the inputs, and get the results
+                #  3. Add the results to the response dict as key: value pairs, where the key is the output ID 
+                #     and the value is the output value returned from the callback
+
                 ## EXERCISE 5 START
-                # For each callback, check if the trigger_id is in the input_ids
-                # If it is, we execute the callback function to get the new values
-                # for the outputs
                 if trigger_id in callback["input_ids"]:
                     callback_function = callback["function"]
                     input_values = [

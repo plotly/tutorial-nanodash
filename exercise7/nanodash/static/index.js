@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', initializeInputHandlers);
 
 function getState() {
     const payload = {};
-    // Some helpful pseudo code:
+    // Some helpful pseudocode:
     // for each input element in the page:
     //   set the payload at element's id to the element's value.
     
@@ -31,7 +31,7 @@ function getState() {
 }
 
 function updateValues(newState) {
-    // Some helpful pseudo code:
+    // Some helpful pseudocode:
     // for each key in newState:
     //   if the value is a boolean:
     //     set the value of the input element with that id to the value

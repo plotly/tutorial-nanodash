@@ -15,7 +15,7 @@ function getInputElement(id) {
 }
 
 function initializeInputHandlers() {
-    document.querySelectorAll('input, select').forEach(element => {
+    getInputElements().forEach(element => {
         element.addEventListener('input', () => sendState(element.id));
     });
 }

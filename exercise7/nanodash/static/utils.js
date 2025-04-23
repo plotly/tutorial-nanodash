@@ -42,3 +42,24 @@ function initializeInputHandlers() {
         element.addEventListener('input', () => sendState(element.id));
     });
 }
+
+function parseResponse(data) {
+    for (const key in data) {
+        const value = data[key];
+        // Deserialize json
+        try {
+            data[key] = JSON.parse(value);
+        } catch (e) {}
+    }
+    return data;
+}
+
+function isPlotlyFigure(value) {
+    return value && value.data && value.layout;
+}
+
+function setElementValue(element, value) {
+    if (element) {
+        element.value = value;
+    }
+}

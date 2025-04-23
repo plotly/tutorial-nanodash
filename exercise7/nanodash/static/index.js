@@ -24,39 +24,52 @@ function getState() {
     // EXERCISE 4 START
     const elements = getInputElements();
     for (const element of elements) {
-        payload[getElementId(element)] = getElementState(element);
+        payload[getElementId(element)] = getElementValue(element);
     };
     // EXERCISE 4 END
     return payload;
 }
 
 function updateValues(newState) {
-    // EXERCISE 6 START
-    for (let id in newState) {
-        let value = newState[id];
-        // Deserialize json
-        try {
-            value = JSON.parse(value);
-        } catch (e) {}
+    // Some helpful pseudo code:
+    // for each key in newState:
+    //   if the value is a boolean:
+    //     set the value of the input element with that id to the value
+    //   else if the value is a plotly figure:
+    //     update the plotly figure with that id to the value
+    //   else:
+    //     set the value of the input element with that id to the value
 
-        if (typeof value === 'boolean') {
-            let element = getInputElement(id);
-            if (!element) continue;
-            element.checked = value;
-        } else if (typeof value === 'object') {
-            Plotly.newPlot(id, value.data, value.layout, value.config);
+    // Some helpful javascript syntax:
+    // * To create a variable:
+    //     * const variable = value;
+    // * To create a for loop:
+    //     * for (const key in object) { ... }
+    // * To access a value in an object:
+    //     * const value = object[key];
+
+    // HELPER FUNCTIONS:
+    // * isPlotlyFigure(value) - returns true if the value is a plotly figure
+    // * Plotly.newPlot(id, value) - updates the plotly figure with the given id
+    // * getInputElement(id) - returns the input element with the given id
+
+    // EXERCISE 6 START
+    for (const id in newState) {
+        let value = newState[id];
+
+        if (isPlotlyFigure(value)) {
+            Plotly.newPlot(id, value);
         } else {
-            let element = getInputElement(id);
-            if (!element) continue;
-            element.value = value;
+            const element = getInputElement(id);
+            setElementValue(element, value);
         }
     }
     // EXERCISE 6 END
 }
 
 function sendState(id) {
-    let state = getState();
-    let payload = {
+    const state = getState();
+    const payload = {
         trigger_id: id,
         state: state
     };
@@ -67,6 +80,7 @@ function sendState(id) {
         body: JSON.stringify(payload)
     })
     .then(response => response.json())
+    .then(parseResponse)
     .then(updateValues)
     .catch(error => console.error('Error:', error));
 }

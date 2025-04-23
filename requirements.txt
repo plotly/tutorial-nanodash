@@ -1,6 +1,6 @@
 flask
-flask-cors
-ruff
 pandas
 plotly
 requests
+pytest
+selenium

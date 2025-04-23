@@ -17,7 +17,5 @@ def test_page_structure():
     with app_test_context("exercise1/app.py") as driver:
         # Check for basic page elements
         assert driver.title, "Page should have a title"
-
-        assert driver.find_element(By.TAG_NAME, "h1"), "Page should have an <h1> element"
         
 

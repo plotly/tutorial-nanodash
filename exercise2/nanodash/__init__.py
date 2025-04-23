@@ -4,7 +4,7 @@ NanoDash - A lightweight dashboard framework for Python
 from .nanodash import NanoDash
 from .components import (
     Header,
-    TextField,
+    TextInput,
     Button,
     Dropdown,
     Page,

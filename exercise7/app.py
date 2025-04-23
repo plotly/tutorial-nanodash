@@ -1,9 +1,9 @@
 try:
     from nanodash import NanoDash
-    from nanodash.components import Header, TextField, Graph, Page
+    from nanodash.components import Header, TextInput, Graph, Page
 except ModuleNotFoundError:
     from exercise7.nanodash import NanoDash
-    from exercise7.nanodash.components import Header, TextField, Graph, Page
+    from exercise7.nanodash.components import Header, TextInput, Graph, Page
 
 import plotly.express as px
 import plotly.graph_objects as go
@@ -12,7 +12,7 @@ import plotly.graph_objects as go
 app = NanoDash()
 
 # Create a header component
-header = Header(text="This is a NanoDash app")
+header = Header(text="This is a NanoDash app!")
 
 # Create a page with all components
 page = Page(children=[

@@ -1,9 +1,9 @@
 try:
     from nanodash import NanoDash
-    from nanodash.components import Header, TextField, Dropdown, Page
+    from nanodash.components import Header, TextInput, Dropdown, Page
 except ModuleNotFoundError:
     from exercise5.nanodash import NanoDash
-    from exercise5.nanodash.components import Header, TextField, Dropdown, Page
+    from exercise5.nanodash.components import Header, TextInput, Dropdown, Page
 
 # Create a new Flask web server
 app = NanoDash()
@@ -12,7 +12,7 @@ app = NanoDash()
 header = Header(text="Exercise 5: Server-to-Client Communication")
 
 # Create input components
-text_input = TextField(id="input-test")
+text_input = TextInput(id="input-test")
 
 dropdown = Dropdown(
     id="dropdown-test",
@@ -20,9 +20,9 @@ dropdown = Dropdown(
 )
 
 # Create output components
-text_output = TextField(id="output-test")
+text_output = TextInput(id="output-test")
 
-dropdown_output = TextField(id="dropdown-output")
+dropdown_output = TextInput(id="dropdown-output")
 
 # Create a page with the components
 page = Page(children=[

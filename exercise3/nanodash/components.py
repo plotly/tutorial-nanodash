@@ -39,7 +39,7 @@ class Text(Component):
         return f"<p id='{self.id}'>{self.text}</p>"
 
 
-class TextField(Component):
+class TextInput(Component):
     ## EXERCISE 2 START
     def __init__(self, id: str = "", value="") -> None:
         self.id = id

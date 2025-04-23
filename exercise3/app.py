@@ -18,7 +18,7 @@ fig = px.scatter(x=[1, 2, 3, 4, 5], y=[1, 4, 9, 16, 25])
 # Create the graph component
 graph = Graph(
     id="graph-test",
-    fig=fig  # Convert Plotly figure to dictionary format
+    fig=fig
 )
 
 # Create a page with the components

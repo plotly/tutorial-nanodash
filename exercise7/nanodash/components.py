@@ -98,6 +98,8 @@ class Page(Component):
 
 
 class Graph(Component):
+    ## For a sample of how to embed a Plotly graph in HTML, see:
+    ## https://codepen.io/marthacryan/pen/yyyyOoB
     ## EXERCISE 3 START
     def __init__(
         self, id: str = "", fig: go.Figure = None, width: int = 1000, height: int = 600

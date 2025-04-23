@@ -35,9 +35,9 @@ function getInputElement(id) {
 
 function initializeButtonHandlers() {
     document.querySelectorAll('input, select, button').forEach(element => {
-        if (isCheckbox(element) || isRadio(element)) {
+        if (isCheckbox(element) || isRadio(element) || isDropdown(element)) {
             element.addEventListener('change', () => sendState(element.id));
-        } else if (isButton(element) || isDropdown(element)) {
+        } else if (isButton(element)) {
             element.addEventListener('click', () => sendState(element.id));
         } else {
             element.addEventListener('input', () => sendState(element.id));

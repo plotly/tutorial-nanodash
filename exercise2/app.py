@@ -1,5 +1,9 @@
-from exercise2.nanodash.nanodash import NanoDash
-from exercise2.nanodash.components import Header, TextField, Dropdown, Page
+try:
+    from nanodash import NanoDash
+    from nanodash.components import Header, TextField, Dropdown, Page
+except ModuleNotFoundError:
+    from exercise2.nanodash import NanoDash
+    from exercise2.nanodash.components import Header, TextField, Dropdown, Page
 
 # Create a new Flask web server
 app = NanoDash()

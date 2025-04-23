@@ -1,5 +1,9 @@
-from nanodash.nanodash import NanoDash
-from nanodash.components import Dropdown, Header, Text, Page, Graph
+try:
+    from nanodash import NanoDash
+    from nanodash.components import Dropdown, Header, Text, Page, Graph
+except ModuleNotFoundError:
+    from exercise7.nanodash import NanoDash
+    from exercise7.nanodash.components import Dropdown, Header, Text, Page, Graph
 import plotly.express as px
 import pandas as pd
 

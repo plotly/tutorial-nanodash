@@ -1,5 +1,9 @@
-from exercise3.nanodash.nanodash import NanoDash
-from exercise3.nanodash.components import Header, Graph, Page
+try:
+    from nanodash import NanoDash
+    from nanodash.components import Header, Graph, Page
+except ModuleNotFoundError:
+    from exercise3.nanodash import NanoDash
+    from exercise3.nanodash.components import Header, Graph, Page
 import plotly.express as px
 
 # Create a new Flask web server

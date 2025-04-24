@@ -15,9 +15,11 @@ app = NanoDash()
 header = Header(text="This is a NanoDash app!")
 
 # Create a page with all components
-page = Page(children=[
-    header,
-])
+page = Page(
+    children=[
+        header,
+    ]
+)
 
 # Add layout to the app
 app.set_layout(page)

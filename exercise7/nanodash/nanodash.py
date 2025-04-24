@@ -65,7 +65,7 @@ class NanoDash:
                 # If yes:
                 #  1. Get the values of the inputs to the callback
                 #  2. Execute the callback function by passing the inputs, and get the results
-                #  3. Add the results to the response dict as key: value pairs, where the key is the output ID 
+                #  3. Add the results to the response dict as key: value pairs, where the key is the output ID
                 #     and the value is the output value returned from the callback
 
                 ## EXERCISE 5 START
@@ -154,7 +154,7 @@ class NanoDash:
                as its argument (which aligns with the list of input IDs) and
                return a list of output values (which aligns with the list
                of output IDs).
-        
+
         The add_callback() method doesn't handle the actual callback logic
         of figuring out which callbacks to trigger and when. It simply
         stores the callback information in the app's callbacks list. The

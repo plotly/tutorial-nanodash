@@ -22,12 +22,37 @@ We encourage the use of a virtual environment to keep things clean. Feel free to
 ```bash
 $ pip install uv
 $ uv venv --python 3.12
+```
+
+To activate the `uv` virtual environment, run:
+
+```bash
 $ source .venv/bin/activate
 ```
 
+Make sure the environment is correctly activated by checking which `python` your terminal is using:
+
+```bash
+$ which python
+```
+
+The end of the path should look like `.venv/bin/python`.
+
+Finally, verify your Python version:
+
+```bash
+$ python --version
+```
+
+You should see some version of `Python 3.12`.
+
+
+
 ## 3. Installing requirements
 
-After setting up and activating your Python virtual environment, install the requirements for the tutorial. If you are using `uv`, run:
+After setting up and activating your Python virtual environment, install the requirements for the tutorial. 
+
+If you are using `uv`, run:
 
 ```bash
 $ uv pip install -r requirements.txt
@@ -38,6 +63,16 @@ Otherwise:
 ```bash
 $ pip install -r requirements.txt
 ```
+
+## 4. Checking that everthing is working
+
+To make sure everything is installed correctly, try running the Exercise 7 tests:
+
+```bash
+$ python -m pytest exercise7/
+```
+
+You should see a message indicating that one test has passed.
 
 That's it, you're all set up! 
 

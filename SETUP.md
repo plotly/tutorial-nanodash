@@ -102,6 +102,8 @@ $ python -m pytest exercise7/
 
 You should see a message indicating that one test has passed.
 
-That's it, you're all set up! 
+---
+
+That's it, you're all set up!  🎉
 
 Feel free to take a look at the [README](https://github.com/plotly/tutorial-nanodash/blob/main/README.md) for information about the repository structure and tutorial exercises. See you there!

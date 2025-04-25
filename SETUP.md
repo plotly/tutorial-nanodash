@@ -1,8 +1,8 @@
-# NanoDash Tutorial: Setup Instructions
+# NanoDash tutorial: Setup instructions
 
-Thanks for registering for the NanoDash tutorial! The following outlines installation instructions for setting up your local machine before the tutorial.
+Thanks for registering for the NanoDash tutorial! This guide provides step-by-step instructions to set up your local machine for the tutorial.
 
-The terminal commands in these instructions are intended for Bash or a similar Unix shell. If you are on Windows, use Git Bash or another  Bash shell tool for Windows.
+The terminal commands below are intended for Bash or similar Unix shells. If you are using Windows, you can use Git Bash, WSL, or another Bash shell tool.
 
 ## 1. Cloning the repository
 
@@ -17,7 +17,9 @@ $ cd tutorial-nanodash/
 
 This tutorial is intended to be completed with **Python 3.12** (or newer). Older versions of Python may work, but the tutorial has only been tested with 3.12.
 
-We encourage the use of a virtual environment to keep things clean. Feel free to use your favorite virtual environment manager. If you don't have a favorite, we recommend `uv`. To create a virtual environment using `uv`, first make sure you are in the root directory of the repository, then run:
+We encourage the use of a virtual environment. You can use any virtual environment manager you prefer. If you don't have a favorite, we recommend `uv`. 
+
+To create a virtual environment using `uv`, first make sure you are in the root directory of the repository, then run:
 
 ```bash
 $ pip install uv
@@ -30,27 +32,20 @@ To activate the `uv` virtual environment, run:
 $ source .venv/bin/activate
 ```
 
-Make sure the environment is correctly activated by checking which `python` your terminal is using:
+Verify that your environment is correctly activated and using the right Python version by running:
 
 ```bash
 $ which python
-```
-
-The path should be the path to your current working directory, followed by `.venv/bin/python`.
-
-Finally, verify your Python version:
-
-```bash
 $ python --version
 ```
 
-You should see some version of `Python 3.12`.
+`which python` should output a path ending with ` .venv/bin/python`
 
-
+`python --version` should output `Python 3.12.x`
 
 ## 3. Installing requirements
 
-After setting up and activating your Python virtual environment, install the requirements for the tutorial.
+After setting up and activating your Python virtual environment, install the requirements for the tutorial, which are listed in `requirements.txt`.
 
 _Note: When using a `uv` virtual environment, `pip` must be replaced by `uv pip`._
 
@@ -66,13 +61,15 @@ Otherwise:
 $ pip install -r requirements.txt
 ```
 
-Verify that the requirements are installed, and check package versions, by running the following if you are using `uv`:
+Next, verify that the key packages are installed correctly.
+
+If you are using `uv`, run:
 
 ```bash
 $ uv pip freeze | grep -E "flask|pandas|plotly|requests|pytest|selenium"
 ```
 
-Or if you are not using `uv`:
+Otherwise:
 
 ```bash
 $ pip freeze | grep -E "flask|pandas|plotly|requests|pytest|selenium"
@@ -92,7 +89,7 @@ selenium==4.31.0
 It's okay if your installed package versions are slightly different, as long as the following step completes successfully.
 
 
-## 4. Checking that everthing is working
+## 4. Checking that everything is working
 
 To make sure everything is installed correctly, try running the Exercise 7 tests:
 
@@ -102,8 +99,10 @@ $ python -m pytest exercise7/
 
 You should see a message indicating that one test has passed.
 
----
+That's it, you're all set up! 🎉
 
-That's it, you're all set up!  🎉
+## Next steps
 
-Feel free to take a look at the [README](https://github.com/plotly/tutorial-nanodash/blob/main/README.md) for information about the repository structure and tutorial exercises. See you there!
+If you like, feel free to take a look at the [README](https://github.com/plotly/tutorial-nanodash/blob/main/README.md) for information about the repository structure and tutorial exercises.
+
+See you there!

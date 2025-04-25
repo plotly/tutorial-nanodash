@@ -39,7 +39,7 @@ def start_server(script_path):
     
     # Create a thread to run the server
     server_thread = threading.Thread(
-        target=lambda: app.run()
+        target=lambda: app.run(use_reloader=False)
     )
     server_thread.daemon = True
     server_thread.start()

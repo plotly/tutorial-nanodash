@@ -1,3 +1,7 @@
+import json
+import plotly.graph_objects as go
+
+
 class Component:
     def __init__(self, **kwargs) -> None:
         """
@@ -15,6 +19,15 @@ class Component:
         raise NotImplementedError(
             f"The html() method for {self.__class__.__name__} is not implemented yet!"
         )
+
+
+class Page(Component):
+    def __init__(self, id: str = "", children: list = None) -> None:
+        self.id = id
+        self.children = children or []
+
+    def html(self) -> str:
+        return f"<div id='{self.id}'>{''.join(c.html() for c in self.children)}</div>"
 
 
 class Header(Component):
@@ -35,6 +48,34 @@ class Text(Component):
         return f"<p id='{self.id}'>{self.text}</p>"
 
 
+class TextInput(Component):
+    def __init__(self, id: str = "", value="") -> None:
+        self.id = id
+        self.value = value
+
+    def html(self) -> str:
+        ## EXERCISE 2 START
+        return f"<input id='{self.id}' type='text' value='{self.value}'/>"
+        ## EXERCISE 2 END
+
+
+class Dropdown(Component):
+    def __init__(self, id: str = "", options: list = None, value=None) -> None:
+        self.id = id
+        self.options = options or []
+        self.value = value
+
+    def html(self) -> str:
+        ## EXERCISE 2 START
+        options_html = [
+            f"<option value='{opt}'{' selected' if opt == self.value else ''}>{opt}</option>"
+            for opt in self.options
+        ]
+        options_html_joined = "".join(options_html)
+        return f"<select id='{self.id}'>{options_html_joined}</select>"
+        ## EXERCISE 2 END
+
+
 class Button(Component):
     def __init__(self, id: str = "", text: str = "") -> None:
         self.id = id
@@ -44,34 +85,38 @@ class Button(Component):
         return f"<button id='{self.id}'>{self.text}</button>"
 
 
-class Page(Component):
-    def __init__(self, id: str = "", children: list = None) -> None:
+class Slider(Component):
+    def __init__(
+        self, id: str = "", min: int = 0, max: int = 100, step: int = 1, value=None
+    ) -> None:
         self.id = id
-        self.children = children or []
-
-    def html(self) -> str:
-        return f"<div id='{self.id}'>{''.join(c.html() for c in self.children)}</div>"
-
-
-
-class TextInput(Component):
-    def __init__(self, id: str = "", value="") -> None:
-        self.id = id
+        self.min = min
+        self.max = max
+        self.step = step
         self.value = value
 
     def html(self) -> str:
-        ## EXERCISE 2 START
-        raise NotImplementedError()
-        ## EXERCISE 2 END
+        return f"<input id='{self.id}' value='{self.value}' type='range' min='{self.min}' max='{self.max}' step='{self.step}'/>"
 
 
-class Dropdown(Component):
-    def __init__(self, id: str = "", options: list = None, value = None) -> None:
-        self.id = id
-        self.options = options or []
-        self.value = value
+class Graph(Component):
+    def __init__(
+        self, id: str = "", fig: go.Figure = None, width: int = 1000, height: int = 600
+    ) -> None:
+        self.id = id or "graph"
+        self.fig = fig or go.Figure()
+        self.width = width
+        self.height = height
 
-    def html(self) -> str:
-        ## EXERCISE 2 START
-        raise NotImplementedError()
-        ## EXERCISE 2 END
+    def html(self):
+        ## For an example of how to embed a Plotly graph in HTML, see:
+        ## https://codepen.io/marthacryan/pen/yyyyOoB
+
+        ## EXERCISE 3 START
+        return f"""
+                <div id={self.id} style="height:{self.height}px; width:{self.width}px"></div>
+                <script>
+                    Plotly.newPlot('{self.id}', {self.fig.to_json()});
+                </script>
+        """
+        ## EXERCISE 3 END

@@ -46,9 +46,7 @@ class TextInput(Component):
         self.value = value
 
     def html(self) -> str:
-        return f"<input id='{self.id}' type='text' value={self.value}/>"
-
-        return f"<input id='{self.id}' type='text' value=''/>"
+        return f"<input id='{self.id}' type='text' value='{self.value}'/>"
     ## EXERCISE 2 END
 
 class Button(Component):

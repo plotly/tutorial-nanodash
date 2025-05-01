@@ -12,11 +12,38 @@ import threading
 import time
 import importlib.util
 import sys
+
+import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from contextlib import contextmanager
+
+import runpy
+
+
+def start_app(app_object):
+    """
+    Start the Flask app using the given path to the app file.
+    """
+    app = app_object
+
+    def run_app():
+        app.run(threaded=True, use_reloader=False, port=5000)
+        
+    # Create a thread to run the app
+    app_thread = threading.Thread(
+        target=run_app,
+        daemon=True,
+    )
+    app_thread.start()
+
+    wait_sec = 5
+    print(f"Started app thread, waiting {wait_sec} seconds...")
+    # Wait for a short time to ensure the server is up
+    time.sleep(wait_sec)
+    print("App is up and running (probably)") 
+
 
 
 def start_server(script_path):
@@ -29,32 +56,47 @@ def start_server(script_path):
         Thread object running the server
     """
     # Load the app module
-    spec = importlib.util.spec_from_file_location("app_module", script_path)
-    module = importlib.util.module_from_spec(spec)
-    sys.modules["app_module"] = module
-    spec.loader.exec_module(module)
+    # spec = importlib.util.spec_from_file_location("app_module", script_path)
+    # module = importlib.util.module_from_spec(spec)
+    # sys.modules["app_module"] = module
+    # spec.loader.exec_module(module)
+    script_path = script_path.replace("/", ".").replace(".py", "")
+    module = runpy.run_module(script_path)
     
     # Assuming the Flask app is named 'app' in the module
-    app = module.app
+    # app = module.app
+    app = module["app"]
+
+    def run_app():
+        try:
+            app.run(threaded=True, use_reloader=False, port=5000)
+        except SystemExit:
+            print("Server stopped")
+        except Exception as error:
+            print("Error: ", error)
+            raise error
     
     # Create a thread to run the server
     server_thread = threading.Thread(
-        target=lambda: app.run(use_reloader=False)
+        target=run_app,
+        daemon=True,
     )
-    server_thread.daemon = True
+    # server_thread.daemon = True
     server_thread.start()
-    
+    print("Started server, waiting 2 seconds...")
     # Wait until the server is up and running by checking the URL
-    wait = WebDriverWait(webdriver.Chrome(), 10)
-    wait.until(
-        EC.presence_of_element_located((By.TAG_NAME, "html"))
-    )
+    # WebDriverWait(webdriver.Chrome(), timeout=2).until(
+    #     EC.presence_of_element_located((By.TAG_NAME, "html"))
+    # )
+    # Wait for a short time to ensure the server is up
+    time.sleep(2)
+    print("Server is up and running")
     
     return server_thread
 
 
-@contextmanager
-def app_test_context(script_path):
+# @pytest.fixture
+def selenium_driver():
     """Context manager for running tests with server and browser.
     
     Args:
@@ -67,13 +109,18 @@ def app_test_context(script_path):
         with app_test_context("path/to/app.py") as driver:
             # Test with the browser
     """
-    server_thread = start_server(script_path)
-    driver = webdriver.Chrome()
+    driver = None
     try:
+        # server_thread = start_server(script_path)
+        driver = webdriver.Chrome()
         driver.get("http://127.0.0.1:5000")
         yield driver
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        raise e
     finally:
-        driver.quit()
+        if driver:
+            driver.quit()
         # Server stops automatically as it's a daemon thread
 
 

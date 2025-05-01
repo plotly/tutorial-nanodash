@@ -1,4 +1,4 @@
-# NanoDash Tutorial Exercises
+# NanoDash tutorial exercises
 
 The 7 exercises to be completed for this tutorial are located in the directories `exercise1/` through `exercise7/`.
 
@@ -12,7 +12,7 @@ Each exercise folder contains the following:
   - To run the tests for exercise N from the repository root: `python -m pytest exerciseN/`
   - To run the tests for exercise N from within the exercise directory: `python -m pytest`
 
-## Note on Running Pytest
+## Note on running Pytest
 We recommend running `python -m pytest` rather than just `pytest`, because it ensures using the python in your virtual environment rather than the system python. 
 
 ## Exercise outline
@@ -32,14 +32,14 @@ Each exercise focuses on implementing a specific part of the NanoDash framework.
 **Command to run tests**
 `python -m pytest exercise1/`
 
-### Exercise 2: Implement UI components
+### Exercise 2: Implementing input components
 
-**Goal**: Implement basic UI component objects to use as building blocks for page layouts.
+**Goal**: Implement basic input components as Python objects, to be used as building blocks for interactive dashboards.
 
 **Tasks**:
 - Review the implementations of the `Page`, `Header` and `Text` classes in `exercise2/nanodash/components.py`
-- Implement the `__init__()` and `html()` methods of the `TextInput` class
-- Implement the `__init__()` and `html()` methods of the `Dropdown` class
+- Implement the `html()` method of the `TextInput` class
+- Implement the `html()` method of the `Dropdown` class
 
 **Files to modify**:
 - `exercise2/nanodash/components.py`
@@ -47,12 +47,12 @@ Each exercise focuses on implementing a specific part of the NanoDash framework.
 **Command to run tests**
 `python -m pytest exercise2/`
 
-### Exercise 3: Implement Graph component 
+### Exercise 3: Implementing the Graph component 
 
 **Goal**: Implement the Graph component, which uses Plotly.js to display Plotly figures in the browser.
 
 **Tasks**:
-- Implement the the `__init__()` and `html()` methods of the `Graph` class in `exercise3/nanodash/components.py`
+- Implement the `html()` method of the `Graph` class in `exercise3/nanodash/components.py`
 
 **Files to modify**:
 - `exercise3/nanodash/components.py`
@@ -60,14 +60,14 @@ Each exercise focuses on implementing a specific part of the NanoDash framework.
 **Command to run tests**
 `python -m pytest exercise3/`
 
-### Exercise 4: Browser to Server Communication — Gathering the page state
+### Exercise 4: Gathering the page state when an input changes
 
 **Goal**: Implement the Javascript logic to capture the state of all components on the page, and bundle it into a JSON request to send to the Flask server.
 
 Don't worry — we've provided some useful helper functions inside the Javascript file; all you need to do is put them together in the right way.
 
 **Tasks**:
-- Implement the `getState()` function in `exercise4/nanodash/static/index.js`.
+- Implement the `getState()` Javascript function in `exercise4/nanodash/static/index.js`.
 
 **Files to modify**:
 - `exercise4/static/index.js`
@@ -80,8 +80,8 @@ Don't worry — we've provided some useful helper functions inside the Javascrip
 **Goal**: Implement the Python logic which receives the page state from the frontend, runs the necessary callbacks, and sends the results back to the frontend. Also implement the logic which allows a user to add a callback to their app.
 
 **Tasks**:
-- Implement the `handle_change()` function in `exercise5/nanodash/nanodash.py`
-- Implement the `add_callback()` function in `exercise5/nanodash/nanodash.py`
+- Implement the `handle_change()` Python function in `exercise5/nanodash/nanodash.py`
+- Implement the `add_callback()` Python function in `exercise5/nanodash/nanodash.py`
 
 **Files to modify**:
 - `exercise5/nanodash/nanodash.py`
@@ -94,7 +94,7 @@ Don't worry — we've provided some useful helper functions inside the Javascrip
 **Goal**: Implement the Javascript logic to update the page's UI components based on the callback results received from the server.
 
 **Tasks**:
-- Implement the `updateValues()` function in `exercise6/nanodash/static/index.js`
+- Implement the `updateValues()` Javascript function in `exercise6/nanodash/static/index.js`
 
 **Files to modify**:
 - `exercise6/nanodash/static/index.js`
@@ -102,7 +102,7 @@ Don't worry — we've provided some useful helper functions inside the Javascrip
 **Command to run tests**
 `python -m pytest exercise6/`
 
-### Exercise 7: Write your own NanoDash Application
+### Exercise 7: Writing your own NanoDash application
 
 **Goal**: Use the NanoDash framework to write your own interactive dashboard. You can modify the framework or add new components if you like.
 

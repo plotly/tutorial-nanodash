@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', initializeInputHandlers);
-document.addEventListener('DOMContentLoaded', () => sendState(''));
 
 function getState() {
     const payload = {};

@@ -10,7 +10,7 @@ except ModuleNotFoundError:
 
 
 # Read data
-data = pd.read_csv("./exercise7/data_example.csv")
+data = pd.read_csv("data/pgh_community_centers.csv")
 data["date"] = pd.to_datetime(data["date"])
 
 # Create a new Flask web server
@@ -135,5 +135,6 @@ app.add_callback(
     function=update_graph,
 )
 
-# Run the app
-app.run()
+if __name__ == "__main__":
+    # Run the app
+    app.run()

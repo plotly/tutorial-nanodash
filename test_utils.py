@@ -1,151 +1,99 @@
 """
-Comprehensive test utilities for NanoDash tests
-
-This module provides a unified set of utilities for testing NanoDash applications:
-1. Server management: start_server
-2. Test contexts: app_test_context
-3. Component interaction: check_component_exists, set_component_value
-4. Graph testing: wait_for_graph_render, get_graph_data
-5. Network testing: setup_fetch_interceptor
+This module provides a set of utilities for testing NanoDash applications
 """
 import threading
 import time
-import importlib.util
-import sys
 
 import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
-import runpy
+
+@pytest.fixture
+def selenium_webdriver():
+    """
+    Pytest fixture for launching and quitting a Selenium WebDriver instance. 
+    
+    Yields:
+        Selenium WebDriver instance connected to the running app
+        
+    Usage:
+        text_input = selenium_webdriver.find_element(By.ID, "element-id")
+    """
+    driver = None
+    try:
+        driver = create_webdriver()
+        yield driver
+    except Exception as e:
+        raise e
+    finally:
+        if driver:
+            driver.quit()
+
+
+def create_webdriver(headless: bool=False):
+    """
+    Returns a new Selenium WebDriver instance pointed at 127.0.0.1:5000.
+    
+    Args:
+        headless: If True, run the browser in headless mode (no GUI).
+        
+    Returns:
+        Selenium WebDriver instance
+    """
+    options = webdriver.ChromeOptions()
+    if headless:
+        options.add_argument("--headless=new")
+    driver = webdriver.Chrome(options=options)
+    driver.get("http://127.0.0.1:5000")
+    return driver
 
 
 def start_app(app_object):
     """
-    Start the Flask app using the given path to the app file.
+    Start the provided Flask app in a daemon thread.
     """
     app = app_object
 
     def run_app():
         app.run(threaded=True, use_reloader=False, port=5000)
         
-    # Create a thread to run the app
     app_thread = threading.Thread(
         target=run_app,
         daemon=True,
     )
     app_thread.start()
 
-    wait_sec = 5
-    print(f"Started app thread, waiting {wait_sec} seconds...")
-    # Wait for a short time to ensure the server is up
-    time.sleep(wait_sec)
-    print("App is up and running (probably)") 
-
-
-
-def start_server(script_path):
-    """Start a Flask server using threading.
-    
-    Args:
-        script_path: Path to the Flask application script
-        
-    Returns:
-        Thread object running the server
-    """
-    # Load the app module
-    # spec = importlib.util.spec_from_file_location("app_module", script_path)
-    # module = importlib.util.module_from_spec(spec)
-    # sys.modules["app_module"] = module
-    # spec.loader.exec_module(module)
-    script_path = script_path.replace("/", ".").replace(".py", "")
-    module = runpy.run_module(script_path)
-    
-    # Assuming the Flask app is named 'app' in the module
-    # app = module.app
-    app = module["app"]
-
-    def run_app():
-        try:
-            app.run(threaded=True, use_reloader=False, port=5000)
-        except SystemExit:
-            print("Server stopped")
-        except Exception as error:
-            print("Error: ", error)
-            raise error
-    
-    # Create a thread to run the server
-    server_thread = threading.Thread(
-        target=run_app,
-        daemon=True,
+    # Wait for the app to start
+    driver = create_webdriver(headless=True)
+    WebDriverWait(driver, timeout=10).until(
+        EC.presence_of_element_located((By.TAG_NAME, "html"))
     )
-    # server_thread.daemon = True
-    server_thread.start()
-    print("Started server, waiting 2 seconds...")
-    # Wait until the server is up and running by checking the URL
-    # WebDriverWait(webdriver.Chrome(), timeout=2).until(
-    #     EC.presence_of_element_located((By.TAG_NAME, "html"))
-    # )
-    # Wait for a short time to ensure the server is up
-    time.sleep(2)
-    print("Server is up and running")
-    
-    return server_thread
+    driver.quit()
+    return app_thread
 
 
-# @pytest.fixture
-def selenium_driver():
-    """Context manager for running tests with server and browser.
-    
-    Args:
-        script_path: Path to the Flask application script
-        
-    Yields:
-        Selenium WebDriver instance connected to the running app
-        
-    Usage:
-        with app_test_context("path/to/app.py") as driver:
-            # Test with the browser
-    """
-    driver = None
-    try:
-        # server_thread = start_server(script_path)
-        driver = webdriver.Chrome()
-        driver.get("http://127.0.0.1:5000")
-        yield driver
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        raise e
-    finally:
-        if driver:
-            driver.quit()
-        # Server stops automatically as it's a daemon thread
-
-
-def wait_for_graph_render(driver, graph_id="#graph-test", timeout=10):
+def wait_for_graph_render(driver, graph_id, timeout=10):
     """Wait for a Plotly graph to render and return the SVG element.
-    
+
     Args:
         driver: Selenium WebDriver instance
-        graph_id: ID of the graph component (with or without # prefix)
+        graph_id: ID of the graph component to wait for
         timeout: Maximum time to wait in seconds
-        
+
     Returns:
-        The SVG element if graph rendered within timeout
-        
-    Raises:
-        TimeoutException if graph does not render within timeout
+        True if graph rendered within timeout, False otherwise
     """
-    # Ensure graph_id starts with #
-    if not graph_id.startswith('#'):
-        graph_id = f"#{graph_id}"
-        
-    wait = WebDriverWait(driver, timeout)
-    return wait.until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, f"{graph_id} .main-svg"))
-    )
+    try:
+        WebDriverWait(driver, timeout).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, f"#{graph_id} .main-svg"))
+        )
+        return True
+    except TimeoutException:
+        return False
 
 
 def setup_fetch_interceptor(driver, url_path='/handle-change'):
@@ -189,7 +137,7 @@ def check_component_exists(driver, component_id):
     try:
         driver.find_element(By.ID, component_id)
         return True
-    except:
+    except NoSuchElementException:
         return False
 
 
@@ -205,12 +153,8 @@ def get_graph_data(driver, graph_id):
     """
     return driver.execute_script(f"""
         const graphDiv = document.getElementById('{graph_id}');
-        if (graphDiv && graphDiv._fullData) {{
-            return {{
-                traces: graphDiv._fullData.length,
-                title: graphDiv.layout.title ? graphDiv.layout.title.text : '',
-                hasData: graphDiv._fullData.some(trace => trace.x && trace.x.length > 0)
-            }};
+        if (graphDiv && graphDiv.data) {{
+            return graphDiv.data;
         }}
         return null;
     """)

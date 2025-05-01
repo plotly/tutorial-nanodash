@@ -69,7 +69,7 @@ class NanoDash:
                 #     and the value is the output value returned from the callback
 
                 ## EXERCISE 5 START
-                if trigger_id in callback["input_ids"] or not trigger_id:
+                if trigger_id in callback["input_ids"]:
                     callback_function = callback["function"]
                     input_values = [
                         state[input_id] for input_id in callback["input_ids"]

@@ -31,7 +31,7 @@ function getState() {
 }
 
 function updateValues(newState) {
-    console.log('updateValues input:', newState);
+    console.log('Input to updateValues:', newState);
     // Some helpful pseudocode:
     // for each key in newState:
     //   if the value is a boolean:
@@ -75,7 +75,7 @@ function sendState(id) {
         trigger_id: id,
         state: state
     };
-    console.log('Payload to send:', payload);
+    console.log('Payload to send to server:', payload);
     
     fetch('/handle-change', {
         method: 'POST',
@@ -83,7 +83,7 @@ function sendState(id) {
         body: JSON.stringify(payload)
     })
     .then(response => {
-        console.log('Response:', response);
+        console.log('Response from server:', response);
         return response.json()
     })
     .then(parseResponse)

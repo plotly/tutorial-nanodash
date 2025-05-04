@@ -1,5 +1,3 @@
-import pandas as pd
-
 try:
     from nanodash import NanoDash
     from nanodash.components import Dropdown, Header, Text, Page, TextInput
@@ -7,73 +5,55 @@ except ModuleNotFoundError:
     from exercise2.nanodash import NanoDash
     from exercise2.nanodash.components import Dropdown, Header, Text, Page, TextInput
 
-
-# Read data
-data = pd.read_csv("data/pgh_community_centers.csv")
-data["date"] = pd.to_datetime(data["date"])
-
 # Create a new Flask web server
-app = NanoDash(title="Sample NanoDash App")
+app = NanoDash(title="Exercise 2 test app")
 
-
-
-###################
 # Create page layout
-###################
-header = Header(text="Pittsburgh Community Center Attendance")
-citation = Text(
-    text="Data source: Western Pennsylvania Regional Data Center (data.wprdc.org)"
+header = Header(text="Exercise 2: Dropdown and TextInput components")
+description1 = Text(
+    text="This app tests whether the Dropdown and TextInput components are implemented correctly. "
 )
-dropdown_label = Text(text="Filter data:")
-year_dropdown = Dropdown(
-    id="year-dropdown",
-    value="2025",
-    options=sorted([str(y) for y in data["date"].dt.year.unique()]),
+description2 = Text(
+    text="Below, you should see a dropdown menu containing a list of animals, and a text input field. "
 )
-month_dropdown = Dropdown(
-    id="month-dropdown",
-    value="April",
+
+# Create components
+animal_dropdown_label = Text(text="Choose an animal:")
+animal_dropdown = Dropdown(
+    id="animal-dropdown",
+    value="Porcupine",
     options=[
-        "All",
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
+        "Deer",
+        "Bear",
+        "Beaver",
+        "Porcupine",
+        "Squirrel",
+        "Raccoon",
+        "Fox",
     ],
 )
-center_name_dropdown = Dropdown(
-    id="center-name-dropdown",
-    value="All",
-    options = ["All"] + sorted(list(data["center_name"].unique())),
+
+animal_textinput_label = Text(text="Or, enter another animal here:")
+animal_textinput = TextInput(
+    id="animal-textinput",
+    value="Your favorite animal",
 )
-chart_title_input_label = Text(text="Customize chart title: ")
-chart_title_input = TextInput(
-    id="chart-title-input",
-    value="Pittsburgh Community Center Attendance",
-)
+
+# Create the page layout with all components
 page = Page(
     children=[
         header,
-        citation,
-        dropdown_label,
-        year_dropdown,
-        month_dropdown,
-        center_name_dropdown,
-        chart_title_input_label,
-        chart_title_input,
+        description1,
+        description2,
+        animal_dropdown_label,
+        animal_dropdown,
+        animal_textinput_label,
+        animal_textinput,
     ]
 )
+
 # Add layout to the app
 app.set_layout(page)
-
 
 # Run the app
 if __name__ == "__main__":

@@ -1,140 +1,80 @@
-import plotly.express as px
-import pandas as pd
-
 try:
     from nanodash import NanoDash
-    from nanodash.components import Dropdown, Header, Text, Page, Graph, TextInput
+    from nanodash.components import Dropdown, Header, Text, Page, TextInput
 except ModuleNotFoundError:
     from exercise4.nanodash import NanoDash
-    from exercise4.nanodash.components import Dropdown, Header, Text, Page, Graph, TextInput
-
-
-# Read data
-data = pd.read_csv("data/pgh_community_centers.csv")
-data["date"] = pd.to_datetime(data["date"])
+    from exercise4.nanodash.components import Dropdown, Header, Text, Page, TextInput
 
 # Create a new Flask web server
-app = NanoDash(title="Sample NanoDash App")
+app = NanoDash(title="Exercise 4 test app")
 
-
-def make_graph(year, month, center_name, custom_title=""):
-    # Show only data from selected year
-    data_filtered = data[data["date"].dt.year == int(year)]
-    # Show only data from selected month
-    if month != "All":
-        data_filtered = data_filtered[data_filtered["date"].dt.month_name() == month]
-    # Show only data from selected center
-    if center_name != "All":
-        data_filtered = data_filtered[data_filtered["center_name"] == center_name]
-    # Use custom title if provided, otherwise create title from inputs
-    title = custom_title or make_chart_title(year, month, center_name)
-    # Create the graph
-    fig = px.bar(
-        data_filtered,
-        x="date",
-        y="attendance_count",
-        color="center_name",
-        barmode="stack",
-    )
-    fig.update_layout(
-        title=title,
-        xaxis_title="Date",
-        yaxis_title="Attendance count",
-        showlegend=False,
-    )
-    return fig
-
-def make_chart_title(year, month, center_name):
-    center_name = center_name + " (Pittsburgh)" if center_name != "All" else "Pittsburgh community centers"
-    title = f"Daily attendance at {center_name}, "
-    if month != "All":
-        title += month + " "
-    title += year
-    return title
-
-
-###################
 # Create page layout
-###################
-header = Header(text="Pittsburgh Community Center Attendance")
-graph = Graph(
-    fig=make_graph(year="2025", month="All", center_name="All"),
-    id="attendance-graph",
+header = Header(text="Exercise 4: Client to server communication")
+description1 = Text(
+    text="This app tests whether the client can capture state and send it to the server."
 )
-citation = Text(
-    text="Data source: Western Pennsylvania Regional Data Center (data.wprdc.org)"
+description2 = Text(
+    text="Below, you'll find dropdowns to select a playing card and a text input for your name. When you change the values, a request should be sent to the server with the new state. You can't see the request on the page, but you can see it in the 'Network' tab in your browser's developer tools."
 )
-dropdown_label = Text(text="Filter data:")
-year_dropdown = Dropdown(
-    id="year-dropdown",
-    value="2025",
-    options=sorted([str(y) for y in data["date"].dt.year.unique()]),
-)
-month_dropdown = Dropdown(
-    id="month-dropdown",
-    value="April",
+
+# Create components with new IDs
+suit_dropdown_label = Text(text="Select a card suit:")
+suit_dropdown = Dropdown(
+    id="card-suit",
+    value="Hearts",
     options=[
-        "All",
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
+        "Hearts",
+        "Diamonds",
+        "Clubs",
+        "Spades",
     ],
 )
-center_name_dropdown = Dropdown(
-    id="center-name-dropdown",
-    value="All",
-    options = ["All"] + sorted(list(data["center_name"].unique())),
+
+rank_dropdown_label = Text(text="Select a card rank:")
+rank_dropdown = Dropdown(
+    id="card-rank",
+    value="Ace",
+    options=[
+        "Ace",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "Jack",
+        "Queen",
+        "King",
+    ],
 )
-chart_title_input_label = Text(text="Customize chart title: ")
-chart_title_input = TextInput(
-    id="chart-title-input",
-    value="Pittsburgh Community Center Attendance",
+
+player_label = Text(text="Enter your name:")
+player_input = TextInput(
+    id="player-name",
+    value="",
 )
+
+# Create the page layout with all components
 page = Page(
     children=[
         header,
-        citation,
-        dropdown_label,
-        year_dropdown,
-        month_dropdown,
-        center_name_dropdown,
-        chart_title_input_label,
-        chart_title_input,
-        graph,
+        description1,
+        description2,
+        suit_dropdown_label,
+        suit_dropdown,
+        rank_dropdown_label,
+        rank_dropdown,
+        player_label,
+        player_input,
     ]
 )
+
 # Add layout to the app
 app.set_layout(page)
 
-
-###################
-# Add callbacks
-###################
-def update_graph(inputs):
-    # Unpack inputs
-    year = inputs[0]
-    month = inputs[1]
-    center_name = inputs[2]
-    custom_title = inputs[3]
-    fig = make_graph(year=year, month=month, center_name=center_name, custom_title=custom_title)
-    return [fig]
-
-
-app.add_callback(
-    input_ids=["year-dropdown", "month-dropdown", "center-name-dropdown", "chart-title-input"],
-    output_ids=["attendance-graph"],
-    function=update_graph,
-)
-
+# Run the app
 if __name__ == "__main__":
-    # Run the app
     app.run()

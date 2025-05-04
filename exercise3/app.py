@@ -3,119 +3,75 @@ import pandas as pd
 
 try:
     from nanodash import NanoDash
-    from nanodash.components import Dropdown, Header, Text, Page, Graph, TextInput
+    from nanodash.components import Dropdown, Header, Text, Page, Graph
 except ModuleNotFoundError:
     from exercise3.nanodash import NanoDash
-    from exercise3.nanodash.components import Dropdown, Header, Text, Page, Graph, TextInput
-
-
-# Read data
-data = pd.read_csv("data/pgh_community_centers.csv")
-data["date"] = pd.to_datetime(data["date"])
+    from exercise3.nanodash.components import Dropdown, Header, Text, Page, Graph
 
 # Create a new Flask web server
-app = NanoDash(title="Sample NanoDash App")
+app = NanoDash(title="Exercise 3 test app")
+
+# Create sample data for planets
+planets_data = pd.DataFrame(
+    {
+        "planet": [
+            "Mercury",
+            "Venus",
+            "Earth",
+            "Mars",
+            "Jupiter",
+            "Saturn",
+            "Uranus",
+            "Neptune",
+        ],
+        "diameter_km": [4879, 12104, 12756, 6792, 142984, 120536, 51118, 49528],
+    }
+)
 
 
-def make_graph(year, month, center_name, custom_title=""):
-    # Show only data from selected year
-    data_filtered = data[data["date"].dt.year == int(year)]
-    # Show only data from selected month
-    if month != "All":
-        data_filtered = data_filtered[data_filtered["date"].dt.month_name() == month]
-    # Show only data from selected center
-    if center_name != "All":
-        data_filtered = data_filtered[data_filtered["center_name"] == center_name]
-    # Use custom title if provided, otherwise create title from inputs
-    title = custom_title or make_chart_title(year, month, center_name)
-    # Create the graph
+# Create a simple bar chart
+def create_planets_chart():
     fig = px.bar(
-        data_filtered,
-        x="date",
-        y="attendance_count",
-        color="center_name",
-        barmode="stack",
+        planets_data,
+        x="planet",
+        y="diameter_km",
+        color="planet",
+        title="Diameter of planets in our solar system",
     )
     fig.update_layout(
-        title=title,
-        xaxis_title="Date",
-        yaxis_title="Attendance count",
-        showlegend=False,
+        xaxis_title="Planet", yaxis_title="Diameter (km)", showlegend=False
     )
     return fig
 
-def make_chart_title(year, month, center_name):
-    center_name = center_name + " (Pittsburgh)" if center_name != "All" else "Pittsburgh community centers"
-    title = f"Daily attendance at {center_name}, "
-    if month != "All":
-        title += month + " "
-    title += year
-    return title
 
+# Create page elements
+header = Header(text="Exercise 3: Graph component")
+description = Text(
+    text="This app tests whether the Graph component is implemented correctly."
+)
+explanation = Text(
+    text="Below, you should see a bar chart showing the diameters of planets in our solar system."
+)
 
-###################
-# Create page layout
-###################
-header = Header(text="Pittsburgh Community Center Attendance")
-graph = Graph(
-    fig=make_graph(year="2025", month="All", center_name="All"),
-    id="attendance-graph",
-)
-citation = Text(
-    text="Data source: Western Pennsylvania Regional Data Center (data.wprdc.org)"
-)
-dropdown_label = Text(text="Filter data:")
-year_dropdown = Dropdown(
-    id="year-dropdown",
-    value="2025",
-    options=sorted([str(y) for y in data["date"].dt.year.unique()]),
-)
-month_dropdown = Dropdown(
-    id="month-dropdown",
-    value="April",
-    options=[
-        "All",
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-    ],
-)
-center_name_dropdown = Dropdown(
-    id="center-name-dropdown",
-    value="All",
-    options = ["All"] + sorted(list(data["center_name"].unique())),
-)
-chart_title_input_label = Text(text="Customize chart title: ")
-chart_title_input = TextInput(
-    id="chart-title-input",
-    value="Pittsburgh Community Center Attendance",
-)
+# Create the graph
+planet_graph = Graph(id="planet-graph", fig=create_planets_chart())
+
+citation = Text(text="Data source: https://nssdc.gsfc.nasa.gov/planetary/factsheet/")
+
+# Create the page layout with all components
 page = Page(
     children=[
         header,
+        description,
+        explanation,
+        planet_graph,
         citation,
-        dropdown_label,
-        year_dropdown,
-        month_dropdown,
-        center_name_dropdown,
-        chart_title_input_label,
-        chart_title_input,
-        graph,
     ]
 )
+
 # Add layout to the app
 app.set_layout(page)
 
-
+# Run the app
 if __name__ == "__main__":
-    # Run the app
     app.run()

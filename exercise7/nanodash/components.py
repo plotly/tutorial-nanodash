@@ -113,8 +113,13 @@ class Graph(Component):
         self.height = height
 
     def html(self):
-        ## For an example of how to embed a Plotly graph in HTML, see:
-        ## https://codepen.io/marthacryan/pen/yyyyOoB
+        # For an example of how to embed a Plotly graph in HTML, see:
+        # https://codepen.io/marthacryan/pen/yyyyOoB
+        # 
+        # You will also need to use the JSON string representation of the Plotly figure object.
+        # This can be obtained using the to_json() method of the Figure class:
+        #
+        #     fig_as_json_string = fig.to_json()
 
         ## EXERCISE 3 START
         return f"""

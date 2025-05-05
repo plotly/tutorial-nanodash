@@ -57,7 +57,36 @@ class NanoDash:
                 "component-id-2": "updated-component-value-2",
                 ...
             }
+
+            ====================
+            Callback definitions
+            ====================
+            A callback is defined by 3 pieces of information:
+            1. The IDs of the input components that trigger the callback
+                when their value changes. These are given as a list of
+                strings. The values of these components will be passed
+                as a list to the callback function.
+            2. The IDs of the output components that should be updated
+                when the callback is triggered. These are given as a list of
+                strings. The updated values of these components will be returned
+                as a list by the callback function.
+            3. The function that should be called when the callback is
+                triggered. This function should take a list of input values
+                as its argument (which aligns with the list of input IDs) and
+                return a list of output values (which aligns with the list
+                of output IDs).
+
+            The app's callbacks are stored in the following format:
+                self.callbacks = [
+                    {
+                        "input_ids": ["id-1", "id-2", ...],
+                        "output_ids": ["id-3", "id-4", ...],
+                        "function": <function-ref>,
+                    },
+                    ...
+                ]
             """
+
             # Construct the response
             response = {}
 
@@ -66,12 +95,12 @@ class NanoDash:
             trigger_id = flask.request.json["trigger_id"]
 
             for callback in self.callbacks:
-                # Helpful pseudocode:
-                # For each callback: Check if the trigger id is in the input ids for that callback
+                # For each callback: Check if any of the callback's input_ids
+                # matches the `trigger_id`` from the response
                 # If yes:
-                #  1. Get the values of the inputs to the callback
-                #  2. Execute the callback function by passing the inputs, and get the results
-                #  3. Add the results to the response dict as key: value pairs, where the key is the output ID
+                #  1. Retrieve the values of the callback inputs from the response's `state`
+                #  2. Execute the callback function by passing the input values as a list, and get the output values
+                #  3. Add the output values to the response dict as key: value pairs, where the key is the output ID
                 #     and the value is the output value returned from the callback
 
                 ## EXERCISE 5 START
@@ -145,39 +174,12 @@ class NanoDash:
         """
         Adds a callback to the app.
 
-        A callback is defined by 3 pieces of information:
-
-            1. The IDs of the input components that trigger the callback
-               when their value changes. These are given as a list of
-               strings. The values of these components will be passed
-               as a list to the callback function.
-            2. The IDs of the output components that should be updated
-               when the callback is triggered. These are given as a list of
-               strings. The values of these components will be set to the
-               list of values returned by the callback function.
-            3. The function that should be called when the callback is
-               triggered. This function should take a list of input values
-               as its argument (which aligns with the list of input IDs) and
-               return a list of output values (which aligns with the list
-               of output IDs).
-
         The add_callback() method doesn't handle the actual callback logic
         of figuring out which callbacks to trigger and when. It simply
         stores the callback information in the app's callbacks list. The
         actual logic for executing the callbacks is handled in the
         handle_change() method, which is called when a request is received
         from the browser.
-
-        The app's callbacks are stored in the following format:
-        self.callbacks = [
-            {
-                "input_ids": ["id-1", "id-2", ...],
-                "output_ids": ["id-3", "id-4", ...],
-                "function": function_var
-            },
-            ...
-        ]
-
         """
         self.callbacks.append(
             {"input_ids": input_ids, "output_ids": output_ids, "function": function}

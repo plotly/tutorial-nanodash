@@ -16,7 +16,14 @@ function getInputElement(id) {
 
 function initializeInputHandlers() {
     getInputElements().forEach(element => {
-        element.addEventListener('input', () => sendState(element.id));
+        // Use 'input' event for text inputs and 'change' for select elements
+        // (Selenium seems to not trigger 'input' events for select elements for some reason)
+        if (element.tagName === 'SELECT') {
+            element.addEventListener('change', () => sendState(element.id));
+        }
+        else {
+            element.addEventListener('input', () => sendState(element.id));
+        }
     });
 }
 

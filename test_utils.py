@@ -1,6 +1,7 @@
 """
 This module provides a set of utilities for testing NanoDash applications
 """
+
 import threading
 import time
 
@@ -9,17 +10,18 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 
 @pytest.fixture
 def selenium_webdriver():
     """
-    Pytest fixture for launching and quitting a Selenium WebDriver instance. 
-    
+    Pytest fixture for launching and quitting a Selenium WebDriver instance.
+
     Yields:
         Selenium WebDriver instance connected to the running app
-        
+
     Usage:
         text_input = selenium_webdriver.find_element(By.ID, "element-id")
     """
@@ -34,13 +36,13 @@ def selenium_webdriver():
             driver.quit()
 
 
-def create_webdriver(headless: bool=False):
+def create_webdriver(headless: bool = False):
     """
     Returns a new Selenium WebDriver instance pointed at 127.0.0.1:5000.
-    
+
     Args:
         headless: If True, run the browser in headless mode (no GUI).
-        
+
     Returns:
         Selenium WebDriver instance
     """
@@ -60,7 +62,7 @@ def start_app(app_object):
 
     def run_app():
         app.run(threaded=True, use_reloader=False, port=5000)
-        
+
     app_thread = threading.Thread(
         target=run_app,
         daemon=True,
@@ -96,9 +98,9 @@ def wait_for_graph_render(driver, graph_id, timeout=10):
         return False
 
 
-def setup_fetch_interceptor(driver, url_path='/handle-change'):
+def setup_fetch_interceptor(driver, url_path="/handle-change"):
     """Setup JavaScript to intercept fetch requests and store payloads/responses.
-    
+
     Args:
         driver: Selenium WebDriver instance
         url_path: URL path to intercept (default: '/handle-change')
@@ -126,11 +128,11 @@ def setup_fetch_interceptor(driver, url_path='/handle-change'):
 
 def check_component_exists(driver, component_id):
     """Check if a component exists in the DOM.
-    
+
     Args:
         driver: Selenium WebDriver instance
         component_id: ID of the component to check
-        
+
     Returns:
         True if the component exists, False otherwise
     """
@@ -143,11 +145,11 @@ def check_component_exists(driver, component_id):
 
 def get_graph_data(driver, graph_id):
     """Get the data from a Plotly graph.
-    
+
     Args:
         driver: Selenium WebDriver instance
         graph_id: ID of the graph component
-        
+
     Returns:
         Dictionary with graph data or None if not found
     """
@@ -162,50 +164,47 @@ def get_graph_data(driver, graph_id):
 
 def set_component_value(driver, component_id, value):
     """Set the value of a component.
-    
+
     Args:
         driver: Selenium WebDriver instance
         component_id: ID of the component
         value: Value to set
-        
+
     Returns:
         True if successful, False otherwise
     """
     try:
         element = driver.find_element(By.ID, component_id)
         element_type = element.tag_name.lower()
-        
+
         if element_type == "input":
             input_type = element.get_attribute("type")
             if input_type == "text":
                 element.clear()
                 element.send_keys(value)
         elif element_type == "select":
-            options = element.find_elements(By.TAG_NAME, "option")
-            for option in options:
-                if option.text == value or option.get_attribute("value") == value:
-                    option.click()
-                    break
-        
+            select = Select(element)
+            select.select_by_value(value)
         return True
-    except:
+    except Exception as e:
+        print("Exception while setting component value: ", e)
         return False
 
 
 def get_component_value(driver, component_id):
     """Get the value of a component.
-    
+
     Args:
         driver: Selenium WebDriver instance
         component_id: ID of the component
-        
+
     Returns:
         Value of the component or None if component doesn't exist
     """
     try:
         element = driver.find_element(By.ID, component_id)
         element_type = element.tag_name.lower()
-        
+
         if element_type == "input":
             return element.get_attribute("value")
         elif element_type == "select":
@@ -213,7 +212,7 @@ def get_component_value(driver, component_id):
         elif element_type == "div":
             # For components that might store their value in innerHTML
             return element.text
-            
+
         return None
     except:
         return None
@@ -221,11 +220,11 @@ def get_component_value(driver, component_id):
 
 def wait_for_callback_completion(driver, timeout=5):
     """Wait for all pending callbacks to complete.
-    
+
     Args:
         driver: Selenium WebDriver instance
         timeout: Maximum time to wait in seconds
-        
+
     Returns:
         True if callbacks completed within timeout, False otherwise
     """
@@ -242,3 +241,20 @@ def wait_for_callback_completion(driver, timeout=5):
         return False
     except:
         return False
+
+
+def verify_request_contents(request_contents, expected_trigger_id, expected_state):
+    """Verify that the request contains the expected trigger ID and state."""
+    assert "trigger_id" in request_contents, "Request should contain `trigger_id` key"
+    assert "state" in request_contents, "Request should contain `state` key"
+    state = request_contents["state"]
+    assert request_contents["trigger_id"] == expected_trigger_id, (
+        f"trigger_id should be `{expected_trigger_id}`"
+    )
+    for component_id in expected_state:
+        assert component_id in state, (
+            f"State should include component with ID `{component_id}`"
+        )
+        assert state[component_id] == expected_state[component_id], (
+            f"State for `{component_id}` should be `{expected_state[component_id]}`"
+        )

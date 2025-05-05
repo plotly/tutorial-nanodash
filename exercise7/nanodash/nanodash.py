@@ -1,3 +1,9 @@
+"""
+This file contains the definition for the NanoDash class itself,
+including logic for running the Flask server, returning the HTML layout
+of the app, and handling callbacks.
+"""
+
 from typing import List
 
 import flask

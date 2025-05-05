@@ -1,4 +1,8 @@
-import json
+"""
+This file contains class definitions for individual components
+that can be used to build a dashboard in NanoDash.
+"""
+
 import plotly.graph_objects as go
 
 

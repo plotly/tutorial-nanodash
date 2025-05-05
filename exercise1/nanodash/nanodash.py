@@ -1,4 +1,11 @@
+"""
+This file contains the definition for the NanoDash class itself,
+including logic for running the Flask server, returning the HTML layout
+of the app, and handling callbacks.
+"""
+
 import flask
+
 
 class NanoDash:
     def __init__(self, title: str = "NanoDash App") -> None:
@@ -39,11 +46,13 @@ class NanoDash:
         '''
         """
         ## EXERCISE 1 START
-        raise NotImplementedError()
+        raise NotImplementedError(
+            "The full_html() method of the NanoDash class has not been implemented yet."
+        )
         ## EXERCISE 1 END
 
-    def run(self) -> None:
+    def run(self, debug=True, **kwargs) -> None:
         """
         Run the NanoDash application by starting the Flask server.
         """
-        self.app.run()
+        self.app.run(debug=debug, **kwargs)

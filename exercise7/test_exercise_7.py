@@ -1,26 +1,28 @@
 """
 Exercise 7: Testing your own app
+
+This is a test file for the app created in Exercise 7. Since the app may
+contain whatever content you like, the test provided initially is not very
+specific: it only checks if the app contains a header element. You may use
+the provided test as a model to add more specific tests for your app.
 """
-from selenium import webdriver
+
+import pytest
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
-from test_utils import start_server
+from test_utils import start_app, selenium_webdriver
 
 
-def test_header_exists():
+# Set up the tests by launching the test app in another thread
+# Will run once at the start of the test file
+@pytest.fixture(scope="module", autouse=True)
+def test_header_exists(selenium_webdriver):
     """Test if the app contains a header."""
-    start_server("exercise7/app.py")
+    start_app("exercise7/app.py")
+
+    # Check if the header element exists
     try:
-        driver = webdriver.Chrome()
-        driver.get("http://127.0.0.1:5000")
-        
-        # Find element with the tag <h1>
-        try:
-            header = driver.find_element(By.TAG_NAME, "h1")
-        except NoSuchElementException:
-            header = None
-   
-        assert header is not None, "Page should contain a Header element"
-            
-    finally:
-        driver.quit()
+        header = selenium_webdriver.find_element(By.TAG_NAME, "h1")
+    except NoSuchElementException:
+        header = None
+    assert header is not None, "Page should contain a Header element"

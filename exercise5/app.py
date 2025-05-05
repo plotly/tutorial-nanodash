@@ -20,7 +20,6 @@ description3 = Text(
     text="You won't see the message field change on the page, because we haven't written the code to update the output components yet, but you can see the server's response in the 'Network' tab in your browser's developer tools."
 )
 
-# Create first set of components with IDs ending in "1"
 input_label_1 = Text(text="Enter a name, and select a color and animal:")
 name_input_1 = TextInput(
     id="name-textinput-1",
@@ -69,7 +68,6 @@ textfield_output_1 = TextInput(
 
 divider_1 = Text(text="-------------")
 
-# Create second set of components with IDs ending in "2"
 input_label_2 = Text(text="Enter a name, and select a color and animal:")
 name_input_2 = TextInput(
     id="name-textinput-2",

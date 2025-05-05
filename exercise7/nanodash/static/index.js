@@ -33,26 +33,25 @@ function getState() {
 function updateValues(newState) {
     console.log('Input to updateValues:', newState);
     // Some helpful pseudocode:
-    // for each key in newState:
-    //   if the value is a boolean:
-    //     set the value of the input element with that id to the value
-    //   else if the value is a plotly figure:
-    //     update the plotly figure with that id to the value
-    //   else:
-    //     set the value of the input element with that id to the value
+    // for each id in newState:
+    //   * get the value of newState at that id
+    //   * if the value is a plotly figure:
+    //       create a new plotly figure from the value, using the id
+    //     else:
+    //       set the value of the input element with that id to the value
 
     // Some helpful javascript syntax:
-    // * To create a variable:
-    //     * const variable = value;
-    // * To create a for loop:
-    //     * for (const key in object) { ... }
-    // * To access a value in an object:
-    //     * const value = object[key];
+    //   * To create a variable:
+    //       const variable = value;
+    //   * To create a for loop:
+    //       for (const key in object) { ... }
+    //   * To access a value in an object:
+    //       const value = object[key];
 
     // HELPER FUNCTIONS:
-    // * isPlotlyFigure(value) - returns true if the value is a plotly figure
-    // * Plotly.newPlot(id, value) - updates the plotly figure with the given id
-    // * getInputElement(id) - returns the input element with the given id
+    //   * isPlotlyFigure(value) - returns true if the value is a plotly figure
+    //   * Plotly.newPlot(id, value) - updates the plotly figure with the given id
+    //   * getInputElement(id) - returns the input element with the given id
     
     // EXERCISE 6 START
     for (const id in newState) {

@@ -100,7 +100,10 @@ class NanoDash:
                 # If yes:
                 #  1. Retrieve the values of the callback inputs from the response's `state`
                 #  2. Execute the callback function by passing the input values as a list, and get the output values
-                #  3. Add the output values to the response dict as key: value pairs, where the key is the output ID
+                #  3. Convert the output values to JSON-serializable format. You can use the helper function
+                #     `make_json_serializable()`, which accepts a list and returns a list, to do this.
+                #      This function will convert any Plotly figures in the output to JSON format.
+                #  4. Add the output values to the response dict as key: value pairs, where the key is the output ID
                 #     and the value is the output value returned from the callback
 
                 ## EXERCISE 5 START

@@ -47,7 +47,7 @@ class NanoDash:
         """
         ## EXERCISE 1 START
         raise NotImplementedError(
-            "The full_html() method of the NanoDash class has not been implemented yet."
+            "The full_html() method of the NanoDash class is not implemented yet!"
         )
         ## EXERCISE 1 END
 

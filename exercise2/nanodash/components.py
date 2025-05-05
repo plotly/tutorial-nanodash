@@ -58,7 +58,7 @@ class TextInput(Component):
     def html(self) -> str:
         ## EXERCISE 2 START
         raise NotImplementedError(
-            "The html() method for the TextInput class is not implemented yet!"
+            "The html() method of the TextInput class is not implemented yet!"
         )
         ## EXERCISE 2 END
 
@@ -72,6 +72,6 @@ class Dropdown(Component):
     def html(self) -> str:
         ## EXERCISE 2 START
         raise NotImplementedError(
-            "The html() method for the Dropdown class is not implemented yet!"
+            "The html() method of the Dropdown class is not implemented yet!"
         )
         ## EXERCISE 2 END

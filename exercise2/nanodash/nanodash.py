@@ -13,7 +13,6 @@ class NanoDash:
     def __init__(self, title: str = "NanoDash App") -> None:
         self.app = flask.Flask(__name__)
         self.title = title
-        self.callbacks = []
 
         # This route is used to serve the main HTML page
         @self.app.route("/")

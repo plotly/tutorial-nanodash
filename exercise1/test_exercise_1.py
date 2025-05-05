@@ -20,7 +20,7 @@ def test_page_structure():
 
     # Check if the server is running and responding to requests
     response = requests.get("http://127.0.0.1:5000")
-    assert response.status_code == 200
+    assert response.status_code == 200, "Request to the server failed"
 
     # Check if the response contains HTML content
     assert "<html>" in response.text, "Response does not contain HTML"

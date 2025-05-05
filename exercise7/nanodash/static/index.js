@@ -31,6 +31,7 @@ function getState() {
 }
 
 function updateValues(newState) {
+    console.log('Input to updateValues:', newState);
     // Some helpful pseudocode:
     // for each key in newState:
     //   if the value is a boolean:
@@ -52,7 +53,7 @@ function updateValues(newState) {
     // * isPlotlyFigure(value) - returns true if the value is a plotly figure
     // * Plotly.newPlot(id, value) - updates the plotly figure with the given id
     // * getInputElement(id) - returns the input element with the given id
-
+    
     // EXERCISE 6 START
     for (const id in newState) {
         let value = newState[id];
@@ -69,17 +70,22 @@ function updateValues(newState) {
 
 function sendState(id) {
     const state = getState();
+    console.log('Output of getState:', state);
     const payload = {
         trigger_id: id,
         state: state
     };
+    console.log('Payload to send to server:', payload);
     
     fetch('/handle-change', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
     })
-    .then(response => response.json())
+    .then(response => {
+        console.log('Response from server:', response);
+        return response.json()
+    })
     .then(parseResponse)
     .then(updateValues)
     .catch(error => console.error('Error:', error));

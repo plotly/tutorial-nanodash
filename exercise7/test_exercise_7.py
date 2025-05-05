@@ -10,15 +10,22 @@ the provided test as a model to add more specific tests for your app.
 import pytest
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+
+from exercise7.app import app
 from test_utils import start_app, selenium_webdriver
 
 
 # Set up the tests by launching the test app in another thread
 # Will run once at the start of the test file
 @pytest.fixture(scope="module", autouse=True)
+def setup_module():
+    """Set up the test module by starting the app."""
+    start_app(app)
+    return
+
+
 def test_header_exists(selenium_webdriver):
     """Test if the app contains a header."""
-    start_app("exercise7/app.py")
 
     # Check if the header element exists
     try:

@@ -3,6 +3,7 @@
 *.pyc
 *~
 .#*
+*.DS_Store
 .jekyll-cache
 .pytest_cache
 .ruff_cache

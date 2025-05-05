@@ -5,8 +5,8 @@ try:
     from nanodash import NanoDash
     from nanodash.components import Dropdown, Header, Text, Page, Graph, TextInput
 except ModuleNotFoundError:
-    from exercise7.nanodash import NanoDash
-    from exercise7.nanodash.components import (
+    from exercise6.nanodash import NanoDash
+    from exercise6.nanodash.components import (
         Dropdown,
         Header,
         Text,
@@ -21,7 +21,7 @@ data = pd.read_csv("data/pgh_community_centers.csv")
 data["date"] = pd.to_datetime(data["date"])
 
 # Create a new Flask web server
-app = NanoDash(title="Exercise 5 test app")
+app = NanoDash(title="Exercise 6 test app")
 
 
 def make_graph(year, month, center_name, custom_title=""):

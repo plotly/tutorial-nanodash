@@ -6,6 +6,7 @@ import threading
 import time
 
 import pytest
+import requests
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -181,7 +182,9 @@ def set_component_value(driver, component_id, value):
             input_type = element.get_attribute("type")
             if input_type == "text":
                 element.clear()
-                element.send_keys(value)
+                for char in value:
+                    element.send_keys(char)
+                    time.sleep(0.05)
         elif element_type == "select":
             select = Select(element)
             select.select_by_value(value)
@@ -257,4 +260,36 @@ def verify_request_contents(request_contents, expected_trigger_id, expected_stat
         )
         assert state[component_id] == expected_state[component_id], (
             f"State for `{component_id}` should be `{expected_state[component_id]}`"
+        )
+
+
+def post_callback_request(payload):
+    response = requests.post(
+        "http://127.0.0.1:5000/handle-change",
+        json=payload,
+        headers={"Content-Type": "application/json"},
+    )
+    assert response.status_code == 200, "Callback request should return status code 200"
+    return response.json()
+
+
+def verify_response_contents(response_contents, expected_response_contents):
+    """Verify that the response contains the expected contents."""
+    assert response_contents, "Response should not be empty"
+    assert isinstance(response_contents, dict), "Response should be a dictionary"
+
+    # Check that all expected keys are in the response
+    for key in expected_response_contents:
+        assert key in response_contents, f"Key '{key}' should be in the response"
+
+    # Check that no unexpected keys are in the response
+    for key in response_contents:
+        assert key in expected_response_contents, (
+            f"Key '{key}' should not be in the response"
+        )
+
+    # Check that all keys have the expected values
+    for key, value in expected_response_contents.items():
+        assert value in str(response_contents[key]), (
+            f"Value '{value}' should be in the response for key '{key}'"
         )

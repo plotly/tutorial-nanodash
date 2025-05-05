@@ -1,107 +1,91 @@
 """
 Exercise 6: Testing UI updates from callback responses
 """
-from selenium import webdriver
+
+import time
+from datetime import datetime
+
+import pytest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import pytest
-import time
-from test_utils import start_server
+
+from exercise6.app import app
+from test_utils import (
+    start_app,
+    set_component_value,
+    get_component_value,
+    get_graph_data,
+    selenium_webdriver,
+)
 
 
-def test_text_updates():
+# Set up the tests by launching the test app in another thread
+# Will run once at the start of the test file
+@pytest.fixture(scope="module", autouse=True)
+def setup_module():
+    start_app(app)
+    return
+
+
+def test_text_updates(selenium_webdriver):
     """Test if text outputs are updated correctly."""
-    start_server("exercise6/app.py")
-    try:
-        driver = webdriver.Chrome()
-        driver.get("http://127.0.0.1:5000")
-        
-        # Find input and output elements
-        input_element = driver.find_element(By.ID, "input-test")
-        
-        # Send value to the input
-        test_value = "Updated text"
-        input_element.clear()
-        input_element.send_keys(test_value)
-        
-        # Wait for the callback to process and update the UI
-        time.sleep(1)
-        
-        # Check if the output element was updated
-        output_element = driver.find_element(By.ID, "output-test")
-        assert output_element.get_attribute("value") == test_value, "Output should be updated with input value"
-    finally:
-        driver.quit()
+
+    # Set values of the dropdowns and input
+    new_year = "2022"
+    new_month = "March"
+    new_center_name = "All"
+    new_chart_title = "Custom title"
+    set_component_value(selenium_webdriver, "year-dropdown", new_year)
+    set_component_value(selenium_webdriver, "month-dropdown", new_month)
+    set_component_value(selenium_webdriver, "center-name-dropdown", new_center_name)
+    set_component_value(selenium_webdriver, "chart-title-input", new_chart_title)
+
+    # Wait for the callback to process and update the UI
+    time.sleep(1)
+
+    # Check if the output element was updated
+    expected_message = (
+        f"{new_year}, {new_month}, {new_center_name}, '{new_chart_title}'"
+    )
+    assert (
+        get_component_value(selenium_webdriver, "output-message") == expected_message
+    ), "Output should be updated to match input values"
 
 
-def test_graph_updates():
+def test_graph_updates(selenium_webdriver):
     """Test if graph components are updated correctly."""
-    start_server("exercise6/app.py")
-    try:
-        driver = webdriver.Chrome()
-        driver.get("http://127.0.0.1:5000")
-        
-        # Wait for Plotly graph to be initialized
-        wait = WebDriverWait(driver, 10)
-        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "#graph-test .main-svg")))
-        
-        # Get initial title
-        initial_title = None
-        try:
-            title_element = driver.find_element(By.CSS_SELECTOR, "#graph-test .gtitle")
-            initial_title = title_element.text
-        except:
-            pass  # Title might not exist initially
-        
-        # Update the input that should trigger a graph update
-        input_element = driver.find_element(By.ID, "graph-input")
-        test_value = "New Graph Title"
-        input_element.clear()
-        for char in test_value:
-            input_element.send_keys(char)
-            time.sleep(0.1)
-        
-        # Wait for the graph to update
-        time.sleep(0.5)
-        
-        # Check if the graph title was updated
-        try:
-            title_element = driver.find_element(By.CSS_SELECTOR, "#graph-test .gtitle")
-            new_title = title_element.text
-            assert new_title == test_value, "Graph title should be updated to match input"
-            if initial_title:
-                assert new_title != initial_title, "Graph title should have changed"
-        except:
-            pytest.fail("Graph title should be updated and visible")
-    finally:
-        driver.quit()
 
+    # Wait for Plotly graph to be initialized
+    WebDriverWait(selenium_webdriver, 10).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, "#attendance-graph .main-svg"))
+    )
 
-def test_multiple_output_updates():
-    """Test if multiple outputs can be updated from a single input."""
-    start_server("exercise6/app.py")
-    try:
-        driver = webdriver.Chrome()
-        driver.get("http://127.0.0.1:5000")
-        
-        # Find the trigger input
-        multi_input = driver.find_element(By.ID, "multi-output-input")
-        test_value = "Multi Update"
-        multi_input.clear()
-        for char in test_value:
-            multi_input.send_keys(char)
-            time.sleep(0.1)
-        
-        # Wait for updates to propagate
-        time.sleep(1)
-        
-        # Check if all outputs were updated
-        output1 = driver.find_element(By.ID, "output-1")
-        output2 = driver.find_element(By.ID, "output-2")
-        
-        # Different verification based on component types, this assumes text fields
-        assert test_value in output1.get_attribute("value"), "First output should be updated"
-        assert test_value in output2.get_attribute("value"), "Second output should be updated"
-    finally:
-        driver.quit()
+    # Update some inputs that should trigger a graph update
+    new_year = "2022"
+    new_title = "Custom title"
+    set_component_value(selenium_webdriver, "year-dropdown", new_year)
+    set_component_value(selenium_webdriver, "chart-title-input", new_title)
+
+    # Wait for the graph to update
+    time.sleep(1)
+
+    # Check if the graph title was updated
+    title_element = selenium_webdriver.find_element(
+        By.CSS_SELECTOR, "#attendance-graph .gtitle"
+    )
+    updated_title_in_layout = title_element.text
+    assert updated_title_in_layout == new_title, (
+        "Graph title should be updated to match input"
+    )
+
+    # Check if the graph data was updated to contain only data from 2022
+    graph_data = get_graph_data(selenium_webdriver, "attendance-graph")
+    print("graph_data: \n", graph_data)
+    x_values = []
+    for trace in graph_data:
+        x_values.extend(trace["x"])
+    x_values_as_datetimes = [datetime.fromisoformat(x) for x in x_values]
+    assert all([x.year == int(new_year) for x in x_values_as_datetimes]), (
+        f"Graph data should only contain data from {new_year}"
+    )

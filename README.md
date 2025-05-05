@@ -1,4 +1,12 @@
-# NanoDash tutorial exercises
+# Welcome to the NanoDash tutorial!
+
+This tutorial will demonstrate how interactive web dashboard frameworks like Plotly Dash work, by building a simplified version of Dash itself from scratch using Python, the Flask framework, and a little bit of vanilla JavaScript. 
+
+## Setup
+
+If you haven't already, please complete the setup instructions outlined in [SETUP.md]((https://github.com/plotly/tutorial-nanodash/blob/main/SETUP.md)) before continuing.
+
+## Exercises
 
 The 7 exercises to be completed for this tutorial are located in the directories `exercise1/` through `exercise7/`.
 

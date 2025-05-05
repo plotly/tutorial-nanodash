@@ -1,16 +1,17 @@
 """
 Exercise 5: Testing server-to-client communication (Python to Frontend)
 """
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import Select
 
 import pytest
-import requests
-import time
 
 from exercise5.app import app
-from test_utils import start_app, selenium_webdriver, set_component_value
+from test_utils import (
+    start_app,
+    post_callback_request,
+    verify_response_contents,
+    selenium_webdriver,
+)
+
 
 # Set up the tests by launching the test app in another thread
 # Will run once at the start of the test file
@@ -19,32 +20,62 @@ def setup_module():
     start_app(app)
     return
 
-def test_callback_registration():
-    """Test if callbacks can be registered and processed."""
-    # Create a payload to simulate a component update
-    new_text = "Hello World!"
+
+def test_first_callback_set():
+    """Test the first set of components."""
+    # Create a payload to simulate a component update for the first set
+    name = "Danielle"
+    color = "Purple"
+    animal = "Turtle"
     payload = {
-        "trigger_id": "chart-title-input",
+        "trigger_id": "name-textinput-1",
         "state": {
-            "chart-title-input": new_text,
-            "year-dropdown": "2022",
-            "month-dropdown": "January",
-            "center-name-dropdown": "All",
+            "name-textinput-1": name,
+            "color-dropdown-1": color,
+            "animal-dropdown-1": animal,
         },
     }
-    
+
     # Send a POST request to the state endpoint
-    response = requests.post(
-        "http://127.0.0.1:5000/handle-change",
-        json=payload,
-        headers={"Content-Type": "application/json"}
-    )
-    
+    response = post_callback_request(payload)
+
     # Check if a callback was triggered and returned a response
-    assert response.status_code == 200
-    response_data = response.json()
-    assert response_data, "Callback should return a response"
-    
-    # Assuming a simple echo callback that returns the input value in an output component
-    assert "attendance-graph" in response_data, "Output component should be in the response"
-    assert new_text in str(response_data["attendance-graph"]), "Figure returned by callback should contain input text"
+    assert response, "Callback should return a response"
+
+    # Check that the response is correct
+    verify_response_contents(
+        response,
+        expected_response_contents={
+            "textfield-output-1": f"{name} likes {color.lower()} {animal.lower()}s!",
+        },
+    )
+
+
+def test_second_callback_set():
+    """Test the second set of components."""
+    # Create a payload to simulate a component update for the second set
+    name = "Asha"
+    color = "Orange"
+    animal = "Dolphin"
+    payload = {
+        "trigger_id": "name-textinput-2",
+        "state": {
+            "name-textinput-2": name,
+            "color-dropdown-2": color,
+            "animal-dropdown-2": animal,
+        },
+    }
+
+    # Send a POST request to the state endpoint
+    response = post_callback_request(payload)
+
+    # Check if a callback was triggered and returned a response
+    assert response, "Callback should return a response"
+
+    # Check that the response is correct
+    verify_response_contents(
+        response,
+        expected_response_contents={
+            "textfield-output-2": f"{name} likes {color.lower()} {animal.lower()}s!",
+        },
+    )

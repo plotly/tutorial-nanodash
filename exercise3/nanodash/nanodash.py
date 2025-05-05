@@ -1,7 +1,10 @@
-from typing import List
+"""
+This file contains the definition for the NanoDash class itself,
+including logic for running the Flask server, returning the HTML layout
+of the app, and handling callbacks.
+"""
 
 import flask
-import plotly.graph_objects as go
 
 from .components import Component
 
@@ -10,7 +13,6 @@ class NanoDash:
     def __init__(self, title: str = "NanoDash App") -> None:
         self.app = flask.Flask(__name__)
         self.title = title
-        self.callbacks = []
 
         # This route is used to serve the main HTML page
         @self.app.route("/")
@@ -53,7 +55,6 @@ class NanoDash:
         <html>
             <head>
                 <script src="https://cdn.plot.ly/plotly-3.0.1.min.js" charset="utf-8"></script>
-                <script src='static/index.js'></script>
                 <title>{self.title}</title>
             </head>
             <body>
@@ -63,20 +64,8 @@ class NanoDash:
         """
         ## EXERCISE 1 END
 
-    def run(self) -> None:
+    def run(self, debug=True, **kwargs) -> None:
         """
         Run the NanoDash application by starting the Flask server.
         """
-        self.app.run()
-
-
-def make_json_serializable(output_values: List) -> List:
-    """
-    Helper function which converts any Plotly figures in the output values to JSON format.
-    This is necessary because Plotly figures are Python objects, and they need to be converted
-    to strings in a very particular way so that they can be sent between the server and the browser.
-    """
-    for index, output_value in enumerate(output_values):
-        if isinstance(output_value, go.Figure):
-            output_values[index] = output_value.to_json()
-    return output_values
+        self.app.run(debug=debug, **kwargs)

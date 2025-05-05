@@ -15,19 +15,20 @@ Each exercise folder contains the following:
 - A partial copy of the NanoDash codebase (under `exerciseN/nanodash/`), containing one or more spots for you to "fill-in-the-blanks" by implementing part of the NanoDash logic
 
 - A sample app (`exerciseN/app.py`) which will run correctly once the exercise has been completed
+  - To run the app from the repository root: `python exerciseN/app.py`
 
 - A tests file (`test_exerciseN.py`) which will pass once the exercise has been completed.
   - To run the tests for exercise N from the repository root: `python -m pytest exerciseN/`
-  - To run the tests for exercise N from within the exercise directory: `python -m pytest`
 
-## Note on running Pytest
-We recommend running `python -m pytest` rather than just `pytest`, because it ensures using the python in your virtual environment rather than the system python. 
+## A note on running Pytest
+We recommend using the command `python -m pytest` rather than just `pytest`, because it ensures using the Python in your virtual environment rather than the system Python. 
 
 ## Exercise outline
 
 Each exercise focuses on implementing a specific part of the NanoDash framework.
 
 ### Exercise 1: Making a basic Flask server which serves a static HTML page
+---
 
 **Goal**: Set up a simple Flask server that serves one static HTML page.
 
@@ -41,6 +42,7 @@ Each exercise focuses on implementing a specific part of the NanoDash framework.
 `python -m pytest exercise1/`
 
 ### Exercise 2: Implementing input components
+---
 
 **Goal**: Implement basic input components as Python objects, to be used as building blocks for interactive dashboards.
 
@@ -55,7 +57,8 @@ Each exercise focuses on implementing a specific part of the NanoDash framework.
 **Command to run tests**
 `python -m pytest exercise2/`
 
-### Exercise 3: Implementing the Graph component 
+### Exercise 3: Implementing the Graph component
+---
 
 **Goal**: Implement the Graph component, which uses Plotly.js to display Plotly figures in the browser.
 
@@ -69,6 +72,7 @@ Each exercise focuses on implementing a specific part of the NanoDash framework.
 `python -m pytest exercise3/`
 
 ### Exercise 4: Gathering the page state when an input changes
+---
 
 **Goal**: Implement the Javascript logic to capture the state of all components on the page, and bundle it into a JSON request to send to the Flask server.
 
@@ -84,6 +88,7 @@ Don't worry — we've provided some useful helper functions inside the Javascrip
 `python -m pytest exercise4/`
 
 ### Exercise 5: Running callbacks
+---
 
 **Goal**: Implement the Python logic which receives the page state from the frontend, runs the necessary callbacks, and sends the results back to the frontend. Also implement the logic which allows a user to add a callback to their app.
 
@@ -98,6 +103,7 @@ Don't worry — we've provided some useful helper functions inside the Javascrip
 `python -m pytest exercise5/`
 
 ### Exercise 6: Updating the page with callback results
+---
 
 **Goal**: Implement the Javascript logic to update the page's UI components based on the callback results received from the server.
 
@@ -111,6 +117,7 @@ Don't worry — we've provided some useful helper functions inside the Javascrip
 `python -m pytest exercise6/`
 
 ### Exercise 7: Writing your own NanoDash application
+---
 
 **Goal**: Use the NanoDash framework to write your own interactive dashboard. You can modify the framework or add new components if you like.
 

@@ -1,82 +1,104 @@
 """
 Exercise 4: Testing client-to-server communication (Frontend to Python)
 """
-import time
-from selenium.webdriver.common.by import By
+
 import pytest
-import json
-import requests
+
+from exercise4.app import app
 from test_utils import (
-    start_server, app_test_context, setup_fetch_interceptor,
-    set_component_value, check_component_exists, wait_for_callback_completion
+    start_app,
+    setup_fetch_interceptor,
+    set_component_value,
+    check_component_exists,
+    get_component_value,
+    verify_request_contents,
+    selenium_webdriver,
 )
 
 
-def test_handle_change_endpoint_exists():
-    """Test if the handle-change endpoint exists and accepts POST requests."""
-    start_server("exercise4/app.py")
-    # Create a simple payload
-    payload = {
-        "trigger_id": "input-test",
-        "state": {"input-test": "test value"}
-    }
-    
-    # Send a POST request to the handle-change endpoint
-    response = requests.post(
-        "http://127.0.0.1:5000/handle-change",
-        json=payload,
-        headers={"Content-Type": "application/json"}
+# Set up the tests by launching the test app in another thread
+# Will run once at the start of the test file
+@pytest.fixture(scope="module", autouse=True)
+def setup_module():
+    start_app(app)
+    return
+
+
+# Set up the interceptor which captures the
+# requests sent by the client
+@pytest.fixture(autouse=True)
+def setup_selenium(selenium_webdriver):
+    """Set up the fetch interceptor to capture requests."""
+    setup_fetch_interceptor(selenium_webdriver)
+
+
+def test_state_capture_dropdown_trigger(selenium_webdriver):
+    """Test if component state changes are captured and sent to the server
+    when the Dropdown component is changed."""
+
+    # Make sure Dropdown component exists
+    assert check_component_exists(selenium_webdriver, "card-suit"), (
+        "Dropdown component should exist"
     )
-    
-    # Check if the endpoint exists and accepts the request
-    assert response.status_code != 404, "handle-change endpoint should exist"
-    assert response.status_code == 200, "handle-change endpoint should accept POST requests"
-    
-    # Check if the response is valid JSON
-    try:
-        response_data = response.json()
-        assert isinstance(response_data, dict), "Response should be a JSON object"
-    except:
-        pytest.fail("Response should be valid JSON")
+
+    # Change Dropdown value
+    new_value = "Diamonds"
+    assert set_component_value(selenium_webdriver, "card-suit", new_value), (
+        "Should be able to set dropdown value"
+    )
+
+    # Check that the new value is set correctly
+    assert get_component_value(selenium_webdriver, "card-suit") == new_value, (
+        "Dropdown value should be updated"
+    )
+
+    # Check that request is sent
+    request_contents = selenium_webdriver.execute_script("return window.lastPayload;")
+    assert request_contents, "Request should be sent on input change"
+
+    # Check that request contains the correct info in the correct format
+    verify_request_contents(
+        request_contents,
+        expected_trigger_id="card-suit",
+        expected_state={
+            "card-suit": new_value,
+            "card-rank": get_component_value(selenium_webdriver, "card-rank"),
+            "player-name": get_component_value(selenium_webdriver, "player-name"),
+        },
+    )
 
 
-def test_input_state_capture():
-    """Test if component state changes are captured and sent to the server."""
-    with app_test_context("exercise3/app.py") as driver:
-        # Mock the fetch API to intercept the requests
-        setup_fetch_interceptor(driver)
-        
-        # Check that components exist
-        assert check_component_exists(driver, "input-test"), "Input component should exist"
-        
-        # Set input value using our utility
-        test_text = "Hello, world!"
-        assert set_component_value(driver, "input-test", test_text), "Should be able to set input value"
-        
-        payload = driver.execute_script("return window.lastPayload;")
-        assert payload, "Request should be sent on input change"
-        assert payload["trigger_id"] == "input-test", "trigger_id element ID should be correct"
-        assert payload["state"]["input-test"] == test_text, "State should include the input value"
+def test_state_capture_textinput_trigger(selenium_webdriver):
+    """Test if component state changes are captured and sent to the server
+    when the TextInput component is changed."""
 
+    # Make sure TextInput component exists
+    assert check_component_exists(selenium_webdriver, "player-name"), (
+        "TextInput component should exist"
+    )
 
-def test_multi_component_state():
-    """Test if the state includes all component values."""
-    with app_test_context("exercise4/app.py") as driver:
-        # Mock the fetch API to intercept the requests
-        setup_fetch_interceptor(driver)
-        
-        # Set input value using our utility
-        assert set_component_value(driver, "input-test", "Text input value"), "Should be able to set input value"
-        
-        # Wait for callback to complete
-        assert wait_for_callback_completion(driver), "Callback should complete"
-        
-        # Check payload
-        payload = driver.execute_script("return window.lastPayload;")
-        assert payload, "Request should be sent on input change"
-        
-        # Verify that all components are included in the state (even if not the triggered one)
-        state = payload["state"]
-        components_to_check = ["input-test"]  # Adjust based on your exercise
-        for component_id in components_to_check:
-            assert component_id in state, f"State should include {component_id}"
+    # Change TextInput value
+    new_text = "Guido"
+    assert set_component_value(selenium_webdriver, "player-name", new_text), (
+        "Should be able to set input value"
+    )
+
+    # Check that the new value is set correctly
+    assert get_component_value(selenium_webdriver, "player-name") == new_text, (
+        "TextInput value should be updated"
+    )
+
+    # Check that request is sent
+    request_contents = selenium_webdriver.execute_script("return window.lastPayload;")
+    assert request_contents, "Request should be sent on input change"
+
+    # Check that request contains the correct info in the correct format
+    verify_request_contents(
+        request_contents,
+        expected_trigger_id="player-name",
+        expected_state={
+            "card-suit": get_component_value(selenium_webdriver, "card-suit"),
+            "card-rank": get_component_value(selenium_webdriver, "card-rank"),
+            "player-name": new_text,
+        },
+    )

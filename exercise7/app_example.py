@@ -1,21 +1,23 @@
-try:
-    from nanodash import NanoDash
-    from nanodash.components import Dropdown, Header, Text, Page, Graph
-except ModuleNotFoundError:
-    from exercise7.nanodash import NanoDash
-    from exercise7.nanodash.components import Dropdown, Header, Text, Page, Graph
 import plotly.express as px
 import pandas as pd
 
+try:
+    from nanodash import NanoDash
+    from nanodash.components import Dropdown, Header, Text, Page, Graph, TextInput
+except ModuleNotFoundError:
+    from exercise7.nanodash import NanoDash
+    from exercise7.nanodash.components import Dropdown, Header, Text, Page, Graph, TextInput
+
+
 # Read data
-data = pd.read_csv("./exercise7/data_example.csv")
+data = pd.read_csv("data/pgh_community_centers.csv")
 data["date"] = pd.to_datetime(data["date"])
 
 # Create a new Flask web server
 app = NanoDash(title="Sample NanoDash App")
 
 
-def make_graph(year, month, center_name):
+def make_graph(year, month, center_name, custom_title=""):
     # Show only data from selected year
     data_filtered = data[data["date"].dt.year == int(year)]
     # Show only data from selected month
@@ -24,6 +26,8 @@ def make_graph(year, month, center_name):
     # Show only data from selected center
     if center_name != "All":
         data_filtered = data_filtered[data_filtered["center_name"] == center_name]
+    # Use custom title if provided, otherwise create title from inputs
+    title = custom_title or make_chart_title(year, month, center_name)
     # Create the graph
     fig = px.bar(
         data_filtered,
@@ -33,12 +37,20 @@ def make_graph(year, month, center_name):
         barmode="stack",
     )
     fig.update_layout(
-        title="Daily attendance at Pittsburgh community centers",
+        title=title,
         xaxis_title="Date",
         yaxis_title="Attendance count",
         showlegend=False,
     )
     return fig
+
+def make_chart_title(year, month, center_name):
+    center_name = center_name + " (Pittsburgh)" if center_name != "All" else "Pittsburgh community centers"
+    title = f"Daily attendance at {center_name}, "
+    if month != "All":
+        title += month + " "
+    title += year
+    return title
 
 
 ###################
@@ -50,47 +62,53 @@ graph = Graph(
     id="attendance-graph",
 )
 citation = Text(
-    text="Source: Western Pennsylvania Regional Data Center (data.wprdc.org)"
+    text="Data source: Western Pennsylvania Regional Data Center (data.wprdc.org)"
 )
-unique_years = [str(y) for y in data["date"].dt.year.unique()]
+dropdown_label = Text(text="Filter data:")
 year_dropdown = Dropdown(
     id="year-dropdown",
-    options=unique_years,
-    # value="2025",
+    value="2025",
+    options=sorted([str(y) for y in data["date"].dt.year.unique()]),
 )
-unique_months = [
-    "All",
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-]
 month_dropdown = Dropdown(
     id="month-dropdown",
-    options=unique_months,
-    # value="March",
+    value="April",
+    options=[
+        "All",
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ],
 )
-unique_centers = ["All"] + list(data["center_name"].unique())
 center_name_dropdown = Dropdown(
     id="center-name-dropdown",
-    options=unique_centers,
-    # value="All",
+    value="All",
+    options = ["All"] + sorted(list(data["center_name"].unique())),
+)
+chart_title_input_label = Text(text="Customize chart title: ")
+chart_title_input = TextInput(
+    id="chart-title-input",
+    value="Pittsburgh Community Center Attendance",
 )
 page = Page(
     children=[
         header,
         citation,
+        dropdown_label,
         year_dropdown,
         month_dropdown,
         center_name_dropdown,
+        chart_title_input_label,
+        chart_title_input,
         graph,
     ]
 )
@@ -106,15 +124,17 @@ def update_graph(inputs):
     year = inputs[0]
     month = inputs[1]
     center_name = inputs[2]
-    fig = make_graph(year=year, month=month, center_name=center_name)
+    custom_title = inputs[3]
+    fig = make_graph(year=year, month=month, center_name=center_name, custom_title=custom_title)
     return [fig]
 
 
 app.add_callback(
-    input_ids=["year-dropdown", "month-dropdown", "center-name-dropdown"],
+    input_ids=["year-dropdown", "month-dropdown", "center-name-dropdown", "chart-title-input"],
     output_ids=["attendance-graph"],
     function=update_graph,
 )
 
-# Run the app
-app.run()
+if __name__ == "__main__":
+    # Run the app
+    app.run()

@@ -1,12 +1,18 @@
+"""
+This file contains the definition for the NanoDash class itself,
+including logic for running the Flask server, returning the HTML layout
+of the app, and handling callbacks.
+"""
+
 import flask
 
 from .components import Component
+
 
 class NanoDash:
     def __init__(self, title: str = "NanoDash App") -> None:
         self.app = flask.Flask(__name__)
         self.title = title
-        self.callbacks = []
 
         # This route is used to serve the main HTML page
         @self.app.route("/")
@@ -48,8 +54,6 @@ class NanoDash:
         return f"""
         <html>
             <head>
-                <script src="https://cdn.plot.ly/plotly-3.0.1.min.js" charset="utf-8"></script>
-                <script src='static/index.js'></script>
                 <title>{self.title}</title>
             </head>
             <body>
@@ -59,8 +63,8 @@ class NanoDash:
         """
         ## EXERCISE 1 END
 
-    def run(self) -> None:
+    def run(self, debug=True, **kwargs) -> None:
         """
         Run the NanoDash application by starting the Flask server.
         """
-        self.app.run()
+        self.app.run(debug=debug, **kwargs)

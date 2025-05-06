@@ -4,7 +4,7 @@ This tutorial will demonstrate how interactive web dashboard frameworks like Plo
 
 ## Setup
 
-If you haven't already, please complete the setup instructions outlined in [SETUP.md]((https://github.com/plotly/tutorial-nanodash/blob/main/SETUP.md)) before continuing.
+If you haven't already, please complete the setup instructions outlined in [SETUP.md](https://github.com/plotly/tutorial-nanodash/blob/main/SETUP.md) before continuing.
 
 ## Exercises
 

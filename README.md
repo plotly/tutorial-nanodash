@@ -44,6 +44,9 @@ Each exercise focuses on implementing a specific part of the NanoDash framework.
 **Command to run tests**
 `python -m pytest exercise1/`
 
+**Command to run app**
+`python exercise1/app.py`
+
 ### Exercise 2: Implementing input components
 ---
 
@@ -60,6 +63,9 @@ Each exercise focuses on implementing a specific part of the NanoDash framework.
 **Command to run tests**
 `python -m pytest exercise2/`
 
+**Command to run app**
+`python exercise2/app.py`
+
 ### Exercise 3: Implementing the Graph component
 ---
 
@@ -73,6 +79,9 @@ Each exercise focuses on implementing a specific part of the NanoDash framework.
 
 **Command to run tests**
 `python -m pytest exercise3/`
+
+**Command to run app**
+`python exercise3/app.py`
 
 ### Exercise 4: Gathering the page state when an input changes
 ---
@@ -90,6 +99,9 @@ Don't worry — we've provided some useful helper functions inside the Javascrip
 **Command to run tests**
 `python -m pytest exercise4/`
 
+**Command to run app**
+`python exercise4/app.py`
+
 ### Exercise 5: Running callbacks
 ---
 
@@ -105,6 +117,9 @@ Don't worry — we've provided some useful helper functions inside the Javascrip
 **Command to run tests**
 `python -m pytest exercise5/`
 
+**Command to run app**
+`python exercise5/app.py`
+
 ### Exercise 6: Updating the page with callback results
 ---
 
@@ -118,6 +133,9 @@ Don't worry — we've provided some useful helper functions inside the Javascrip
 
 **Command to run tests**
 `python -m pytest exercise6/`
+
+**Command to run app**
+`python exercise6/app.py`
 
 ### Exercise 7: Writing your own NanoDash application
 ---

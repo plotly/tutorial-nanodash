@@ -2,6 +2,9 @@
 
 This tutorial will demonstrate how interactive web dashboard frameworks like Plotly Dash work, by building a simplified version of Dash itself from scratch using Python, the Flask framework, and a little bit of vanilla JavaScript. 
 
+[Link to Slides](https://docs.google.com/presentation/d/1rbJyN75oafr6xxv5Xs9jWwQkrMgv0drzuLckSWyhAJs/edit?usp=sharing)
+
+
 ## Setup
 
 If you haven't already, please complete the setup instructions outlined in [SETUP.md](https://github.com/plotly/tutorial-nanodash/blob/main/SETUP.md) before continuing.
